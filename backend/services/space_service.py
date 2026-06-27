@@ -2,7 +2,7 @@ from datetime import datetime
 from bson import ObjectId
 from utils.invite_generator import generate_invite_code
 from models.space import spaces_collection
-
+from utils.serializer import serialize
 
 def create_space(space_name, space_type, owner_id):
     space = {
@@ -41,9 +41,7 @@ def get_user_spaces(owner_id):
     )
 
     for space in spaces:
-        space["_id"] = str(space["_id"])
-
-    return spaces
+        return serialize(space)
 
 
 

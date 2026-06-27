@@ -1,0 +1,5 @@
+TEXT = "text"
+IMAGE = "image"
+VOICE = "voice"
+FILE = "file"
+SYSTEM = "system"

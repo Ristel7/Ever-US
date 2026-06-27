@@ -1,6 +1,11 @@
-from flask import Blueprint, g
+from flask import Blueprint
+
+from controllers.user_controller import (
+    get_profile,
+    upload_profile_image
+)
+
 from middleware.jwt_required import jwt_required
-from utils.response import success
 
 user_bp = Blueprint("user", __name__)
 
@@ -8,14 +13,10 @@ user_bp = Blueprint("user", __name__)
 @user_bp.route("/profile", methods=["GET"])
 @jwt_required
 def profile():
+    return get_profile()
 
-    return success(
-        "Profile fetched successfully",
-        {
-            "user": {
-                "id": g.user["_id"],
-                "name": g.user["name"],
-                "email": g.user["email"]
-            }
-        }
-    )
+
+@user_bp.route("/profile-image", methods=["PUT"])
+@jwt_required
+def profile_image():
+    return upload_profile_image()

@@ -35,7 +35,4 @@ def get_space_members(space_id):
         })
     )
 
-    for member in members:
-        member["_id"] = str(member["_id"])
-
-    return members
+    return serialize(members)
