@@ -25,11 +25,13 @@ def create_space(space_name, space_type, owner_id):
     }
 
 
-
 def get_user_spaces(owner_id):
+
     spaces = list(
         spaces_collection.find(
-            {"owner_id": owner_id},
+            {
+                "owner_id": owner_id
+            },
             {
                 "_id": 1,
                 "space_name": 1,
@@ -40,8 +42,7 @@ def get_user_spaces(owner_id):
         )
     )
 
-    for space in spaces:
-        return serialize(space)
+    return serialize(spaces) 
 
 
 
@@ -87,3 +88,20 @@ def delete_space_by_id(space_id, owner_id):
 
     return result.deleted_count > 0
 
+
+def update_space_cover(space_id, owner_id, image_url):
+
+    result = spaces_collection.update_one(
+        {
+            "_id": ObjectId(space_id),
+            "owner_id": owner_id
+        },
+        {
+            "$set": {
+                "cover_image": image_url,
+                "updated_at": datetime.utcnow()
+            }
+        }
+    )
+
+    return result.modified_count > 0

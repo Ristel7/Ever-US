@@ -1,0 +1,57 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+
+<h2>Login</h2>
+
+<form id="loginForm">
+
+    <input type="email" id="email" placeholder="Email">
+
+    <br><br>
+
+    <input type="password" id="password" placeholder="Password">
+
+    <br><br>
+
+    <button type="submit">
+
+        Login
+
+    </button>
+
+</form>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+<script>
+
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+
+            e.preventDefault();
+
+            await login(
+
+                document.getElementById("email").value,
+
+                document.getElementById("password").value
+
+            );
+
+        });
+
+</script>
+
+{% endblock %}

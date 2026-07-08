@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}everUS{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block css %}{% endblock %}
+
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <h2>everUS</h2>
+
+            <ul>
+
+                <li><a href="/dashboard">Dashboard</a></li>
+
+                <li><a href="/spaces">Spaces</a></li>
+
+                <li><a href="/gallery">Gallery</a></li>
+
+                <li><a href="/timeline">Timeline</a></li>
+
+                <li><a href="/journal">Journal</a></li>
+
+                <li><a href="/settings">Settings</a></li>
+
+            </ul>
+
+        </aside>
+
+        <!-- Main Content -->
+
+        <main class="content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+
+    {% block js %}{% endblock %}
+    
+    <li>
+    
+        <a href="#" onclick="logout()">
+    
+            Logout
+    
+        </a>
+    
+    </li>
+</body>
+
+</html>

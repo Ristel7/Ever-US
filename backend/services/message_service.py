@@ -112,3 +112,21 @@ def update_message(message_id, sender_id, new_message):
     print("=" * 50)
 
     return result.modified_count > 0
+
+
+def create_image_message(space_id, sender_id, image_url):
+
+    document = {
+        "space_id": space_id,
+        "sender_id": sender_id,
+        "message": image_url,
+        "message_type": "image",
+        "reply_to": None,
+        "is_edited": False,
+        "created_at": datetime.utcnow(),
+        "updated_at": datetime.utcnow()
+    }
+
+    result = messages_collection.insert_one(document)
+
+    return str(result.inserted_id)

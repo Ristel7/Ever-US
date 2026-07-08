@@ -1,16 +1,18 @@
 from flask import request, g
 
+from socketio_instance import socketio
+
+from services.upload_service import upload_image
 from services.message_service import (
     create_message,
+    create_image_message,
     get_messages,
     update_message,
     delete_message
 )
-
 from services.membership_service import is_member
 
 from utils.response import success, error
-
 from utils.validator import (
     validate_required,
     validate_length
@@ -58,10 +60,80 @@ def send_message():
         message
     )
 
+    # Socket.IO Event
+    socketio.emit(
+        "new_message",
+        {
+            "message_id": message_id,
+            "space_id": space_id,
+            "sender_id": user_id,
+            "message": message,
+            "message_type": "text"
+        },
+        room=space_id
+    )
+
     return success(
         "Message sent successfully",
         {
             "message_id": message_id
+        },
+        201
+    )
+
+
+def send_image_message():
+
+    if "image" not in request.files:
+        return error(
+            "No image uploaded",
+            400
+        )
+
+    space_id = request.form.get("space_id")
+
+    if not validate_required(space_id):
+        return error(
+            "Space ID is required",
+            400
+        )
+
+    user_id = g.user["_id"]
+
+    if not is_member(space_id, user_id):
+        return error(
+            "You are not a member of this space",
+            403
+        )
+
+    image = request.files["image"]
+
+    upload_result = upload_image(image)
+
+    message_id = create_image_message(
+        space_id,
+        user_id,
+        upload_result["url"]
+    )
+
+    # Socket.IO Event
+    socketio.emit(
+        "new_message",
+        {
+            "message_id": message_id,
+            "space_id": space_id,
+            "sender_id": user_id,
+            "message": upload_result["url"],
+            "message_type": "image"
+        },
+        room=space_id
+    )
+
+    return success(
+        "Image message sent successfully",
+        {
+            "message_id": message_id,
+            "image_url": upload_result["url"]
         },
         201
     )
@@ -93,7 +165,6 @@ def edit_message(message_id):
 
     new_message = data.get("message")
 
-    # Validation
     if not validate_required(new_message):
         return error(
             "Message cannot be empty",
@@ -138,39 +209,4 @@ def remove_message(message_id):
 
     return success(
         "Message deleted successfully"
-    )
-
-
-def upload_profile_image():
-
-    print("Files:", request.files)
-
-    if "image" not in request.files:
-        return error(
-            "No image uploaded",
-            400
-        )
-
-    image = request.files["image"]
-
-    print("Filename:", image.filename)
-
-    result = upload_image(image)
-
-    success_update = update_profile_image(
-        g.user["_id"],
-        result["url"]
-    )
-
-    if not success_update:
-        return error(
-            "Unable to update profile image",
-            500
-        )
-
-    return success(
-        "Profile image updated successfully",
-        {
-            "profile_image": result["url"]
-        }
     )

@@ -5,7 +5,8 @@ from controllers.space_controller import (
     get_spaces,
     get_space,
     update_space,
-    delete_space
+    delete_space,
+    upload_cover_image
 )
 
 from middleware.jwt_required import jwt_required
@@ -51,3 +52,9 @@ def update_space_route(space_id):
 @jwt_required
 def delete_space_route(space_id):
     return delete_space(space_id)
+
+
+@space_bp.route("/<space_id>/cover", methods=["PUT"])
+@jwt_required
+def update_cover(space_id):
+    return upload_cover_image(space_id)

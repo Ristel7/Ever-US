@@ -1,5 +1,5 @@
 from flask import request, g
-
+from services.upload_service import upload_image
 from services.space_service import (
     create_space,
     get_user_spaces,
@@ -9,6 +9,7 @@ from services.space_service import (
 )
 from utils.response import success, error
 from services.membership_service import add_member
+from services.space_service import update_space_cover
 
 
 def create_new_space():
@@ -116,3 +117,34 @@ def delete_space(space_id):
         "Space deleted successfully"
     )
 
+
+def upload_cover_image(space_id):
+
+    if "image" not in request.files:
+        return error(
+            "No image uploaded",
+            400
+        )
+
+    image = request.files["image"]
+
+    result = upload_image(image)
+
+    success_update = update_space_cover(
+        space_id,
+        g.user["_id"],
+        result["url"]
+    )
+
+    if not success_update:
+        return error(
+            "Space not found or unauthorized",
+            404
+        )
+
+    return success(
+        "Cover image updated successfully",
+        {
+            "cover_image": result["url"]
+        }
+    )

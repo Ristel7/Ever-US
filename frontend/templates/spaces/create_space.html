@@ -1,0 +1,70 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<h2>Create Space</h2>
+
+<form id="spaceForm">
+
+    <input id="spaceName" placeholder="Space Name">
+
+    <br><br>
+
+    <select id="spaceType">
+
+        <option value="friends">Friends</option>
+        <option value="family">Family</option>
+        <option value="work">Work</option>
+
+    </select>
+
+    <br><br>
+
+    <button>Create</button>
+
+</form>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth_guard.js') }}"></script>
+
+<script>
+
+    verifyUser();
+
+    document
+        .getElementById("spaceForm")
+        .addEventListener("submit", async function (e) {
+
+            e.preventDefault();
+
+            const response = await api(
+                "/spaces",
+                "POST",
+                {
+                    space_name:
+                        document.getElementById("spaceName").value,
+
+                    space_type:
+                        document.getElementById("spaceType").value
+                }
+            );
+
+            if (response.success) {
+
+                window.location.href = "/spaces";
+
+            } else {
+
+                alert(response.message);
+
+            }
+
+        });
+
+</script>
+
+{% endblock %}

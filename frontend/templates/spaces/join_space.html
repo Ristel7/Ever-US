@@ -1,0 +1,57 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<h2>Join Space</h2>
+
+<form id="joinForm">
+
+    <input id="inviteCode" placeholder="Invite Code">
+
+    <br><br>
+
+    <button>Join</button>
+
+</form>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth_guard.js') }}"></script>
+
+<script>
+
+    verifyUser();
+
+    document
+        .getElementById("joinForm")
+        .addEventListener("submit", async function (e) {
+
+            e.preventDefault();
+
+            const response = await api(
+                "/invite/join",
+                "POST",
+                {
+                    invite_code:
+                        document.getElementById("inviteCode").value
+                }
+            );
+
+            if (response.success) {
+
+                window.location.href = "/spaces";
+
+            } else {
+
+                alert(response.message);
+
+            }
+
+        });
+
+</script>
+
+{% endblock %}

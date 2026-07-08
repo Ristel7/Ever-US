@@ -1,0 +1,31 @@
+.space-card {
+
+    width: 260px;
+
+    background: white;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+
+    margin: 15px;
+
+    display: inline-block;
+
+    vertical-align: top;
+
+}
+
+.space-card img {
+
+    width: 100%;
+
+    height: 150px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+}

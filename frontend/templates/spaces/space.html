@@ -1,36 +1,39 @@
 {% extends "layouts/base.html" %}
 
 {% block title %}
-Dashboard
+Spaces
 {% endblock %}
 
 {% block content %}
 
-<h1>Welcome</h1>
+<h1>My Spaces</h1>
 
 <br>
 
-<img id="profileImage" width="120">
+<a href="/spaces/create">
+    <button>Create Space</button>
+</a>
 
-<h2 id="userName"></h2>
+<a href="/spaces/join">
+    <button>Join Space</button>
+</a>
 
-<p id="userEmail"></p>
+<br><br>
+
+<div id="spacesContainer"></div>
 
 {% endblock %}
 
 {% block js %}
 
 <script src="{{ url_for('static', filename='js/api.js') }}"></script>
-
 <script src="{{ url_for('static', filename='js/auth_guard.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/spaces.js') }}"></script>
 
 <script>
 
     verifyUser();
-
-    loadProfile();
+    loadSpaces();
 
 </script>
 

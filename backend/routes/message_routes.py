@@ -2,6 +2,7 @@ from flask import Blueprint
 
 from controllers.message_controller import (
     send_message,
+    send_image_message,
     get_space_messages,
     edit_message,
     remove_message
@@ -34,3 +35,9 @@ def edit_message_route(message_id):
 @jwt_required
 def delete_message_route(message_id):
     return remove_message(message_id)
+
+
+@message_bp.route("/image", methods=["POST"])
+@jwt_required
+def upload_image_message():
+    return send_image_message()
