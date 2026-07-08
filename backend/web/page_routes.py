@@ -8,7 +8,7 @@ page_bp = Blueprint("pages", __name__)
 
 @page_bp.route("/")
 def home():
-    return render_template("auth/login.html")
+    return render_template("landing/landing.html")
 
 
 @page_bp.route("/dashboard")
@@ -66,3 +66,13 @@ def create_space():
 @page_bp.route("/spaces/join")
 def join_space():
     return render_template("spaces/join_space.html")
+
+
+@page_bp.route("/")
+def landing():
+    return render_template("landing/landing.html")
+
+
+@page_bp.route("/register")
+def register():
+    return render_template("auth/register.html")

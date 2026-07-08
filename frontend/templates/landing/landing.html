@@ -1,0 +1,176 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}everUS | Every Memory Deserves Forever{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+<link rel="icon" href="{{url_for('static', filename='images/logo.png') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        ❤️ everUS
+
+    </div>
+
+    <ul>
+
+        <li><a href="#">Home</a></li>
+
+        <li><a href="#">Features</a></li>
+
+        <li><a href="#">About</a></li>
+
+        <li><a href="/login">Login</a></li>
+
+        <li>
+
+            <a href="/register" class="btn-primary">
+
+                Get Started
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <span class="badge">
+
+            ❤️ Private • Secure • Forever
+
+        </span>
+
+        <h1>
+
+            Every Memory
+            <br>
+
+            Deserves Forever.
+
+        </h1>
+
+        <p>
+
+            Create beautiful private spaces with the people
+            who matter the most.
+
+            Chat together.
+
+            Share memories.
+
+            Build your timeline.
+
+            Relive every special moment.
+
+        </p>
+
+        <div class="buttons">
+
+            <a href="/register" class="btn-primary">
+
+                Get Started
+
+            </a>
+
+            <a href="/login" class="btn-secondary">
+
+                Login
+
+            </a>
+
+        </div>
+
+        <div class="stats">
+
+            <div>
+
+                <h2>100%</h2>
+
+                <span>Private</span>
+
+            </div>
+
+            <div>
+
+                <h2>Real-Time</h2>
+
+                <span>Messaging</span>
+
+            </div>
+
+            <div>
+
+                <h2>∞</h2>
+
+                <span>Memories</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        <div class="chat-card">
+
+            <div class="chat-header">
+
+                ❤️ Priyanshu & Tanu
+
+            </div>
+
+            <div class="message sender">
+
+                Hello ❤️
+
+            </div>
+
+            <div class="message receiver">
+
+                Miss you 🥺
+
+            </div>
+
+            <div class="message sender">
+
+                📷 Beautiful Memory
+
+            </div>
+
+            <div class="bottom">
+
+                Gallery • Timeline • Journal
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
