@@ -1,175 +1,112 @@
-{% extends "layouts/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}everUS | Every Memory Deserves Forever{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>everUS — Private Memories Forever</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <link rel="icon" href="{{url_for('static', filename='images/icon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
 
-{% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
-<link rel="icon" href="{{url_for('static', filename='images/icon.png') }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
+<body>
+    <header class="navbar">
+        <a class="brand" href="#"><span class="brand-mark"></span><span>everUS</span></a>
+        <nav class="nav-links">
+            <a class="active" href="#">Home<span class="dot"></span></a>
+            <a href="#features">Features</a><a href="#about">About</a><a href="#contact">Contact</a>
+        </nav>
+        <div class="nav-actions"><a class="login" href="#">Login</a><a class="primary-btn small" href="#">Get
+                Started</a></div>
+    </header>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-{% endblock %}
-
-{% block content %}
-
-<!-- ================= NAVBAR ================= -->
-
-<nav class="navbar">
-
-    <div class="logo">
-
-        ❤️ everUS
-
-    </div>
-
-    <ul>
-
-        <li><a href="#">Home</a></li>
-
-        <li><a href="#">Features</a></li>
-
-        <li><a href="#">About</a></li>
-
-        <li><a href="/login">Login</a></li>
-
-        <li>
-
-            <a href="/register" class="btn-primary">
-
-                Get Started
-
-            </a>
-
-        </li>
-
-    </ul>
-
-</nav>
-
-<!-- ================= HERO ================= -->
-
-<section class="hero">
-
-    <div class="hero-left">
-
-        <span class="badge">
-
-            ❤️ Private • Secure • Forever
-
-        </span>
-
-        <h1>
-
-            Every Memory
-            <br>
-
-            Deserves Forever.
-
-        </h1>
-
-        <p>
-
-            Create beautiful private spaces with the people
-            who matter the most.
-
-            Chat together.
-
-            Share memories.
-
-            Build your timeline.
-
-            Relive every special moment.
-
-        </p>
-
-        <div class="buttons">
-
-            <a href="/register" class="btn-primary">
-
-                Get Started
-
-            </a>
-
-            <a href="/login" class="btn-secondary">
-
-                Login
-
-            </a>
-
-        </div>
-
-        <div class="stats">
-
-            <div>
-
-                <h2>100%</h2>
-
-                <span>Private</span>
-
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow"><span>◆</span><span>Private. Secure. <strong>Forever.</strong></span></div>
+                <h1>Build a Place<br>Where Every<br>Memory Lives<br><span>Forever.</span></h1>
+                <p class="hero-text">everUS helps you create private spaces to preserve conversations, memories, photos,
+                    and moments with the people who matter most.</p>
+                <div class="hero-buttons"><a class="primary-btn" href="#">Get Started <span>→</span></a><a
+                        class="outline-btn" href="#features">Explore Features <span>→</span></a></div>
+                <div class="trust-row">
+                    <div class="trust-item">
+                        <div class="trust-icon">♡</div>
+                        <div><b>100% Private</b><small>Your data stays yours</small></div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">▣</div>
+                        <div><b>End-to-End Encrypted</b><small>We protect your privacy</small></div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon green">☁</div>
+                        <div><b>Always Accessible</b><small>Anytime, anywhere</small></div>
+                    </div>
+                </div>
             </div>
 
-            <div>
-
-                <h2>Real-Time</h2>
-
-                <span>Messaging</span>
-
+            <div class="hero-visual">
+                <div class="glow"></div>
+                <div class="hero-image-wrap"><img src="{{url_for('static', filename='images/hero-image.png') }}" alt="EverUS memory illustration"></div>
+                <div class="feature-card card-top-left">
+                    <div class="feature-icon purple">♧</div>
+                    <div><b>Private Spaces</b><small>Create safe spaces<br>for your people</small></div><span
+                        class="arrow">→</span>
+                </div>
+                <div class="feature-card card-top-right">
+                    <div class="feature-icon pink">▧</div>
+                    <div><b>Gallery</b><small>Store and organize<br>your memories</small></div><span
+                        class="arrow">→</span>
+                </div>
+                <div class="feature-card card-bottom-left">
+                    <div class="feature-icon green">▤</div>
+                    <div><b>Journal</b><small>Write your thoughts,<br>only for you</small></div><span
+                        class="arrow">→</span>
+                </div>
+                <div class="feature-card card-bottom-right">
+                    <div class="feature-icon violet">▦</div>
+                    <div><b>Timeline</b><small>Celebrate moments<br>that matter</small></div><span
+                        class="arrow">→</span>
+                </div>
+                <span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span><span
+                    class="spark s4">✦</span>
             </div>
+        </section>
 
-            <div>
+        <section class="feature-grid" id="features">
+            <article class="feature-box">
+                <div class="feature-icon large purple">♧</div>
+                <h3>Private Spaces</h3>
+                <p>Create secure spaces for couples, friends, family, or teams.</p><a href="#">Learn more →</a>
+            </article>
+            <article class="feature-box">
+                <div class="feature-icon large blue">▧</div>
+                <h3>Gallery</h3>
+                <p>Upload, organize and revisit every precious moment together.</p><a href="#">Learn more →</a>
+            </article>
+            <article class="feature-box">
+                <div class="feature-icon large pink">▦</div>
+                <h3>Timeline</h3>
+                <p>Track important dates, events, trips and life milestones.</p><a href="#">Learn more →</a>
+            </article>
+            <article class="feature-box">
+                <div class="feature-icon large green">▤</div>
+                <h3>Journal</h3>
+                <p>Write, reflect and keep your personal thoughts private forever.</p><a href="#">Learn more →</a>
+            </article>
+        </section>
 
-                <h2>∞</h2>
+        <section class="dummy-section" id="about">
+            <h2>Made for the moments that matter.</h2>
+            <p>Keep your conversations, memories and milestones together in one private place.</p>
+        </section>
+    </main>
+</body>
 
-                <span>Memories</span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="hero-right">
-
-        <div class="chat-card">
-
-            <div class="chat-header">
-
-                ❤️ Priyanshu & Tanu
-
-            </div>
-
-            <div class="message sender">
-
-                Hello ❤️
-
-            </div>
-
-            <div class="message receiver">
-
-                Miss you 🥺
-
-            </div>
-
-            <div class="message sender">
-
-                📷 Beautiful Memory
-
-            </div>
-
-            <div class="bottom">
-
-                Gallery • Timeline • Journal
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-{% endblock %}
+</html>

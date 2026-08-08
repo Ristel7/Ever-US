@@ -1,0 +1,1001 @@
+:root {
+
+    --primary: #6d28d9;
+    --primary-light: #8b5cf6;
+    --accent: #2563eb;
+
+    --background: #f8fafc;
+    --surface: #ffffff;
+
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+
+    --success: #22c55e;
+    --danger: #ef4444;
+
+}
+
+
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    font-family: "Poppins", sans-serif;
+
+    background: var(--background);
+
+    color: var(--text);
+
+}
+
+
+button,
+input {
+
+    font-family: inherit;
+
+}
+
+
+a {
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.auth-page {
+
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+}
+
+
+/* =========================================
+   LEFT VISUAL
+========================================= */
+
+.auth-visual {
+
+    position: relative;
+
+    min-height: 100vh;
+
+    overflow: hidden;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 70px;
+
+    background:
+
+        radial-gradient(circle at 20% 20%,
+            rgba(139, 92, 246, .45),
+            transparent 35%),
+
+        radial-gradient(circle at 90% 80%,
+            rgba(37, 99, 235, .4),
+            transparent 35%),
+
+        linear-gradient(145deg,
+            #4c1d95,
+            #6d28d9 50%,
+            #4338ca);
+
+}
+
+
+/* decorative glow */
+
+.auth-visual::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+
+    height: 500px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, .07);
+
+    filter: blur(5px);
+
+    top: -200px;
+
+    right: -180px;
+
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.visual-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    max-width: 650px;
+
+    margin: auto;
+
+}
+
+
+.brand {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: white;
+
+    font-size: 27px;
+
+    font-weight: 700;
+
+    letter-spacing: -.8px;
+
+}
+
+
+.brand-icon {
+
+    font-size: 38px;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+}
+
+
+.visual-main {
+
+    margin-top: 130px;
+
+}
+
+
+.eyebrow {
+
+    display: inline-block;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, .7);
+
+    margin-bottom: 22px;
+
+}
+
+
+.visual-main h1 {
+
+    font-size: clamp(42px, 4vw, 68px);
+
+    line-height: 1.08;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 700;
+
+    margin-bottom: 28px;
+
+}
+
+
+.visual-main p {
+
+    max-width: 520px;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, .78);
+
+}
+
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.visual-features {
+
+    display: flex;
+
+    gap: 18px;
+
+    margin-top: 55px;
+
+}
+
+
+.visual-feature {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 15px 18px;
+
+    border: 1px solid rgba(255, 255, 255, .16);
+
+    background: rgba(255, 255, 255, .08);
+
+    backdrop-filter: blur(14px);
+
+    border-radius: 17px;
+
+}
+
+
+.feature-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, .12);
+
+}
+
+
+.feature-icon svg {
+
+    width: 21px;
+
+    height: 21px;
+
+}
+
+
+.visual-feature strong {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.visual-feature span {
+
+    display: block;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+
+    color: rgba(255, 255, 255, .6);
+
+}
+
+
+/* =========================================
+   ORBS
+========================================= */
+
+.orb {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+}
+
+
+.orb-one {
+
+    width: 220px;
+
+    height: 220px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, .13),
+            rgba(255, 255, 255, 0));
+
+    bottom: -90px;
+
+    left: -50px;
+
+}
+
+
+.orb-two {
+
+    width: 140px;
+
+    height: 140px;
+
+    border: 1px solid rgba(255, 255, 255, .15);
+
+    top: 35%;
+
+    right: 7%;
+
+}
+
+
+/* =========================================
+   INFINITY DECORATION
+========================================= */
+
+.infinity-decoration {
+
+    position: absolute;
+
+    right: 12%;
+
+    bottom: 9%;
+
+    font-size: 130px;
+
+    font-weight: 200;
+
+    color: rgba(255, 255, 255, .05);
+
+    transform: rotate(-8deg);
+
+}
+
+
+/* =========================================
+   RIGHT SIDE
+========================================= */
+
+.auth-form-section {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 50px 30px;
+
+    background: var(--background);
+
+}
+
+
+.auth-card {
+
+    width: 100%;
+
+    max-width: 470px;
+
+}
+
+
+/* =========================================
+   MOBILE BRAND
+========================================= */
+
+.mobile-brand {
+
+    display: none;
+
+}
+
+
+.mobile-brand .brand {
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.form-header {
+
+    margin-bottom: 35px;
+
+}
+
+
+.form-badge {
+
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    border-radius: 30px;
+
+    background: #ede9fe;
+
+    color: var(--primary);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
+
+    margin-bottom: 17px;
+
+}
+
+
+.form-header h2 {
+
+    font-size: 34px;
+
+    line-height: 1.2;
+
+    letter-spacing: -1px;
+
+    margin-bottom: 9px;
+
+}
+
+
+.form-header p {
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+
+    margin-bottom: 20px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+
+}
+
+
+.label-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.label-row span {
+
+    font-size: 10px;
+
+    color: var(--muted);
+
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input-wrapper {
+
+    position: relative;
+
+}
+
+
+.input-wrapper>svg {
+
+    position: absolute;
+
+    left: 16px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 19px;
+
+    height: 19px;
+
+    color: #9ca3af;
+
+    pointer-events: none;
+
+}
+
+
+.input-wrapper input {
+
+    width: 100%;
+
+    height: 55px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    outline: none;
+
+    background: white;
+
+    padding: 0 18px 0 48px;
+
+    font-size: 13px;
+
+    color: var(--text);
+
+    transition: .25s;
+
+}
+
+
+.input-wrapper input::placeholder {
+
+    color: #a1a1aa;
+
+}
+
+
+.input-wrapper input:focus {
+
+    border-color: var(--primary-light);
+
+    box-shadow:
+        0 0 0 4px rgba(139, 92, 246, .10);
+
+}
+
+
+/* =========================================
+   PASSWORD TOGGLE
+========================================= */
+
+.password-toggle {
+
+    position: absolute;
+
+    right: 13px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--primary);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================
+   STRENGTH
+========================================= */
+
+.password-strength {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: -9px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.strength-bars {
+
+    display: flex;
+
+    gap: 4px;
+
+    flex: 1;
+
+}
+
+
+.strength-bars span {
+
+    height: 4px;
+
+    flex: 1;
+
+    border-radius: 10px;
+
+    background: #e5e7eb;
+
+    transition: .3s;
+
+}
+
+
+.strength-bars span.active {
+
+    background: var(--primary-light);
+
+}
+
+
+.password-strength>span {
+
+    min-width: 105px;
+
+    font-size: 9px;
+
+    color: var(--muted);
+
+}
+
+
+/* =========================================
+   TERMS
+========================================= */
+
+.terms {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    position: relative;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    color: var(--muted);
+
+    line-height: 1.6;
+
+    margin-bottom: 23px;
+
+}
+
+
+.terms input {
+
+    position: absolute;
+
+    opacity: 0;
+
+}
+
+
+.custom-checkbox {
+
+    width: 17px;
+
+    height: 17px;
+
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 5px;
+
+    background: white;
+
+    transition: .2s;
+
+}
+
+
+.terms input:checked+.custom-checkbox {
+
+    background: var(--primary);
+
+    border-color: var(--primary);
+
+}
+
+
+.terms a {
+
+    color: var(--primary);
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+========================================= */
+
+.submit-button {
+
+    width: 100%;
+
+    height: 56px;
+
+    border: 0;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    background:
+
+        linear-gradient(135deg,
+            var(--primary),
+            var(--primary-light));
+
+    box-shadow:
+
+        0 12px 28px rgba(109, 40, 217, .23);
+
+    transition: .3s;
+
+}
+
+
+.submit-button svg {
+
+    width: 18px;
+
+    height: 18px;
+
+    transition: .3s;
+
+}
+
+
+.submit-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+
+        0 16px 35px rgba(109, 40, 217, .30);
+
+}
+
+
+.submit-button:hover svg {
+
+    transform: translateX(4px);
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.form-message {
+
+    text-align: center;
+
+    font-size: 12px;
+
+    margin-top: 12px;
+
+    min-height: 18px;
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+.login-link {
+
+    text-align: center;
+
+    font-size: 12px;
+
+    color: var(--muted);
+
+    margin-top: 24px;
+
+}
+
+
+.login-link a {
+
+    color: var(--primary);
+
+    font-weight: 600;
+
+    margin-left: 4px;
+
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+.secure-note {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #9ca3af;
+
+    font-size: 10px;
+
+    margin-top: 30px;
+
+}
+
+
+.secure-note svg {
+
+    width: 14px;
+
+    height: 14px;
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .auth-page {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .auth-visual {
+
+        display: none;
+
+    }
+
+
+    .mobile-brand {
+
+        display: block;
+
+        margin-bottom: 45px;
+
+    }
+
+
+    .auth-form-section {
+
+        min-height: 100vh;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .auth-form-section {
+
+        padding: 35px 22px;
+
+    }
+
+
+    .form-header h2 {
+
+        font-size: 29px;
+
+    }
+
+
+    .auth-card {
+
+        max-width: 100%;
+
+    }
+
+}
