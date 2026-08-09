@@ -1,16 +1,15 @@
-console.log("LOGIN JS FILE LOADED");
-
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    console.log("DOM LOADED");
+    console.log("everUS Login JS loaded");
 
 
-    const form =
-        document.getElementById("loginForm");
+    // =====================================================
+    // ELEMENTS
+    // =====================================================
 
-    const emailInput =
-        document.getElementById("email");
+    const loginForm = document.getElementById("loginForm");
+
+    const emailInput = document.getElementById("email");
 
     const passwordInput =
         document.getElementById("password");
@@ -25,49 +24,61 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("loginButton");
 
 
-    console.log(
-        "LOGIN FORM:",
-        form
-    );
+    // =====================================================
+    // CHECK FORM
+    // =====================================================
+
+    if (!loginForm) {
+
+        console.error(
+            "Login form #loginForm was not found."
+        );
+
+        return;
+    }
 
 
     // =====================================================
-    // PASSWORD TOGGLE
+    // PASSWORD SHOW / HIDE
     // =====================================================
 
-    passwordToggle.addEventListener(
-        "click",
-        () => {
+    if (passwordToggle) {
 
-            const isPassword =
-                passwordInput.type === "password";
+        passwordToggle.addEventListener(
+            "click",
+            () => {
 
-
-            passwordInput.type =
-                isPassword
-                    ? "text"
-                    : "password";
+                const isPassword =
+                    passwordInput.type === "password";
 
 
-            passwordToggle.textContent =
-                isPassword
-                    ? "Hide"
-                    : "Show";
+                passwordInput.type =
+                    isPassword
+                        ? "text"
+                        : "password";
 
 
-            passwordToggle.setAttribute(
-                "aria-label",
-                isPassword
-                    ? "Hide password"
-                    : "Show password"
-            );
+                passwordToggle.textContent =
+                    isPassword
+                        ? "Hide"
+                        : "Show";
 
-        }
-    );
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    isPassword
+                        ? "Hide password"
+                        : "Show password"
+                );
+
+            }
+        );
+
+    }
 
 
     // =====================================================
-    // MESSAGE
+    // MESSAGE FUNCTION
     // =====================================================
 
     function showMessage(
@@ -75,19 +86,27 @@ document.addEventListener("DOMContentLoaded", () => {
         type = ""
     ) {
 
+        if (!message) {
+            return;
+        }
+
         message.textContent = text;
 
         message.className =
-            "form-message " + type;
+            "form-message";
+
+        if (type) {
+            message.classList.add(type);
+        }
 
     }
 
 
     // =====================================================
-    // LOGIN
+    // LOGIN FORM
     // =====================================================
 
-    form.addEventListener(
+    loginForm.addEventListener(
         "submit",
         async (event) => {
 
@@ -95,16 +114,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             console.log(
-                "LOGIN BUTTON CLICKED"
+                "Login form submitted"
             );
 
+
+            // -------------------------------------------------
+            // GET VALUES
+            // -------------------------------------------------
 
             const email =
                 emailInput.value.trim();
 
-
             const password =
                 passwordInput.value;
+
+
+            // -------------------------------------------------
+            // CLEAR OLD MESSAGE
+            // -------------------------------------------------
+
+            showMessage("");
 
 
             // -------------------------------------------------
@@ -121,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 emailInput.focus();
 
                 return;
-
             }
 
 
@@ -135,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 passwordInput.focus();
 
                 return;
-
             }
 
 
@@ -149,15 +176,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 passwordInput.focus();
 
                 return;
-
             }
 
 
             // -------------------------------------------------
-            // LOADING
+            // LOADING STATE
             // -------------------------------------------------
 
-            const originalHTML =
+            const originalButtonHTML =
                 loginButton.innerHTML;
 
 
@@ -169,19 +195,16 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
 
 
-            showMessage("");
-
-
             try {
 
                 console.log(
-                    "CALLING LOGIN API..."
+                    "Sending login request..."
                 );
 
 
-                // -------------------------------------------------
-                // API REQUEST
-                // -------------------------------------------------
+                // =================================================
+                // LOGIN API
+                // =================================================
 
                 const response =
                     await fetch(
@@ -203,24 +226,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 console.log(
-                    "API STATUS:",
+                    "Login API status:",
                     response.status
                 );
 
+
+                // -------------------------------------------------
+                // READ RESPONSE
+                // -------------------------------------------------
 
                 const result =
                     await response.json();
 
 
                 console.log(
-                    "API RESPONSE:",
+                    "Login API response:",
                     result
                 );
 
 
-                // -------------------------------------------------
+                // =================================================
                 // LOGIN FAILED
-                // -------------------------------------------------
+                // =================================================
 
                 if (
                     !response.ok ||
@@ -234,13 +261,31 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                     return;
-
                 }
 
 
-                // -------------------------------------------------
-                // SAVE JWT
-                // -------------------------------------------------
+                // =================================================
+                // CHECK TOKEN
+                // =================================================
+
+                if (!result.token) {
+
+                    console.error(
+                        "Login successful but no token was returned."
+                    );
+
+                    showMessage(
+                        "Login failed: authentication token was not received.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                // =================================================
+                // SAVE JWT TOKEN
+                // =================================================
 
                 localStorage.setItem(
                     "access_token",
@@ -248,54 +293,68 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                // -------------------------------------------------
-                // SAVE USER
-                // -------------------------------------------------
+                // =================================================
+                // SAVE USER DATA
+                // =================================================
 
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(
-                        result.user
-                    )
-                );
+                if (result.user) {
+
+                    localStorage.setItem(
+                        "user",
+                        JSON.stringify(
+                            result.user
+                        )
+                    );
+
+                }
 
 
-                // -------------------------------------------------
-                // SUCCESS
-                // -------------------------------------------------
-
-                showMessage(
-                    "Login successful! Redirecting...",
-                    "success"
+                console.log(
+                    "JWT token saved successfully"
                 );
 
 
                 console.log(
-                    "LOGIN SUCCESSFUL"
+                    "User:",
+                    result.user
                 );
 
 
-                // -------------------------------------------------
-                // TEMPORARY REDIRECT
-                // -------------------------------------------------
+                // =================================================
+                // SUCCESS MESSAGE
+                // =================================================
+
+                showMessage(
+                    "Login successful! Opening your dashboard...",
+                    "success"
+                );
+
+
+                // =================================================
+                // REDIRECT TO DASHBOARD
+                // =================================================
 
                 setTimeout(
                     () => {
 
                         window.location.href =
-                            "/";
+                            "/dashboard";
 
                     },
-                    800
+                    700
                 );
 
             }
 
 
+            // =====================================================
+            // NETWORK / SERVER ERROR
+            // =====================================================
+
             catch (error) {
 
                 console.error(
-                    "LOGIN ERROR:",
+                    "Login error:",
                     error
                 );
 
@@ -308,6 +367,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
+            // =====================================================
+            // RESTORE BUTTON
+            // =====================================================
+
             finally {
 
                 loginButton.disabled =
@@ -315,11 +378,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 loginButton.innerHTML =
-                    originalHTML;
+                    originalButtonHTML;
 
             }
 
         }
     );
 
-}); 
+});
