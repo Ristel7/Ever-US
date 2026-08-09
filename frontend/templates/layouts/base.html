@@ -1,46 +1,311 @@
-<header class="navbar">
+<!DOCTYPE html>
+<html lang="en">
 
-    <a href="{{ url_for('pages.home') }}" class="brand">
+<head>
 
-        <span class="brand-mark"></span>
+    <meta charset="UTF-8">
 
-        <span>everUS</span>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    </a>
+    <meta name="description"
+        content="everUS is a private space for preserving memories, conversations, photos and moments that matter.">
+
+    <meta name="theme-color" content="#6630e9">
+
+    <title>
+        {% block title %}everUS{% endblock %}
+    </title>
 
 
-    <nav class="nav-links">
+    <!-- Google Font -->
 
-        <a href="{{ url_for('pages.home') }}" class="active">
-            Home
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+
+
+    <!-- Page-specific CSS -->
+
+    {% block styles %}{% endblock %}
+
+</head>
+
+
+<body>
+
+
+    <!-- ================================
+         NAVBAR
+    ================================= -->
+
+    <header class="navbar">
+
+        <a href="{{ url_for('pages.home') }}" class="brand">
+
+            <span class="brand-mark" aria-hidden="true"></span>
+
+            <span>
+                everUS
+            </span>
+
         </a>
 
-        <a href="#features">
-            Features
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('pages.home') }}" class="active">
+                Home
+                <span class="dot"></span>
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#privacy">
+                Privacy
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a href="{{ url_for('pages.login') }}" class="login">
+                Login
+            </a>
+
+            <a href="{{ url_for('pages.register') }}" class="primary-btn small">
+                Get Started
+            </a>
+
+            <button type="button" class="mobile-menu-button" id="mobileMenuButton" aria-label="Open navigation menu"
+                aria-expanded="false">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================
+         MOBILE NAVIGATION
+    ================================= -->
+
+    <nav class="mobile-nav" id="mobileNav">
+
+        <a href="{{ url_for('pages.home') }}" class="mobile-nav-link">
+
+            <i class="fa-solid fa-house"></i>
+
+            <span>
+                Home
+            </span>
+
         </a>
 
-        <a href="#how-it-works">
-            How It Works
+
+        <a href="#features" class="mobile-nav-link">
+
+            <i class="fa-solid fa-layer-group"></i>
+
+            <span>
+                Features
+            </span>
+
         </a>
 
-        <a href="#privacy">
-            Privacy
+
+        <a href="#how-it-works" class="mobile-nav-link">
+
+            <i class="fa-solid fa-route"></i>
+
+            <span>
+                How It Works
+            </span>
+
+        </a>
+
+
+        <a href="#privacy" class="mobile-nav-link">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <span>
+                Privacy
+            </span>
+
+        </a>
+
+
+        <div class="mobile-nav-divider"></div>
+
+
+        <a href="{{ url_for('pages.login') }}" class="mobile-login">
+            Login
+        </a>
+
+
+        <a href="{{ url_for('pages.register') }}" class="mobile-register">
+            Create Account
         </a>
 
     </nav>
 
 
-    <div class="nav-actions">
+    <!-- ================================
+         PAGE CONTENT
+    ================================= -->
 
-        <a href="{{ url_for('pages.login') }}" class="login">
-            Login
-        </a>
+    {% block content %}{% endblock %}
 
-        <a href="{{ url_for('pages.register') }}" class="primary-btn small">
-            Get Started
-        </a>
 
-    </div>
+    <!-- ================================
+         MOBILE MENU SCRIPT
+    ================================= -->
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-</header>
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const menuButton =
+                    document.getElementById(
+                        "mobileMenuButton"
+                    );
+
+                const mobileNav =
+                    document.getElementById(
+                        "mobileNav"
+                    );
+
+
+                if (!menuButton || !mobileNav) {
+                    return;
+                }
+
+
+                menuButton.addEventListener(
+                    "click",
+                    function () {
+
+                        const isOpen =
+                            mobileNav.classList.toggle(
+                                "open"
+                            );
+
+
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            isOpen
+                        );
+
+
+                        const icon =
+                            menuButton.querySelector(
+                                "i"
+                            );
+
+
+                        if (isOpen) {
+
+                            icon.classList.remove(
+                                "fa-bars"
+                            );
+
+                            icon.classList.add(
+                                "fa-xmark"
+                            );
+
+                        } else {
+
+                            icon.classList.remove(
+                                "fa-xmark"
+                            );
+
+                            icon.classList.add(
+                                "fa-bars"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                const mobileLinks =
+                    mobileNav.querySelectorAll(
+                        "a"
+                    );
+
+
+                mobileLinks.forEach(
+                    function (link) {
+
+                        link.addEventListener(
+                            "click",
+                            function () {
+
+                                mobileNav.classList.remove(
+                                    "open"
+                                );
+
+                                menuButton.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+
+                                const icon =
+                                    menuButton.querySelector(
+                                        "i"
+                                    );
+
+                                icon.classList.remove(
+                                    "fa-xmark"
+                                );
+
+                                icon.classList.add(
+                                    "fa-bars"
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+
+    <!-- ================================
+         PAGE-SPECIFIC JAVASCRIPT
+    ================================= -->
+
+    {% block scripts %}{% endblock %}
+
+</body>
+
+</html>
