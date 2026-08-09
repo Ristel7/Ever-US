@@ -36,3 +36,10 @@ def dashboard():
     return render_template(
         "dashboard/dashboard.html"
     )
+
+
+@page_bp.route("/create-space")
+def create_space_page():
+    return render_template(
+        "spaces/create_space.html"
+    )
