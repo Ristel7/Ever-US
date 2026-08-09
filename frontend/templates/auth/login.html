@@ -9,7 +9,9 @@ Login | everUS
 {% block styles %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
 <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}">
+
 {% endblock %}
 
 
@@ -19,9 +21,9 @@ Login | everUS
 <main class="auth-page">
 
 
-    <!-- =========================================
+    <!-- =====================================================
          LEFT SIDE
-    ========================================== -->
+    ====================================================== -->
 
     <section class="auth-visual">
 
@@ -67,9 +69,11 @@ Login | everUS
 
 
                 <p>
+
                     Everything that matters deserves
                     a private place to live, grow and
                     last forever.
+
                 </p>
 
             </div>
@@ -176,6 +180,7 @@ Login | everUS
 
                 </div>
 
+
             </div>
 
         </div>
@@ -198,9 +203,9 @@ Login | everUS
 
 
 
-    <!-- =========================================
+    <!-- =====================================================
          RIGHT SIDE
-    ========================================== -->
+    ====================================================== -->
 
     <section class="auth-form-section">
 
@@ -249,9 +254,9 @@ Login | everUS
 
 
 
-            <!-- =====================================
+            <!-- =================================================
                  LOGIN FORM
-            ====================================== -->
+            ================================================== -->
 
             <form id="loginForm" novalidate>
 
@@ -350,7 +355,7 @@ Login | everUS
 
                 <!-- MESSAGE -->
 
-                <div class="form-message" id="formMessage" role="alert"></div>
+                <div class="form-message" id="formMessage" role="alert" aria-live="polite"></div>
 
 
 
@@ -410,9 +415,11 @@ Login | everUS
 
             </div>
 
+
         </div>
 
     </section>
+
 
 </main>
 
@@ -420,235 +427,12 @@ Login | everUS
 
 
 
+<!-- =========================================================
+     LOGIN JAVASCRIPT
+========================================================= -->
+
 {% block scripts %}
 
-<script>
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-
-            /* =====================================
-               ELEMENTS
-            ====================================== */
-
-            const form =
-                document.getElementById(
-                    "loginForm"
-                );
-
-
-            const emailInput =
-                document.getElementById(
-                    "email"
-                );
-
-
-            const passwordInput =
-                document.getElementById(
-                    "password"
-                );
-
-
-            const passwordToggle =
-                document.getElementById(
-                    "passwordToggle"
-                );
-
-
-            const message =
-                document.getElementById(
-                    "formMessage"
-                );
-
-
-            const loginButton =
-                document.getElementById(
-                    "loginButton"
-                );
-
-
-
-            /* =====================================
-               SHOW / HIDE PASSWORD
-            ====================================== */
-
-            passwordToggle.addEventListener(
-                "click",
-                function () {
-
-                    const isPassword =
-                        passwordInput.type === "password";
-
-
-                    passwordInput.type =
-                        isPassword
-                            ? "text"
-                            : "password";
-
-
-                    passwordToggle.textContent =
-                        isPassword
-                            ? "Hide"
-                            : "Show";
-
-
-                    passwordToggle.setAttribute(
-                        "aria-label",
-                        isPassword
-                            ? "Hide password"
-                            : "Show password"
-                    );
-
-                }
-            );
-
-
-
-            /* =====================================
-               MESSAGE HELPER
-            ====================================== */
-
-            function showMessage(
-                text,
-                type
-            ) {
-
-                message.textContent =
-                    text;
-
-
-                message.className =
-                    "form-message " + type;
-
-            }
-
-
-
-            /* =====================================
-               LOGIN FORM
-            ====================================== */
-
-            form.addEventListener(
-                "submit",
-                function (event) {
-
-                    event.preventDefault();
-
-
-                    showMessage(
-                        "",
-                        ""
-                    );
-
-
-                    const email =
-                        emailInput.value.trim();
-
-
-                    const password =
-                        passwordInput.value;
-
-
-                    /* -----------------------------
-                       VALIDATION
-                    ------------------------------ */
-
-                    if (!email) {
-
-                        showMessage(
-                            "Please enter your email address.",
-                            "error"
-                        );
-
-                        emailInput.focus();
-
-                        return;
-                    }
-
-
-                    if (!password) {
-
-                        showMessage(
-                            "Please enter your password.",
-                            "error"
-                        );
-
-                        passwordInput.focus();
-
-                        return;
-                    }
-
-
-                    if (password.length < 8) {
-
-                        showMessage(
-                            "Password must contain at least 8 characters.",
-                            "error"
-                        );
-
-                        passwordInput.focus();
-
-                        return;
-                    }
-
-
-
-                    /* -----------------------------
-                       TEMPORARY STATE
-                       
-                       API connection will be added
-                       in the next step.
-                    ------------------------------ */
-
-                    loginButton.disabled = true;
-
-
-                    const originalHTML =
-                        loginButton.innerHTML;
-
-
-                    loginButton.innerHTML = `
-                    <span>Signing in...</span>
-                `;
-
-
-                    /*
-                     * API integration comes next:
-                     *
-                     * POST /api/auth/login
-                     *
-                     * email
-                     * password
-                     */
-
-
-                    setTimeout(
-                        function () {
-
-                            console.log(
-                                "Login form validated"
-                            );
-
-
-                            loginButton.disabled =
-                                false;
-
-
-                            loginButton.innerHTML =
-                                originalHTML;
-
-                        },
-                        500
-                    );
-
-                }
-            );
-
-        }
-    );
-
-</script>
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 
 {% endblock %}

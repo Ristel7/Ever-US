@@ -1,37 +1,181 @@
 {% extends "layouts/base.html" %}
+{% block title %}Dashboard | everUS{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %} {% block content %} <div class="dashboard-shell">
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<aside class="sidebar" id="sidebar">
+    <div class="brand-row"><a class="brand" href="{{ url_for('pages.home') }}"><span>∞</span> everUS</a><button
+            id="closeSidebar"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="nav-label">WORKSPACE</div>
+    <nav>
+        <a class="nav active" href="{{ url_for('pages.dashboard') }}"><i class="fa-solid fa-house"></i>Dashboard</a>
+        <a class="nav" href="#"><i class="fa-regular fa-folder-open"></i>Spaces</a>
+        <a class="nav" href="#"><i class="fa-regular fa-images"></i>Memories</a>
+        <a class="nav" href="#"><i class="fa-solid fa-user-group"></i>People</a>
+        <a class="nav" href="#"><i class="fa-solid fa-timeline"></i>Timeline</a>
+        <a class="nav" href="#"><i class="fa-solid fa-wand-magic-sparkles"></i>AI Assistant <b>New</b></a>
+    </nav>
+    <div class="nav-label account">ACCOUNT</div>
+    <a class="nav" href="#"><i class="fa-solid fa-gear"></i>Settings</a>
+    <div class="sidebar-bottom">
+        <div class="profile">
+            <div class="avatar" id="avatar">U</div>
+            <div><strong id="sideName">User</strong><small id="sideEmail">Loading...</small></div>
+        </div>
+        <div class="storage-mini"><span>Storage</span><strong>0 GB of 10 GB</strong>
+            <div><i style="width:0%"></i></div>
+        </div>
+        <a class="bottom-link" href="#"><i class="fa-regular fa-circle-question"></i>Help & Support</a>
+        <button class="bottom-link" id="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>Log out</button>
+    </div>
+</aside>
 
-{% block title %}
-Dashboard
+<main class="main">
+    <header class="topbar">
+        <button class="menu" id="openSidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="top-actions">
+            <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="search"
+                    placeholder="Search anything..."></div>
+            <button class="icon-btn"><i class="fa-regular fa-bell"></i><span>3</span></button>
+            <button class="create-btn" id="createSpace"><i class="fa-solid fa-plus"></i><span>Create
+                    Space</span></button>
+        </div>
+    </header>
+
+    <div class="content">
+        <section class="welcome"><span>YOUR PRIVATE UNIVERSE</span>
+            <h1>Welcome back, <em id="welcomeName">there</em>. <b>👋</b></h1>
+            <p>Everything that matters, all in one private place.</p>
+        </section>
+
+        <section class="stats">
+            <article class="stat">
+                <div class="stat-icon blue"><i class="fa-regular fa-folder-open"></i></div>
+                <div><small>Total Spaces</small><strong id="totalSpaces">0</strong><label>Private spaces</label></div>
+            </article>
+            <article class="stat">
+                <div class="stat-icon pink"><i class="fa-regular fa-images"></i></div>
+                <div><small>Total Memories</small><strong>0</strong><label>Ready to grow</label></div>
+            </article>
+            <article class="stat">
+                <div class="stat-icon purple"><i class="fa-solid fa-user-group"></i></div>
+                <div><small>People Connected</small><strong>0</strong><label>Across your spaces</label></div>
+            </article>
+            <article class="stat">
+                <div class="stat-icon violet"><i class="fa-solid fa-database"></i></div>
+                <div><small>Storage Used</small><strong>0 GB</strong><label>of 10 GB</label></div>
+                <div class="ring"><span>0%</span></div>
+            </article>
+        </section>
+
+        <section class="layout-grid">
+            <div class="left">
+                <section class="panel spaces-panel">
+                    <header class="panel-head">
+                        <div><small>YOUR COLLECTION</small>
+                            <h2>Your Spaces</h2>
+                        </div><button>View all <i class="fa-solid fa-arrow-right"></i></button>
+                    </header>
+                    <div class="spaces" id="spaces">
+                        <div class="loading"><i class="fa-solid fa-spinner"></i>Loading your spaces...</div>
+                    </div>
+                </section>
+
+                <div class="bottom-grid">
+                    <section class="panel chart-panel">
+                        <header class="panel-head">
+                            <div><small>ACTIVITY</small>
+                                <h2>Memories Overview</h2>
+                            </div><button class="period">This Year <i class="fa-solid fa-chevron-down"></i></button>
+                        </header>
+                        <div class="chart">
+                            <div class="grid-lines"></div><svg viewBox="0 0 800 250" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0" stop-color="#8b5cf6" stop-opacity=".45" />
+                                        <stop offset="1" stop-color="#8b5cf6" stop-opacity="0" />
+                                    </linearGradient>
+                                </defs>
+                                <path class="area"
+                                    d="M0 225 C45 215 70 180 105 192 S165 150 205 160 S265 140 305 122 S365 145 405 105 S465 112 505 87 S560 90 600 64 S660 58 700 36 S755 27 800 5 L800 250 L0 250Z" />
+                                <path class="line"
+                                    d="M0 225 C45 215 70 180 105 192 S165 150 205 160 S265 140 305 122 S365 145 405 105 S465 112 505 87 S560 90 600 64 S660 58 700 36 S755 27 800 5" />
+                            </svg>
+                        </div>
+                        <div class="months">
+                            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                        </div>
+                    </section>
+                    <section class="panel recent">
+                        <header class="panel-head">
+                            <div><small>LATEST</small>
+                                <h2>Recent Memories</h2>
+                            </div><button>View all</button>
+                        </header>
+                        <div class="empty"><i class="fa-regular fa-images"></i><span>Your recent memories will appear
+                                here.</span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <aside class="right">
+                <section class="quote">
+                    <div>“</div>
+                    <p>The best things in life are the people we love, the places we've been, and the memories we've
+                        made along
+                        the way.</p><i class="fa-regular fa-heart"></i>
+                </section>
+                <section class="panel activity">
+                    <header class="panel-head">
+                        <h2>Recent Activity</h2><button>View all</button>
+                    </header>
+                    <div class="empty"><i class="fa-regular fa-clock"></i><span>No recent activity yet.</span></div>
+                </section>
+                <section class="invite"><small>SHARE THE MOMENTS</small>
+                    <h3>Invite Your People</h3>
+                    <p>Bring your loved ones into your private space.</p><button>Invite People</button><i
+                        class="fa-solid fa-user-group"></i>
+                </section>
+                <section class="panel storage">
+                    <header class="panel-head">
+                        <h2>Storage Usage</h2><button>View details</button>
+                    </header>
+                    <div class="storage-info">
+                        <div class="big-ring"><span>0%</span></div>
+                        <div><strong>0 GB</strong><small>of 10 GB used</small>
+                            <div class="bar"><i></i></div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </section>
+    </div>
+</main>
+</div>
+
+<div class="modal" id="spaceModal">
+    <div class="modal-card"><button class="close" id="closeModal"><i class="fa-solid fa-xmark"></i></button><small>NEW
+            SPACE</small>
+        <h2>Create a private space</h2>
+        <p>Give your space a name and choose what it is for.</p>
+        <form id="spaceForm"><label>Space name</label><input id="spaceName" required maxlength="80"
+                placeholder="e.g. Family, Friends, Travel..."><label>Space type</label><select id="spaceType" required>
+                <option value="">Choose a type</option>
+                <option value="couple">Couple</option>
+                <option value="friends">Friends</option>
+                <option value="family">Family</option>
+                <option value="personal">Personal</option>
+                <option value="team">Team</option>
+            </select>
+            <div class="modal-actions"><button type="button" id="cancelModal">Cancel</button><button type="submit"
+                    id="submitSpace">Create Space</button></div>
+            <div id="modalMessage"></div>
+        </form>
+    </div>
+</div>
 {% endblock %}
-
-{% block content %}
-
-<h1>Welcome</h1>
-
-<br>
-
-<img id="profileImage" width="120">
-
-<h2 id="userName"></h2>
-
-<p id="userEmail"></p>
-
-{% endblock %}
-
-{% block js %}
-
-<script src="{{ url_for('static', filename='js/api.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/auth_guard.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-
-<script>
-
-    verifyUser();
-
-    loadProfile();
-
-</script>
-
-{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>{% endblock %}

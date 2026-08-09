@@ -29,3 +29,10 @@ def login():
     return render_template(
         "auth/login.html"
     )
+
+
+@page_bp.route("/dashboard")
+def dashboard():
+    return render_template(
+        "dashboard/dashboard.html"
+    )
