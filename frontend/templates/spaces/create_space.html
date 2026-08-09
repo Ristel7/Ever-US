@@ -1,70 +1,384 @@
-{% extends "layouts/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
+<head>
 
-<h2>Create Space</h2>
+    <meta charset="UTF-8">
 
-<form id="spaceForm">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <input id="spaceName" placeholder="Space Name">
+    <title>Create Space | everUS</title>
 
-    <br><br>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <select id="spaceType">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create-space.css') }}">
 
-        <option value="friends">Friends</option>
-        <option value="family">Family</option>
-        <option value="work">Work</option>
+</head>
 
-    </select>
+<body>
 
-    <br><br>
+    <div class="create-page">
 
-    <button>Create</button>
+        <!-- Background decoration -->
+        <div class="glow glow-one"></div>
+        <div class="glow glow-two"></div>
 
-</form>
 
-{% endblock %}
+        <!-- HEADER -->
 
-{% block js %}
+        <header class="create-header">
 
-<script src="{{ url_for('static', filename='js/api.js') }}"></script>
-<script src="{{ url_for('static', filename='js/auth_guard.js') }}"></script>
+            <a href="{{ url_for('pages.dashboard') }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to dashboard
+            </a>
 
-<script>
 
-    verifyUser();
+            <a href="{{ url_for('pages.home') }}" class="brand">
+                <span class="brand-mark">∞</span>
+                <span>everUS</span>
+            </a>
 
-    document
-        .getElementById("spaceForm")
-        .addEventListener("submit", async function (e) {
+        </header>
 
-            e.preventDefault();
 
-            const response = await api(
-                "/spaces",
-                "POST",
-                {
-                    space_name:
-                        document.getElementById("spaceName").value,
+        <!-- MAIN -->
 
-                    space_type:
-                        document.getElementById("spaceType").value
-                }
-            );
+        <main class="create-main">
 
-            if (response.success) {
 
-                window.location.href = "/spaces";
+            <!-- LEFT CONTENT -->
 
-            } else {
+            <section class="create-intro">
 
-                alert(response.message);
+                <span class="intro-kicker">
+                    NEW SPACE
+                </span>
 
-            }
 
-        });
+                <h1>
+                    Create a place
+                    <span>for your moments.</span>
+                </h1>
 
-</script>
 
-{% endblock %}
+                <p>
+                    Build a private space for the people,
+                    memories and conversations that matter
+                    most to you.
+                </p>
+
+
+                <div class="intro-points">
+
+                    <div class="intro-point">
+
+                        <div class="point-icon">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+
+                        <div>
+                            <strong>Private by default</strong>
+                            <span>
+                                Only people you invite can access it.
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="intro-point">
+
+                        <div class="point-icon">
+                            <i class="fa-regular fa-images"></i>
+                        </div>
+
+                        <div>
+                            <strong>Keep your memories together</strong>
+                            <span>
+                                Photos, messages and moments in one place.
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="intro-point">
+
+                        <div class="point-icon">
+                            <i class="fa-solid fa-infinity"></i>
+                        </div>
+
+                        <div>
+                            <strong>Made to last</strong>
+                            <span>
+                                Your space grows with your memories.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- FORM CARD -->
+
+            <section class="create-card">
+
+                <div class="card-heading">
+
+                    <span class="card-badge">
+                        LET'S BEGIN
+                    </span>
+
+                    <h2>
+                        Create your space
+                    </h2>
+
+                    <p>
+                        You can change these details later.
+                    </p>
+
+                </div>
+
+
+                <form id="createSpaceForm">
+
+
+                    <!-- SPACE NAME -->
+
+                    <div class="form-group">
+
+                        <label for="spaceName">
+                            Space name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-folder-open"></i>
+
+                            <input type="text" id="spaceName" name="space_name" placeholder="e.g. Our Memories"
+                                maxlength="80" required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SPACE TYPE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            What is this space for?
+                        </label>
+
+
+                        <div class="space-types">
+
+
+                            <label class="type-option">
+
+                                <input type="radio" name="space_type" value="couple">
+
+                                <span class="type-card">
+
+                                    <span class="type-icon pink">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </span>
+
+                                    <strong>Couple</strong>
+
+                                    <small>
+                                        Just us
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+
+
+                            <label class="type-option">
+
+                                <input type="radio" name="space_type" value="friends">
+
+                                <span class="type-card">
+
+                                    <span class="type-icon blue">
+                                        <i class="fa-solid fa-user-group"></i>
+                                    </span>
+
+                                    <strong>Friends</strong>
+
+                                    <small>
+                                        Our people
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+
+
+                            <label class="type-option">
+
+                                <input type="radio" name="space_type" value="family">
+
+                                <span class="type-card">
+
+                                    <span class="type-icon green">
+                                        <i class="fa-solid fa-house"></i>
+                                    </span>
+
+                                    <strong>Family</strong>
+
+                                    <small>
+                                        Together
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+
+
+                            <label class="type-option">
+
+                                <input type="radio" name="space_type" value="personal">
+
+                                <span class="type-card">
+
+                                    <span class="type-icon purple">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
+
+                                    <strong>Personal</strong>
+
+                                    <small>
+                                        Just me
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group">
+
+                        <div class="label-row">
+
+                            <label for="description">
+                                Description
+                            </label>
+
+                            <span>
+                                Optional
+                            </span>
+
+                        </div>
+
+
+                        <textarea id="description" name="description" maxlength="300"
+                            placeholder="Tell us a little about this space..."></textarea>
+
+                    </div>
+
+
+
+                    <!-- COVER -->
+
+                    <div class="form-group">
+
+                        <div class="label-row">
+
+                            <label>
+                                Cover image
+                            </label>
+
+                            <span>
+                                Optional
+                            </span>
+
+                        </div>
+
+
+                        <label class="cover-upload" for="coverImage" id="coverUpload">
+
+                            <input type="file" id="coverImage" accept="image/png,image/jpeg,image/webp">
+
+
+                            <div class="cover-preview" id="coverPreview">
+
+                                <div class="upload-icon">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+
+                                <strong>
+                                    Add a cover image
+                                </strong>
+
+                                <span>
+                                    PNG, JPG or WEBP
+                                </span>
+
+                            </div>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="form-message" id="formMessage"></div>
+
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="form-actions">
+
+                        <a href="{{ url_for('pages.dashboard') }}" class="cancel-button">
+                            Cancel
+                        </a>
+
+
+                        <button type="submit" class="create-button" id="createButton">
+
+                            <span>
+                                Create Space
+                            </span>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/create-space.js') }}"></script>
+
+</body>
+
+</html>
