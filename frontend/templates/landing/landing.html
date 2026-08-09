@@ -1,19 +1,30 @@
 {% extends "layouts/base.html" %}
 
+
 {% block title %}
 everUS | Every Memory Lives Forever
 {% endblock %}
 
+
 {% block styles %}
 
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<!-- Landing Page CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+
+<!-- Favicon -->
 <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}">
 
 {% endblock %}
 
+
+
 {% block content %}
 
 <main class="landing-page">
+
 
     <!-- =====================================================
          HERO SECTION
@@ -23,25 +34,45 @@ everUS | Every Memory Lives Forever
 
         <div class="hero-copy">
 
+
+            <!-- Eyebrow -->
+
             <div class="eyebrow">
+
                 <span>◆</span>
+
                 <span>
                     Private. Secure.
                     <strong>Forever.</strong>
                 </span>
+
             </div>
 
 
+
+            <!-- Hero Heading -->
+
             <h1>
+
                 Build a Place
+
                 <br>
+
                 Where Every
+
                 <br>
+
                 Memory Lives
+
                 <br>
+
                 <span>Forever.</span>
+
             </h1>
 
+
+
+            <!-- Hero Description -->
 
             <p class="hero-text">
 
@@ -52,9 +83,13 @@ everUS | Every Memory Lives Forever
             </p>
 
 
+
+            <!-- Hero Buttons -->
+
             <div class="hero-buttons">
 
                 <a class="primary-btn" href="{{ url_for('pages.register') }}">
+
                     Get Started
 
                     <span>→</span>
@@ -63,6 +98,7 @@ everUS | Every Memory Lives Forever
 
 
                 <a class="outline-btn" href="#features">
+
                     Explore Features
 
                     <span>→</span>
@@ -72,9 +108,15 @@ everUS | Every Memory Lives Forever
             </div>
 
 
-            <!-- TRUST FEATURES -->
+
+            <!-- =================================================
+                 TRUST FEATURES
+            ================================================== -->
 
             <div class="trust-row">
+
+
+                <!-- Privacy -->
 
                 <div class="trust-item">
 
@@ -83,6 +125,7 @@ everUS | Every Memory Lives Forever
                         <i class="fa-solid fa-lock"></i>
 
                     </div>
+
 
                     <div>
 
@@ -99,6 +142,9 @@ everUS | Every Memory Lives Forever
                 </div>
 
 
+
+                <!-- Security -->
+
                 <div class="trust-item">
 
                     <div class="trust-icon">
@@ -106,6 +152,7 @@ everUS | Every Memory Lives Forever
                         <i class="fa-solid fa-shield-halved"></i>
 
                     </div>
+
 
                     <div>
 
@@ -122,6 +169,9 @@ everUS | Every Memory Lives Forever
                 </div>
 
 
+
+                <!-- Cloud -->
+
                 <div class="trust-item">
 
                     <div class="trust-icon green">
@@ -129,6 +179,7 @@ everUS | Every Memory Lives Forever
                         <i class="fa-solid fa-cloud"></i>
 
                     </div>
+
 
                     <div>
 
@@ -144,21 +195,26 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
             </div>
+
 
         </div>
 
 
-        <!-- =================================================
+
+        <!-- =====================================================
              HERO VISUAL
-        ================================================== -->
+        ====================================================== -->
 
         <div class="hero-visual">
+
 
             <div class="glow"></div>
 
 
-            <!-- MAIN IMAGE -->
+
+            <!-- Main Hero Image -->
 
             <div class="hero-image-wrap">
 
@@ -170,7 +226,10 @@ everUS | Every Memory Lives Forever
             </div>
 
 
-            <!-- PRIVATE SPACES -->
+
+            <!-- =================================================
+                 PRIVATE SPACES CARD
+            ================================================== -->
 
             <div class="feature-card card-top-left">
 
@@ -180,6 +239,7 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <div>
 
                     <b>
@@ -187,12 +247,17 @@ everUS | Every Memory Lives Forever
                     </b>
 
                     <small>
+
                         Create safe spaces
+
                         <br>
+
                         for your people
+
                     </small>
 
                 </div>
+
 
                 <span class="arrow">
                     →
@@ -201,7 +266,10 @@ everUS | Every Memory Lives Forever
             </div>
 
 
-            <!-- GALLERY -->
+
+            <!-- =================================================
+                 GALLERY CARD
+            ================================================== -->
 
             <div class="feature-card card-top-right">
 
@@ -211,6 +279,7 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <div>
 
                     <b>
@@ -218,12 +287,17 @@ everUS | Every Memory Lives Forever
                     </b>
 
                     <small>
+
                         Store and organize
+
                         <br>
+
                         your memories
+
                     </small>
 
                 </div>
+
 
                 <span class="arrow">
                     →
@@ -232,7 +306,10 @@ everUS | Every Memory Lives Forever
             </div>
 
 
-            <!-- JOURNAL -->
+
+            <!-- =================================================
+                 JOURNAL CARD
+            ================================================== -->
 
             <div class="feature-card card-bottom-left">
 
@@ -242,6 +319,7 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <div>
 
                     <b>
@@ -249,12 +327,17 @@ everUS | Every Memory Lives Forever
                     </b>
 
                     <small>
+
                         Write your thoughts,
+
                         <br>
+
                         only for you
+
                     </small>
 
                 </div>
+
 
                 <span class="arrow">
                     →
@@ -263,7 +346,10 @@ everUS | Every Memory Lives Forever
             </div>
 
 
-            <!-- TIMELINE -->
+
+            <!-- =================================================
+                 TIMELINE CARD
+            ================================================== -->
 
             <div class="feature-card card-bottom-right">
 
@@ -273,6 +359,7 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <div>
 
                     <b>
@@ -280,12 +367,17 @@ everUS | Every Memory Lives Forever
                     </b>
 
                     <small>
+
                         Celebrate moments
+
                         <br>
+
                         that matter
+
                     </small>
 
                 </div>
+
 
                 <span class="arrow">
                     →
@@ -294,7 +386,10 @@ everUS | Every Memory Lives Forever
             </div>
 
 
-            <!-- DECORATIVE SPARKS -->
+
+            <!-- =================================================
+                 DECORATIVE SPARKS
+            ================================================== -->
 
             <span class="spark s1">
                 ✦
@@ -312,6 +407,7 @@ everUS | Every Memory Lives Forever
                 ✦
             </span>
 
+
         </div>
 
     </section>
@@ -319,36 +415,52 @@ everUS | Every Memory Lives Forever
 
 
     <!-- =====================================================
-         FEATURES
+         FEATURES SECTION
     ====================================================== -->
 
     <section class="features-section" id="features">
 
+
         <div class="section-heading">
 
+
             <span class="section-label">
+
                 EVERYTHING IN ONE PLACE
+
             </span>
 
+
             <h2>
+
                 Everything You Need
+
                 <br>
-                <span>To Keep What Matters.</span>
+
+                <span>
+                    To Keep What Matters.
+                </span>
+
             </h2>
 
+
             <p>
+
                 Create a private digital space for the
                 memories, conversations and moments
                 you never want to lose.
+
             </p>
 
+
         </div>
+
 
 
         <div class="feature-grid">
 
 
-            <!-- PRIVATE SPACES -->
+            <!-- Private Spaces -->
 
             <article class="feature-box">
 
@@ -358,24 +470,31 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <h3>
                     Private Spaces
                 </h3>
 
+
                 <p>
+
                     Create secure spaces for couples,
                     friends, family, or teams.
+
                 </p>
 
+
                 <a href="{{ url_for('pages.register') }}">
-                    Create a space
-                    →
+
+                    Create a space →
+
                 </a>
 
             </article>
 
 
-            <!-- GALLERY -->
+
+            <!-- Gallery -->
 
             <article class="feature-box">
 
@@ -385,24 +504,31 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <h3>
                     Gallery
                 </h3>
 
+
                 <p>
+
                     Upload, organize and revisit
                     every precious moment together.
+
                 </p>
 
+
                 <a href="{{ url_for('pages.register') }}">
-                    Start preserving
-                    →
+
+                    Start preserving →
+
                 </a>
 
             </article>
 
 
-            <!-- TIMELINE -->
+
+            <!-- Timeline -->
 
             <article class="feature-box">
 
@@ -412,24 +538,31 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <h3>
                     Timeline
                 </h3>
 
+
                 <p>
+
                     Track important dates, events,
                     trips and life milestones.
+
                 </p>
 
+
                 <a href="{{ url_for('pages.register') }}">
-                    Start your timeline
-                    →
+
+                    Start your timeline →
+
                 </a>
 
             </article>
 
 
-            <!-- JOURNAL -->
+
+            <!-- Journal -->
 
             <article class="feature-box">
 
@@ -439,21 +572,28 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <h3>
                     Journal
                 </h3>
 
+
                 <p>
+
                     Write, reflect and keep your
                     personal thoughts private.
+
                 </p>
 
+
                 <a href="{{ url_for('pages.register') }}">
-                    Start writing
-                    →
+
+                    Start writing →
+
                 </a>
 
             </article>
+
 
         </div>
 
@@ -467,28 +607,44 @@ everUS | Every Memory Lives Forever
 
     <section class="how-section" id="how-it-works">
 
+
         <div class="section-heading">
+
 
             <span class="section-label">
                 HOW IT WORKS
             </span>
 
+
             <h2>
+
                 Start Preserving
+
                 <br>
-                <span>In Four Simple Steps.</span>
+
+                <span>
+                    In Four Simple Steps.
+                </span>
+
             </h2>
 
+
             <p>
+
                 Getting started with everUS takes
                 only a few moments.
+
             </p>
+
 
         </div>
 
 
+
         <div class="steps-grid">
 
+
+            <!-- Step 01 -->
 
             <div class="step-card">
 
@@ -496,23 +652,31 @@ everUS | Every Memory Lives Forever
                     01
                 </div>
 
+
                 <div class="step-icon">
 
                     <i class="fa-solid fa-user-plus"></i>
 
                 </div>
 
+
                 <h3>
                     Create Your Account
                 </h3>
 
+
                 <p>
+
                     Sign up and create your
                     private everUS account.
+
                 </p>
 
             </div>
 
+
+
+            <!-- Step 02 -->
 
             <div class="step-card">
 
@@ -520,23 +684,31 @@ everUS | Every Memory Lives Forever
                     02
                 </div>
 
+
                 <div class="step-icon">
 
                     <i class="fa-solid fa-layer-group"></i>
 
                 </div>
 
+
                 <h3>
                     Create a Space
                 </h3>
 
+
                 <p>
+
                     Build a private space for
                     the people who matter.
+
                 </p>
 
             </div>
 
+
+
+            <!-- Step 03 -->
 
             <div class="step-card">
 
@@ -544,23 +716,31 @@ everUS | Every Memory Lives Forever
                     03
                 </div>
 
+
                 <div class="step-icon">
 
                     <i class="fa-solid fa-user-group"></i>
 
                 </div>
 
+
                 <h3>
                     Invite People
                 </h3>
 
+
                 <p>
+
                     Invite trusted people using
                     your private invite code.
+
                 </p>
 
             </div>
 
+
+
+            <!-- Step 04 -->
 
             <div class="step-card">
 
@@ -568,22 +748,28 @@ everUS | Every Memory Lives Forever
                     04
                 </div>
 
+
                 <div class="step-icon">
 
                     <i class="fa-solid fa-infinity"></i>
 
                 </div>
 
+
                 <h3>
                     Start Creating Memories
                 </h3>
 
+
                 <p>
+
                     Share, write and preserve
                     moments together.
+
                 </p>
 
             </div>
+
 
         </div>
 
@@ -597,27 +783,39 @@ everUS | Every Memory Lives Forever
 
     <section class="privacy-section" id="privacy">
 
+
         <div class="privacy-content">
+
 
             <span class="section-label">
                 YOUR PRIVACY MATTERS
             </span>
 
+
             <h2>
+
                 Your Memories
+
                 <br>
+
                 Belong To You.
+
             </h2>
 
+
             <p>
+
                 everUS is designed around privacy.
                 Your spaces are created for the people
                 you choose, and your memories remain
                 under your control.
+
             </p>
 
 
+
             <div class="privacy-points">
+
 
                 <div>
 
@@ -629,6 +827,7 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <div>
 
                     <i class="fa-solid fa-user-shield"></i>
@@ -638,6 +837,7 @@ everUS | Every Memory Lives Forever
                     </span>
 
                 </div>
+
 
                 <div>
 
@@ -649,14 +849,19 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
             </div>
+
 
         </div>
 
 
+
         <div class="privacy-visual">
 
+
             <div class="privacy-card">
+
 
                 <div class="privacy-card-icon">
 
@@ -664,15 +869,22 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
                 <h3>
+
                     Built With Privacy
                     In Mind
+
                 </h3>
 
+
                 <p>
+
                     Your private spaces are accessible
                     only to their members.
+
                 </p>
+
 
                 <div class="privacy-status">
 
@@ -682,43 +894,60 @@ everUS | Every Memory Lives Forever
 
                 </div>
 
+
             </div>
 
+
         </div>
+
 
     </section>
 
 
 
     <!-- =====================================================
-         CTA
+         CALL TO ACTION
     ====================================================== -->
 
     <section class="cta-section">
 
+
         <div class="cta-glow"></div>
 
+
         <div class="cta-content">
+
 
             <span class="section-label">
                 START TODAY
             </span>
 
+
             <h2>
+
                 Give Your Memories
+
                 <br>
+
                 A Place To Live Forever.
+
             </h2>
 
+
             <p>
+
                 Create your private everUS space
                 and start preserving what matters.
+
             </p>
+
 
 
             <div class="cta-buttons">
 
+
                 <a href="{{ url_for('pages.register') }}" class="primary-btn light">
+
                     Create Your Account
 
                     <span>
@@ -729,15 +958,21 @@ everUS | Every Memory Lives Forever
 
 
                 <a href="{{ url_for('pages.login') }}" class="cta-login">
+
                     Already have an account?
+
                     <strong>
                         Login
                     </strong>
+
                 </a>
+
 
             </div>
 
+
         </div>
+
 
     </section>
 
@@ -749,10 +984,14 @@ everUS | Every Memory Lives Forever
 
     <footer class="footer">
 
+
         <div class="footer-container">
 
 
+            <!-- Footer Brand -->
+
             <div class="footer-brand">
+
 
                 <a href="{{ url_for('pages.home') }}" class="footer-logo">
 
@@ -764,85 +1003,136 @@ everUS | Every Memory Lives Forever
 
                 </a>
 
+
                 <p>
+
                     A private place for the moments
                     that matter.
+
                 </p>
+
 
             </div>
 
 
+
+            <!-- Product -->
+
             <div class="footer-column">
+
 
                 <h4>
                     Product
                 </h4>
 
+
                 <a href="#features">
                     Features
                 </a>
+
 
                 <a href="#how-it-works">
                     How It Works
                 </a>
 
+
                 <a href="{{ url_for('pages.register') }}">
                     Get Started
                 </a>
 
+
             </div>
 
 
+
+            <!-- Account -->
+
             <div class="footer-column">
+
 
                 <h4>
                     Account
                 </h4>
 
+
                 <a href="{{ url_for('pages.login') }}">
                     Login
                 </a>
+
 
                 <a href="{{ url_for('pages.register') }}">
                     Register
                 </a>
 
+
             </div>
 
 
+
+            <!-- Privacy -->
+
             <div class="footer-column">
+
 
                 <h4>
                     Privacy
                 </h4>
 
+
                 <a href="#privacy">
                     Privacy
                 </a>
+
 
                 <a href="#">
                     Terms
                 </a>
 
+
             </div>
+
 
         </div>
 
 
+
+        <!-- Footer Bottom -->
+
         <div class="footer-bottom">
 
+
             <span>
-                © 2026 everUS. All rights reserved.
+
+                ©
+                <span data-current-year></span>
+                everUS. All rights reserved.
+
             </span>
+
 
             <span>
                 Built for memories that matter.
             </span>
 
+
         </div>
+
 
     </footer>
 
+
 </main>
+
+{% endblock %}
+
+
+
+<!-- =========================================================
+     LANDING PAGE JAVASCRIPT
+========================================================= -->
+
+{% block scripts %}
+
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
 
 {% endblock %}

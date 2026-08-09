@@ -1,122 +1,44 @@
+console.log("LOGIN JS FILE LOADED");
+
 document.addEventListener("DOMContentLoaded", () => {
 
+    console.log("DOM LOADED");
+
     const form = document.getElementById("loginForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const passwordToggle = document.getElementById("passwordToggle");
-    const message = document.getElementById("formMessage");
-    const loginButton = document.getElementById("loginButton");
 
+    console.log("LOGIN FORM:", form);
 
-    /* =====================================================
-       SHOW / HIDE PASSWORD
-    ===================================================== */
-
-    passwordToggle.addEventListener("click", () => {
-
-        const isPassword =
-            passwordInput.type === "password";
-
-        passwordInput.type =
-            isPassword ? "text" : "password";
-
-        passwordToggle.textContent =
-            isPassword ? "Hide" : "Show";
-
-    });
-
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    function showMessage(text, type) {
-
-        message.textContent = text;
-
-        message.className =
-            "form-message " + type;
+    if (!form) {
+        console.error("loginForm NOT FOUND");
+        return;
     }
-
-
-    /* =====================================================
-       LOGIN
-    ===================================================== */
 
     form.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
+        console.log("LOGIN BUTTON CLICKED");
+
         const email =
-            emailInput.value.trim();
+            document.getElementById("email").value.trim();
 
         const password =
-            passwordInput.value;
+            document.getElementById("password").value;
 
-
-        /* ---------------------------------------------
-           VALIDATION
-        --------------------------------------------- */
-
-        if (!email) {
-
-            showMessage(
-                "Please enter your email address.",
-                "error"
-            );
-
-            emailInput.focus();
-
-            return;
-        }
-
-
-        if (!password) {
-
-            showMessage(
-                "Please enter your password.",
-                "error"
-            );
-
-            passwordInput.focus();
-
-            return;
-        }
-
-
-        /* ---------------------------------------------
-           LOADING STATE
-        --------------------------------------------- */
-
-        loginButton.disabled = true;
-
-        const originalButton =
-            loginButton.innerHTML;
-
-        loginButton.innerHTML = `
-            <span>Signing in...</span>
-        `;
-
-
-        showMessage("", "");
-
+        console.log("EMAIL:", email);
+        console.log("PASSWORD ENTERED:", password.length > 0);
 
         try {
 
-            /* -----------------------------------------
-               CALL LOGIN API
-            ----------------------------------------- */
+            console.log("CALLING API...");
 
             const response = await fetch(
                 "/api/auth/login",
                 {
                     method: "POST",
-
                     headers: {
-                        "Content-Type":
-                            "application/json"
+                        "Content-Type": "application/json"
                     },
-
                     body: JSON.stringify({
                         email: email,
                         password: password
@@ -124,95 +46,44 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
 
+            console.log("API STATUS:", response.status);
 
-            const result =
-                await response.json();
+            const result = await response.json();
 
-
-            console.log(
-                "Login response:",
-                result
-            );
-
-
-            /* -----------------------------------------
-               API ERROR
-            ----------------------------------------- */
+            console.log("API RESPONSE:", result);
 
             if (!response.ok || !result.success) {
 
-                showMessage(
+                alert(
                     result.message ||
-                    "Invalid email or password.",
-                    "error"
+                    "Login failed"
                 );
 
                 return;
             }
-
-
-            /* -----------------------------------------
-               SAVE JWT
-            ----------------------------------------- */
 
             localStorage.setItem(
                 "access_token",
                 result.token
             );
 
-
-            /* -----------------------------------------
-               SAVE USER
-            ----------------------------------------- */
-
             localStorage.setItem(
                 "user",
                 JSON.stringify(result.user)
             );
 
-
-            /* -----------------------------------------
-               SUCCESS
-            ----------------------------------------- */
-
-            showMessage(
-                "Login successful. Redirecting...",
-                "success"
-            );
-
-
-            /* -----------------------------------------
-               REDIRECT
-            ----------------------------------------- */
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "/dashboard";
-
-            }, 800);
-
+            alert("LOGIN SUCCESSFUL");
 
         } catch (error) {
 
             console.error(
-                "Login error:",
+                "LOGIN ERROR:",
                 error
             );
 
-
-            showMessage(
-                "Unable to connect to the server. Please try again.",
-                "error"
+            alert(
+                "Could not connect to server"
             );
-
-
-        } finally {
-
-            loginButton.disabled = false;
-
-            loginButton.innerHTML =
-                originalButton;
 
         }
 
