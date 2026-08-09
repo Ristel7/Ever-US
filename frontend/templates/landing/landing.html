@@ -1,112 +1,841 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layouts/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>everUS — Private Memories Forever</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
-    <link rel="icon" href="{{url_for('static', filename='images/icon.png') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-</head>
+{% block title %}
+everUS | Every Memory Lives Forever
+{% endblock %}
 
-<body>
-    <header class="navbar">
-        <a class="brand" href="#"><span class="brand-mark"></span><span>everUS</span></a>
-        <nav class="nav-links">
-            <a class="active" href="#">Home<span class="dot"></span></a>
-            <a href="#features">Features</a><a href="#about">About</a><a href="#contact">Contact</a>
-        </nav>
-        <div class="nav-actions"><a class="login" href="#">Login</a><a class="primary-btn small" href="#">Get
-                Started</a></div>
-    </header>
+{% block content %}
 
-    <main>
-        <section class="hero">
-            <div class="hero-copy">
-                <div class="eyebrow"><span>◆</span><span>Private. Secure. <strong>Forever.</strong></span></div>
-                <h1>Build a Place<br>Where Every<br>Memory Lives<br><span>Forever.</span></h1>
-                <p class="hero-text">everUS helps you create private spaces to preserve conversations, memories, photos,
-                    and moments with the people who matter most.</p>
-                <div class="hero-buttons"><a class="primary-btn" href="#">Get Started <span>→</span></a><a
-                        class="outline-btn" href="#features">Explore Features <span>→</span></a></div>
-                <div class="trust-row">
-                    <div class="trust-item">
-                        <div class="trust-icon">♡</div>
-                        <div><b>100% Private</b><small>Your data stays yours</small></div>
-                    </div>
-                    <div class="trust-item">
-                        <div class="trust-icon">▣</div>
-                        <div><b>End-to-End Encrypted</b><small>We protect your privacy</small></div>
-                    </div>
-                    <div class="trust-item">
-                        <div class="trust-icon green">☁</div>
-                        <div><b>Always Accessible</b><small>Anytime, anywhere</small></div>
-                    </div>
-                </div>
+<main class="landing-page">
+
+    <!-- =====================================================
+         HERO SECTION
+    ====================================================== -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-copy">
+
+            <div class="eyebrow">
+                <span>◆</span>
+                <span>
+                    Private. Secure.
+                    <strong>Forever.</strong>
+                </span>
             </div>
 
-            <div class="hero-visual">
-                <div class="glow"></div>
-                <div class="hero-image-wrap"><img src="{{url_for('static', filename='images/hero-image.png') }}" alt="EverUS memory illustration"></div>
-                <div class="feature-card card-top-left">
-                    <div class="feature-icon purple">♧</div>
-                    <div><b>Private Spaces</b><small>Create safe spaces<br>for your people</small></div><span
-                        class="arrow">→</span>
-                </div>
-                <div class="feature-card card-top-right">
-                    <div class="feature-icon pink">▧</div>
-                    <div><b>Gallery</b><small>Store and organize<br>your memories</small></div><span
-                        class="arrow">→</span>
-                </div>
-                <div class="feature-card card-bottom-left">
-                    <div class="feature-icon green">▤</div>
-                    <div><b>Journal</b><small>Write your thoughts,<br>only for you</small></div><span
-                        class="arrow">→</span>
-                </div>
-                <div class="feature-card card-bottom-right">
-                    <div class="feature-icon violet">▦</div>
-                    <div><b>Timeline</b><small>Celebrate moments<br>that matter</small></div><span
-                        class="arrow">→</span>
-                </div>
-                <span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span><span
-                    class="spark s4">✦</span>
+
+            <h1>
+                Build a Place
+                <br>
+                Where Every
+                <br>
+                Memory Lives
+                <br>
+                <span>Forever.</span>
+            </h1>
+
+
+            <p class="hero-text">
+
+                everUS helps you create private spaces to
+                preserve conversations, memories, photos,
+                and moments with the people who matter most.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a class="primary-btn" href="{{ url_for('page.register') }}">
+                    Get Started
+
+                    <span>→</span>
+
+                </a>
+
+
+                <a class="outline-btn" href="#features">
+                    Explore Features
+
+                    <span>→</span>
+
+                </a>
+
             </div>
-        </section>
 
-        <section class="feature-grid" id="features">
-            <article class="feature-box">
-                <div class="feature-icon large purple">♧</div>
-                <h3>Private Spaces</h3>
-                <p>Create secure spaces for couples, friends, family, or teams.</p><a href="#">Learn more →</a>
-            </article>
-            <article class="feature-box">
-                <div class="feature-icon large blue">▧</div>
-                <h3>Gallery</h3>
-                <p>Upload, organize and revisit every precious moment together.</p><a href="#">Learn more →</a>
-            </article>
-            <article class="feature-box">
-                <div class="feature-icon large pink">▦</div>
-                <h3>Timeline</h3>
-                <p>Track important dates, events, trips and life milestones.</p><a href="#">Learn more →</a>
-            </article>
-            <article class="feature-box">
-                <div class="feature-icon large green">▤</div>
-                <h3>Journal</h3>
-                <p>Write, reflect and keep your personal thoughts private forever.</p><a href="#">Learn more →</a>
-            </article>
-        </section>
 
-        <section class="dummy-section" id="about">
-            <h2>Made for the moments that matter.</h2>
-            <p>Keep your conversations, memories and milestones together in one private place.</p>
-        </section>
-    </main>
-</body>
+            <!-- TRUST FEATURES -->
 
-</html>
+            <div class="trust-row">
+
+                <div class="trust-item">
+
+                    <div class="trust-icon">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Privacy Focused
+                        </b>
+
+                        <small>
+                            Your data stays protected
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <div class="trust-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Secure
+                        </b>
+
+                        <small>
+                            Built with security in mind
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <div class="trust-icon green">
+
+                        <i class="fa-solid fa-cloud"></i>
+
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Always Accessible
+                        </b>
+
+                        <small>
+                            Anytime, anywhere
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             HERO VISUAL
+        ================================================== -->
+
+        <div class="hero-visual">
+
+            <div class="glow"></div>
+
+
+            <!-- MAIN IMAGE -->
+
+            <div class="hero-image-wrap">
+
+                <img src="{{ url_for(
+                        'static',
+                        filename='images/hero-image.png'
+                    ) }}" alt="everUS private memories illustration">
+
+            </div>
+
+
+            <!-- PRIVATE SPACES -->
+
+            <div class="feature-card card-top-left">
+
+                <div class="feature-icon purple">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+                <div>
+
+                    <b>
+                        Private Spaces
+                    </b>
+
+                    <small>
+                        Create safe spaces
+                        <br>
+                        for your people
+                    </small>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </div>
+
+
+            <!-- GALLERY -->
+
+            <div class="feature-card card-top-right">
+
+                <div class="feature-icon pink">
+
+                    <i class="fa-solid fa-images"></i>
+
+                </div>
+
+                <div>
+
+                    <b>
+                        Gallery
+                    </b>
+
+                    <small>
+                        Store and organize
+                        <br>
+                        your memories
+                    </small>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </div>
+
+
+            <!-- JOURNAL -->
+
+            <div class="feature-card card-bottom-left">
+
+                <div class="feature-icon green">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                </div>
+
+                <div>
+
+                    <b>
+                        Journal
+                    </b>
+
+                    <small>
+                        Write your thoughts,
+                        <br>
+                        only for you
+                    </small>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </div>
+
+
+            <!-- TIMELINE -->
+
+            <div class="feature-card card-bottom-right">
+
+                <div class="feature-icon violet">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                </div>
+
+                <div>
+
+                    <b>
+                        Timeline
+                    </b>
+
+                    <small>
+                        Celebrate moments
+                        <br>
+                        that matter
+                    </small>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </div>
+
+
+            <!-- DECORATIVE SPARKS -->
+
+            <span class="spark s1">
+                ✦
+            </span>
+
+            <span class="spark s2">
+                ✦
+            </span>
+
+            <span class="spark s3">
+                ✦
+            </span>
+
+            <span class="spark s4">
+                ✦
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FEATURES
+    ====================================================== -->
+
+    <section class="features-section" id="features">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                EVERYTHING IN ONE PLACE
+            </span>
+
+            <h2>
+                Everything You Need
+                <br>
+                <span>To Keep What Matters.</span>
+            </h2>
+
+            <p>
+                Create a private digital space for the
+                memories, conversations and moments
+                you never want to lose.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <!-- PRIVATE SPACES -->
+
+            <article class="feature-box">
+
+                <div class="feature-icon large purple">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+                <h3>
+                    Private Spaces
+                </h3>
+
+                <p>
+                    Create secure spaces for couples,
+                    friends, family, or teams.
+                </p>
+
+                <a href="{{ url_for('page.register') }}">
+                    Create a space
+                    →
+                </a>
+
+            </article>
+
+
+            <!-- GALLERY -->
+
+            <article class="feature-box">
+
+                <div class="feature-icon large blue">
+
+                    <i class="fa-solid fa-images"></i>
+
+                </div>
+
+                <h3>
+                    Gallery
+                </h3>
+
+                <p>
+                    Upload, organize and revisit
+                    every precious moment together.
+                </p>
+
+                <a href="{{ url_for('page.register') }}">
+                    Start preserving
+                    →
+                </a>
+
+            </article>
+
+
+            <!-- TIMELINE -->
+
+            <article class="feature-box">
+
+                <div class="feature-icon large pink">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                </div>
+
+                <h3>
+                    Timeline
+                </h3>
+
+                <p>
+                    Track important dates, events,
+                    trips and life milestones.
+                </p>
+
+                <a href="{{ url_for('page.register') }}">
+                    Start your timeline
+                    →
+                </a>
+
+            </article>
+
+
+            <!-- JOURNAL -->
+
+            <article class="feature-box">
+
+                <div class="feature-icon large green">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                </div>
+
+                <h3>
+                    Journal
+                </h3>
+
+                <p>
+                    Write, reflect and keep your
+                    personal thoughts private.
+                </p>
+
+                <a href="{{ url_for('page.register') }}">
+                    Start writing
+                    →
+                </a>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ====================================================== -->
+
+    <section class="how-section" id="how-it-works">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                HOW IT WORKS
+            </span>
+
+            <h2>
+                Start Preserving
+                <br>
+                <span>In Four Simple Steps.</span>
+            </h2>
+
+            <p>
+                Getting started with everUS takes
+                only a few moments.
+            </p>
+
+        </div>
+
+
+        <div class="steps-grid">
+
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                </div>
+
+                <h3>
+                    Create Your Account
+                </h3>
+
+                <p>
+                    Sign up and create your
+                    private everUS account.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                </div>
+
+                <h3>
+                    Create a Space
+                </h3>
+
+                <p>
+                    Build a private space for
+                    the people who matter.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                </div>
+
+                <h3>
+                    Invite People
+                </h3>
+
+                <p>
+                    Invite trusted people using
+                    your private invite code.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-infinity"></i>
+
+                </div>
+
+                <h3>
+                    Start Creating Memories
+                </h3>
+
+                <p>
+                    Share, write and preserve
+                    moments together.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PRIVACY SECTION
+    ====================================================== -->
+
+    <section class="privacy-section" id="privacy">
+
+        <div class="privacy-content">
+
+            <span class="section-label">
+                YOUR PRIVACY MATTERS
+            </span>
+
+            <h2>
+                Your Memories
+                <br>
+                Belong To You.
+            </h2>
+
+            <p>
+                everUS is designed around privacy.
+                Your spaces are created for the people
+                you choose, and your memories remain
+                under your control.
+            </p>
+
+
+            <div class="privacy-points">
+
+                <div>
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <span>
+                        Private spaces
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <i class="fa-solid fa-user-shield"></i>
+
+                    <span>
+                        Controlled membership
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <i class="fa-solid fa-cloud"></i>
+
+                    <span>
+                        Secure cloud storage
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="privacy-visual">
+
+            <div class="privacy-card">
+
+                <div class="privacy-card-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+                <h3>
+                    Built With Privacy
+                    In Mind
+                </h3>
+
+                <p>
+                    Your private spaces are accessible
+                    only to their members.
+                </p>
+
+                <div class="privacy-status">
+
+                    <span class="status-dot"></span>
+
+                    Private space active
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CTA
+    ====================================================== -->
+
+    <section class="cta-section">
+
+        <div class="cta-glow"></div>
+
+        <div class="cta-content">
+
+            <span class="section-label">
+                START TODAY
+            </span>
+
+            <h2>
+                Give Your Memories
+                <br>
+                A Place To Live Forever.
+            </h2>
+
+            <p>
+                Create your private everUS space
+                and start preserving what matters.
+            </p>
+
+
+            <div class="cta-buttons">
+
+                <a href="{{ url_for('page.register') }}" class="primary-btn light">
+                    Create Your Account
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('page.login') }}" class="cta-login">
+                    Already have an account?
+                    <strong>
+                        Login
+                    </strong>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <div class="footer-brand">
+
+                <a href="{{ url_for('page.home') }}" class="footer-logo">
+
+                    <span>
+                        ∞
+                    </span>
+
+                    everUS
+
+                </a>
+
+                <p>
+                    A private place for the moments
+                    that matter.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Product
+                </h4>
+
+                <a href="#features">
+                    Features
+                </a>
+
+                <a href="#how-it-works">
+                    How It Works
+                </a>
+
+                <a href="{{ url_for('page.register') }}">
+                    Get Started
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Account
+                </h4>
+
+                <a href="{{ url_for('page.login') }}">
+                    Login
+                </a>
+
+                <a href="{{ url_for('page.register') }}">
+                    Register
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Privacy
+                </h4>
+
+                <a href="#privacy">
+                    Privacy
+                </a>
+
+                <a href="#">
+                    Terms
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 everUS. All rights reserved.
+            </span>
+
+            <span>
+                Built for memories that matter.
+            </span>
+
+        </div>
+
+    </footer>
+
+</main>
+
+{% endblock %}
