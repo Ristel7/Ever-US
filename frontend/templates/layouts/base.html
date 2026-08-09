@@ -1,43 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<header class="navbar">
 
-<head>
+    <a href="{{ url_for('pages.home') }}" class="brand">
 
-    <meta charset="UTF-8">
+        <span class="brand-mark"></span>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <span>everUS</span>
 
-    <title>
-        {% block title %}everUS{% endblock %}
-    </title>
+    </a>
 
-    <meta name="description"
-        content="everUS is a private space for preserving memories, conversations and moments that matter.">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <nav class="nav-links">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <a href="{{ url_for('pages.home') }}" class="active">
+            Home
+        </a>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+        <a href="#features">
+            Features
+        </a>
+
+        <a href="#how-it-works">
+            How It Works
+        </a>
+
+        <a href="#privacy">
+            Privacy
+        </a>
+
+    </nav>
+
+
+    <div class="nav-actions">
+
+        <a href="{{ url_for('pages.login') }}" class="login">
+            Login
+        </a>
+
+        <a href="{{ url_for('pages.register') }}" class="primary-btn small">
+            Get Started
+        </a>
+
+    </div>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
-
-    {% block styles %}
-    {% endblock %}
-
-</head>
-
-<body>
-
-    {% block content %}
-    {% endblock %}
-
-    {% block scripts %}
-    {% endblock %}
-
-</body>
-
-</html>
+</header>
