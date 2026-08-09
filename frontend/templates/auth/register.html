@@ -1,446 +1,871 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layouts/base.html" %}
 
-<head>
 
-    <meta charset="UTF-8">
+{% block title %}
+Create Account | everUS
+{% endblock %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Create Account | everUS</title>
+{% block styles %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
 
-</head>
+{% block content %}
 
-<body>
+<main class="auth-page">
 
-    <main class="auth-page">
 
-        <!-- LEFT SIDE -->
+    <!-- =========================================
+         LEFT SIDE
+    ========================================== -->
 
-        <section class="auth-visual">
+    <section class="auth-visual">
 
-            <div class="visual-content">
+        <div class="visual-content">
 
-                <a href="index.html" class="brand">
 
-                    <span class="brand-icon">∞</span>
+            <!-- BRAND -->
 
-                    <span>everUS</span>
+            <a href="{{ url_for('pages.home') }}" class="brand">
 
-                </a>
+                <span class="brand-icon">
+                    ∞
+                </span>
 
-                <div class="visual-main">
+                <span>
+                    everUS
+                </span>
 
-                    <span class="eyebrow">
-                        YOUR SPACE. YOUR MEMORIES.
-                    </span>
+            </a>
 
-                    <h1>
-                        Create a place
-                        <br>
-                        worth remembering.
-                    </h1>
 
-                    <p>
-                        Build your private space for the
-                        moments, memories and people that
-                        matter most.
-                    </p>
+            <!-- MAIN CONTENT -->
 
-                </div>
+            <div class="visual-main">
 
-                <div class="visual-features">
+                <span class="eyebrow">
+                    YOUR SPACE. YOUR MEMORIES.
+                </span>
 
-                    <div class="visual-feature">
 
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
-                                <path d="M9 12l2 2 4-4" />
-                            </svg>
-                        </div>
+                <h1>
+                    Create a place
+                    <br>
+                    worth remembering.
+                </h1>
 
-                        <div>
-                            <strong>Private</strong>
-                            <span>Your memories stay yours</span>
-                        </div>
 
-                    </div>
-
-                    <div class="visual-feature">
-
-                        <div class="feature-icon">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <rect x="3" y="4" width="18" height="16" rx="3" />
-
-                                <circle cx="8" cy="9" r="1.5" />
-
-                                <path d="M21 15l-4-4-7 7" />
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-                            <strong>Memories</strong>
-                            <span>Keep every moment together</span>
-                        </div>
-
-                    </div>
-
-                </div>
+                <p>
+                    Build your private space for the
+                    moments, memories and people that
+                    matter most.
+                </p>
 
             </div>
 
-            <div class="orb orb-one"></div>
-            <div class="orb orb-two"></div>
 
-            <div class="infinity-decoration">
-                ∞
-            </div>
+            <!-- FEATURES -->
 
-        </section>
+            <div class="visual-features">
 
 
-        <!-- RIGHT SIDE -->
+                <!-- PRIVATE -->
 
-        <section class="auth-form-section">
+                <div class="visual-feature">
 
-            <div class="auth-card">
+                    <div class="feature-icon">
 
-                <div class="mobile-brand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
-                    <a href="index.html" class="brand">
+                            <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
 
-                        <span class="brand-icon">∞</span>
-
-                        <span>everUS</span>
-
-                    </a>
-
-                </div>
-
-
-                <div class="form-header">
-
-                    <span class="form-badge">
-                        GET STARTED
-                    </span>
-
-                    <h2>
-                        Create your account
-                    </h2>
-
-                    <p>
-                        Start building your private space
-                        today.
-                    </p>
-
-                </div>
-
-
-                <form id="registerForm">
-
-                    <!-- NAME -->
-
-                    <div class="form-group">
-
-                        <label for="name">
-                            Full name
-                        </label>
-
-                        <div class="input-wrapper">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <circle cx="12" cy="8" r="4" />
-
-                                <path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6" />
-
-                            </svg>
-
-                            <input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="name"
-                                required>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- EMAIL -->
-
-                    <div class="form-group">
-
-                        <label for="email">
-                            Email address
-                        </label>
-
-                        <div class="input-wrapper">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <rect x="3" y="5" width="18" height="14" rx="2" />
-
-                                <path d="M3 7l9 6 9-6" />
-
-                            </svg>
-
-                            <input type="email" id="email" name="email" placeholder="you@example.com"
-                                autocomplete="email" required>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- PASSWORD -->
-
-                    <div class="form-group">
-
-                        <div class="label-row">
-
-                            <label for="password">
-                                Password
-                            </label>
-
-                            <span>
-                                Minimum 8 characters
-                            </span>
-
-                        </div>
-
-                        <div class="input-wrapper">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <rect x="4" y="10" width="16" height="11" rx="2" />
-
-                                <path d="M8 10V7a4 4 0 018 0v3" />
-
-                            </svg>
-
-                            <input type="password" id="password" name="password" placeholder="Create a password"
-                                autocomplete="new-password" required>
-
-                            <button type="button" class="password-toggle" id="passwordToggle"
-                                aria-label="Show password">
-                                Show
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- PASSWORD STRENGTH -->
-
-                    <div class="password-strength">
-
-                        <div class="strength-bars">
-
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-
-                        </div>
-
-                        <span id="strengthText">
-                            Password strength
-                        </span>
-
-                    </div>
-
-
-                    <!-- TERMS -->
-
-                    <label class="terms">
-
-                        <input type="checkbox" id="terms" required>
-
-                        <span class="custom-checkbox"></span>
-
-                        <span>
-                            I agree to the
-                            <a href="#">Terms of Service</a>
-                            and
-                            <a href="#">Privacy Policy</a>.
-                        </span>
-
-                    </label>
-
-
-                    <!-- SUBMIT -->
-
-                    <button type="submit" class="submit-button">
-
-                        <span>
-                            Create Account
-                        </span>
-
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-
-                            <path d="M5 12h14" />
-
-                            <path d="M13 6l6 6-6 6" />
+                            <path d="M9 12l2 2 4-4" />
 
                         </svg>
 
-                    </button>
+                    </div>
 
 
-                    <div class="form-message" id="formMessage"></div>
+                    <div>
 
-                </form>
+                        <strong>
+                            Private
+                        </strong>
 
+                        <span>
+                            Your memories stay yours
+                        </span>
 
-                <div class="login-link">
-
-                    Already have an account?
-
-                    <a href="login.html">
-                        Log in
-                    </a>
+                    </div>
 
                 </div>
 
 
-                <div class="secure-note">
+                <!-- MEMORIES -->
 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <div class="visual-feature">
 
-                        <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
+                    <div class="feature-icon">
 
-                        <path d="M9 12l2 2 4-4" />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
-                    </svg>
+                            <rect x="3" y="4" width="18" height="16" rx="3" />
 
-                    <span>
-                        Your information is securely protected.
-                    </span>
+                            <circle cx="8" cy="9" r="1.5" />
+
+                            <path d="M21 15l-4-4-7 7" />
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Memories
+                        </strong>
+
+                        <span>
+                            Keep every moment together
+                        </span>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </section>
-
-    </main>
+        </div>
 
 
-    <script>
+        <!-- DECORATION -->
 
-        const password =
-            document.getElementById("password");
+        <div class="orb orb-one"></div>
 
-        const toggle =
-            document.getElementById("passwordToggle");
+        <div class="orb orb-two"></div>
 
-        const strengthText =
-            document.getElementById("strengthText");
+        <div class="infinity-decoration">
+            ∞
+        </div>
 
-        const bars =
-            document.querySelectorAll(
-                ".strength-bars span"
+    </section>
+
+
+
+    <!-- =========================================
+         RIGHT SIDE
+    ========================================== -->
+
+    <section class="auth-form-section">
+
+        <div class="auth-card">
+
+
+            <!-- MOBILE BRAND -->
+
+            <div class="mobile-brand">
+
+                <a href="{{ url_for('pages.home') }}" class="brand">
+
+                    <span class="brand-icon">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- FORM HEADER -->
+
+            <div class="form-header">
+
+                <span class="form-badge">
+                    GET STARTED
+                </span>
+
+
+                <h2>
+                    Create your account
+                </h2>
+
+
+                <p>
+                    Start building your private space
+                    today.
+                </p>
+
+            </div>
+
+
+
+            <!-- =====================================
+                 REGISTER FORM
+            ====================================== -->
+
+            <form id="registerForm" novalidate>
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full name
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <circle cx="12" cy="8" r="4" />
+
+                            <path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6" />
+
+                        </svg>
+
+
+                        <input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="name"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
+
+                            <path d="M3 7l9 6 9-6" />
+
+                        </svg>
+
+
+                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <div class="label-row">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <span>
+                            Minimum 8 characters
+                        </span>
+
+                    </div>
+
+
+                    <div class="input-wrapper">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <rect x="4" y="10" width="16" height="11" rx="2" />
+
+                            <path d="M8 10V7a4 4 0 018 0v3" />
+
+                        </svg>
+
+
+                        <input type="password" id="password" name="password" placeholder="Create a password"
+                            autocomplete="new-password" required>
+
+
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PASSWORD STRENGTH -->
+
+                <div class="password-strength">
+
+                    <div class="strength-bars">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <span id="strengthText">
+                        Password strength
+                    </span>
+
+                </div>
+
+
+
+                <!-- TERMS -->
+
+                <label class="terms">
+
+                    <input type="checkbox" id="terms" required>
+
+                    <span class="custom-checkbox"></span>
+
+
+                    <span>
+
+                        I agree to the
+
+                        <a href="#">
+                            Terms of Service
+                        </a>
+
+                        and
+
+                        <a href="#">
+                            Privacy Policy
+                        </a>.
+
+                    </span>
+
+                </label>
+
+
+
+                <!-- API ERROR / SUCCESS MESSAGE -->
+
+                <div class="form-message" id="formMessage" role="alert"></div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button type="submit" class="submit-button" id="registerButton">
+
+                    <span>
+                        Create Account
+                    </span>
+
+
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+                        <path d="M5 12h14" />
+
+                        <path d="M13 6l6 6-6 6" />
+
+                    </svg>
+
+                </button>
+
+            </form>
+
+
+
+            <!-- LOGIN -->
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="{{ url_for('pages.login') }}">
+                    Log in
+                </a>
+
+            </div>
+
+
+
+            <!-- SECURITY NOTE -->
+
+            <div class="secure-note">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                    <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
+
+                    <path d="M9 12l2 2 4-4" />
+
+                </svg>
+
+
+                <span>
+                    Your information is securely protected.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            /* =====================================
+               ELEMENTS
+            ====================================== */
+
+            const form =
+                document.getElementById(
+                    "registerForm"
+                );
+
+
+            const nameInput =
+                document.getElementById(
+                    "name"
+                );
+
+
+            const emailInput =
+                document.getElementById(
+                    "email"
+                );
+
+
+            const passwordInput =
+                document.getElementById(
+                    "password"
+                );
+
+
+            const termsInput =
+                document.getElementById(
+                    "terms"
+                );
+
+
+            const toggle =
+                document.getElementById(
+                    "passwordToggle"
+                );
+
+
+            const strengthText =
+                document.getElementById(
+                    "strengthText"
+                );
+
+
+            const bars =
+                document.querySelectorAll(
+                    ".strength-bars span"
+                );
+
+
+            const message =
+                document.getElementById(
+                    "formMessage"
+                );
+
+
+            const registerButton =
+                document.getElementById(
+                    "registerButton"
+                );
+
+
+
+            /* =====================================
+               SHOW / HIDE PASSWORD
+            ====================================== */
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    const isPassword =
+                        passwordInput.type === "password";
+
+
+                    passwordInput.type =
+                        isPassword
+                            ? "text"
+                            : "password";
+
+
+                    toggle.textContent =
+                        isPassword
+                            ? "Hide"
+                            : "Show";
+
+
+                    toggle.setAttribute(
+                        "aria-label",
+                        isPassword
+                            ? "Hide password"
+                            : "Show password"
+                    );
+
+                }
             );
 
 
-        toggle.addEventListener("click", () => {
 
-            const isPassword =
-                password.type === "password";
+            /* =====================================
+               PASSWORD STRENGTH
+            ====================================== */
 
-            password.type =
-                isPassword ? "text" : "password";
+            passwordInput.addEventListener(
+                "input",
+                function () {
 
-            toggle.textContent =
-                isPassword ? "Hide" : "Show";
-
-        });
-
-
-        password.addEventListener("input", () => {
-
-            const value = password.value;
-
-            let strength = 0;
-
-            if (value.length >= 8)
-                strength++;
-
-            if (/[A-Z]/.test(value))
-                strength++;
-
-            if (/[0-9]/.test(value))
-                strength++;
-
-            if (/[^A-Za-z0-9]/.test(value))
-                strength++;
+                    const value =
+                        passwordInput.value;
 
 
-            bars.forEach((bar, index) => {
-
-                bar.classList.toggle(
-                    "active",
-                    index < strength
-                );
-
-            });
+                    let strength = 0;
 
 
-            if (!value) {
+                    if (value.length >= 8) {
+                        strength++;
+                    }
 
-                strengthText.textContent =
-                    "Password strength";
 
-            } else if (strength <= 1) {
+                    if (/[A-Z]/.test(value)) {
+                        strength++;
+                    }
 
-                strengthText.textContent =
-                    "Weak password";
 
-            } else if (strength <= 3) {
+                    if (/[0-9]/.test(value)) {
+                        strength++;
+                    }
 
-                strengthText.textContent =
-                    "Good password";
 
-            } else {
+                    if (/[^A-Za-z0-9]/.test(value)) {
+                        strength++;
+                    }
 
-                strengthText.textContent =
-                    "Strong password";
+
+                    bars.forEach(
+                        function (bar, index) {
+
+                            bar.classList.toggle(
+                                "active",
+                                index < strength
+                            );
+
+                        }
+                    );
+
+
+                    if (!value) {
+
+                        strengthText.textContent =
+                            "Password strength";
+
+                    } else if (strength <= 1) {
+
+                        strengthText.textContent =
+                            "Weak password";
+
+                    } else if (strength <= 3) {
+
+                        strengthText.textContent =
+                            "Good password";
+
+                    } else {
+
+                        strengthText.textContent =
+                            "Strong password";
+
+                    }
+
+                }
+            );
+
+
+
+            /* =====================================
+               MESSAGE HELPER
+            ====================================== */
+
+            function showMessage(
+                text,
+                type
+            ) {
+
+                message.textContent = text;
+
+                message.className =
+                    "form-message " + type;
 
             }
 
-        });
 
 
-        document
-            .getElementById("registerForm")
-            .addEventListener("submit", (event) => {
+            /* =====================================
+               FORM SUBMIT
+            ====================================== */
 
-                event.preventDefault();
+            form.addEventListener(
+                "submit",
+                async function (event) {
 
-                /*
-                    API integration will be added later.
-        
-                    POST /api/auth/register
-                */
+                    event.preventDefault();
 
-                console.log("Registration submitted");
 
-            });
+                    showMessage(
+                        "",
+                        ""
+                    );
 
-    </script>
 
-</body>
+                    /* -----------------------------
+                       BASIC VALIDATION
+                    ------------------------------ */
 
-</html>
+                    const name =
+                        nameInput.value.trim();
+
+
+                    const email =
+                        emailInput.value.trim();
+
+
+                    const password =
+                        passwordInput.value;
+
+
+                    const terms =
+                        termsInput.checked;
+
+
+                    if (!name) {
+
+                        showMessage(
+                            "Please enter your full name.",
+                            "error"
+                        );
+
+                        nameInput.focus();
+
+                        return;
+                    }
+
+
+                    if (!email) {
+
+                        showMessage(
+                            "Please enter your email address.",
+                            "error"
+                        );
+
+                        emailInput.focus();
+
+                        return;
+                    }
+
+
+                    if (password.length < 8) {
+
+                        showMessage(
+                            "Password must contain at least 8 characters.",
+                            "error"
+                        );
+
+                        passwordInput.focus();
+
+                        return;
+                    }
+
+
+                    if (!terms) {
+
+                        showMessage(
+                            "Please accept the Terms of Service and Privacy Policy.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+
+                    /* -----------------------------
+                       DISABLE BUTTON
+                    ------------------------------ */
+
+                    registerButton.disabled = true;
+
+
+                    const originalButtonHTML =
+                        registerButton.innerHTML;
+
+
+                    registerButton.innerHTML = `
+                    <span>Creating account...</span>
+                `;
+
+
+
+                    try {
+
+
+                        /* -------------------------
+                           CALL FLASK API
+                        -------------------------- */
+
+                        const response =
+                            await fetch(
+                                "/api/auth/register",
+                                {
+
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+                                            name: name,
+                                            email: email,
+                                            password: password
+                                        })
+
+                                }
+                            );
+
+
+                        const result =
+                            await response.json();
+
+
+
+                        /* -------------------------
+                           API ERROR
+                        -------------------------- */
+
+                        if (!response.ok || !result.success) {
+
+                            showMessage(
+                                result.message ||
+                                "Registration failed. Please try again.",
+                                "error"
+                            );
+
+                            registerButton.disabled =
+                                false;
+
+                            registerButton.innerHTML =
+                                originalButtonHTML;
+
+                            return;
+                        }
+
+
+
+                        /* -------------------------
+                           SUCCESS
+                        -------------------------- */
+
+                        showMessage(
+                            result.message ||
+                            "Account created successfully.",
+                            "success"
+                        );
+
+
+                        registerButton.innerHTML = `
+                        <span>Account Created ✓</span>
+                    `;
+
+
+                        /*
+                         * Give the user a moment to see
+                         * the success message before
+                         * redirecting to login.
+                         */
+
+                        setTimeout(
+                            function () {
+
+                                window.location.href =
+                                    "{{ url_for('pages.login') }}";
+
+                            },
+                            1200
+                        );
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Registration error:",
+                            error
+                        );
+
+
+                        showMessage(
+                            "Unable to connect to the server. Please make sure the backend is running.",
+                            "error"
+                        );
+
+
+                        registerButton.disabled =
+                            false;
+
+
+                        registerButton.innerHTML =
+                            originalButtonHTML;
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}

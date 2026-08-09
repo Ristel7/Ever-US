@@ -1,430 +1,654 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layouts/base.html" %}
 
-<head>
 
-    <meta charset="UTF-8">
+{% block title %}
+Login | everUS
+{% endblock %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login | everUS</title>
+{% block styles %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
-</head>
+{% block content %}
 
-<body>
-
-    <main class="auth-page">
-
-        <!-- =========================================
-             LEFT SIDE
-        ========================================== -->
-
-        <section class="auth-visual">
-
-            <div class="visual-content">
-
-                <!-- LOGO -->
-
-                <a href="index.html" class="brand">
-
-                    <span class="brand-icon">∞</span>
-
-                    <span>everUS</span>
-
-                </a>
-
-
-                <!-- MAIN CONTENT -->
-
-                <div class="visual-main">
-
-                    <span class="eyebrow">
-                        WELCOME BACK
-                    </span>
-
-                    <h1>
-                        Your memories.
-                        <br>
-                        Your people.
-                        <br>
-                        Your space.
-                    </h1>
-
-                    <p>
-                        Everything that matters deserves
-                        a private place to live, grow and
-                        last forever.
-                    </p>
-
-                </div>
-
-
-                <!-- FEATURES -->
-
-                <div class="visual-features">
-
-                    <div class="visual-feature">
-
-                        <div class="feature-icon">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
-
-                                <path d="M9 12l2 2 4-4" />
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <strong>Private</strong>
-
-                            <span>
-                                Your space stays yours
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="visual-feature">
-
-                        <div class="feature-icon">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <rect x="3" y="4" width="18" height="16" rx="3" />
-
-                                <circle cx="8" cy="9" r="1.5" />
-
-                                <path d="M21 15l-4-4-7 7" />
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <strong>Memories</strong>
-
-                            <span>
-                                Keep every moment
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="visual-feature">
-
-                        <div class="feature-icon">
-
-                            <span class="infinity-small">
-                                ∞
-                            </span>
-
-                        </div>
-
-                        <div>
-
-                            <strong>Forever</strong>
-
-                            <span>
-                                Built to last
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- BACKGROUND DECORATION -->
-
-            <div class="orb orb-one"></div>
-
-            <div class="orb orb-two"></div>
-
-            <div class="orb orb-three"></div>
-
-            <div class="infinity-decoration">
-                ∞
-            </div>
-
-        </section>
-
-
-        <!-- =========================================
-             RIGHT SIDE
-        ========================================== -->
-
-        <section class="auth-form-section">
-
-            <div class="auth-card">
-
-
-                <!-- MOBILE LOGO -->
-
-                <div class="mobile-brand">
-
-                    <a href="index.html" class="brand">
-
-                        <span class="brand-icon">
-                            ∞
-                        </span>
-
-                        <span>
-                            everUS
-                        </span>
-
-                    </a>
-
-                </div>
-
-
-                <!-- HEADER -->
-
-                <div class="form-header">
-
-                    <span class="form-badge">
-                        WELCOME BACK
-                    </span>
-
-                    <h2>
-                        Welcome back
-                    </h2>
-
-                    <p>
-                        Sign in to continue to your space.
-                    </p>
-
-                </div>
-
-
-                <!-- LOGIN FORM -->
-
-                <form id="loginForm">
-
-
-                    <!-- EMAIL -->
-
-                    <div class="form-group">
-
-                        <label for="email">
-                            Email address
-                        </label>
-
-                        <div class="input-wrapper">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <rect x="3" y="5" width="18" height="14" rx="2" />
-
-                                <path d="M3 7l9 6 9-6" />
-
-                            </svg>
-
-                            <input type="email" id="email" name="email" placeholder="you@example.com"
-                                autocomplete="email" required>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- PASSWORD -->
-
-                    <div class="form-group">
-
-                        <div class="label-row">
-
-                            <label for="password">
-                                Password
-                            </label>
-
-                            <a href="#" class="forgot-link">
-                                Forgot password?
-                            </a>
-
-                        </div>
-
-
-                        <div class="input-wrapper">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <rect x="4" y="10" width="16" height="11" rx="2" />
-
-                                <path d="M8 10V7a4 4 0 018 0v3" />
-
-                            </svg>
-
-                            <input type="password" id="password" name="password" placeholder="Enter your password"
-                                autocomplete="current-password" required>
-
-                            <button type="button" class="password-toggle" id="passwordToggle">
-                                Show
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- REMEMBER ME -->
-
-                    <div class="login-options">
-
-                        <label class="remember">
-
-                            <input type="checkbox" id="remember">
-
-                            <span class="custom-checkbox"></span>
-
-                            <span>
-                                Remember me
-                            </span>
-
-                        </label>
-
-                    </div>
-
-
-                    <!-- SUBMIT -->
-
-                    <button type="submit" class="submit-button">
-
-                        <span>
-                            Login
-                        </span>
-
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-
-                            <path d="M5 12h14" />
-
-                            <path d="M13 6l6 6-6 6" />
-
-                        </svg>
-
-                    </button>
-
-
-                    <!-- ERROR / SUCCESS -->
-
-                    <div class="form-message" id="formMessage"></div>
-
-                </form>
-
-
-                <!-- REGISTER -->
-
-                <div class="register-link">
-
-                    Don't have an account?
-
-                    <a href="register.html">
-                        Create account
-                    </a>
-
-                </div>
-
-
-                <!-- SECURITY -->
-
-                <div class="secure-note">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                        <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
-
-                        <path d="M9 12l2 2 4-4" />
-
-                    </svg>
-
-                    <span>
-                        Your connection is secure.
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+<main class="auth-page">
 
 
     <!-- =========================================
-         JAVASCRIPT
+         LEFT SIDE
     ========================================== -->
 
-    <script>
+    <section class="auth-visual">
 
-        const password =
-            document.getElementById("password");
-
-        const passwordToggle =
-            document.getElementById("passwordToggle");
+        <div class="visual-content">
 
 
-        passwordToggle.addEventListener(
-            "click",
-            () => {
+            <!-- BRAND -->
 
-                const isPassword =
-                    password.type === "password";
+            <a href="{{ url_for('pages.home') }}" class="brand">
 
-                password.type =
-                    isPassword
-                        ? "text"
-                        : "password";
+                <span class="brand-icon">
+                    ∞
+                </span>
 
-                passwordToggle.textContent =
-                    isPassword
-                        ? "Hide"
-                        : "Show";
+                <span>
+                    everUS
+                </span>
 
-            }
-        );
+            </a>
 
 
-        document
-            .getElementById("loginForm")
-            .addEventListener(
-                "submit",
-                (event) => {
 
-                    event.preventDefault();
+            <!-- MAIN CONTENT -->
 
-                    /*
-                        API integration comes next.
-          
-                        POST /api/auth/login
-                    */
+            <div class="visual-main">
 
-                    console.log("Login submitted");
+                <span class="eyebrow">
+                    WELCOME BACK
+                </span>
+
+
+                <h1>
+
+                    Your memories.
+                    <br>
+
+                    Your people.
+                    <br>
+
+                    Your space.
+
+                </h1>
+
+
+                <p>
+                    Everything that matters deserves
+                    a private place to live, grow and
+                    last forever.
+                </p>
+
+            </div>
+
+
+
+            <!-- FEATURES -->
+
+            <div class="visual-features">
+
+
+                <!-- PRIVATE -->
+
+                <div class="visual-feature">
+
+                    <div class="feature-icon">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
+
+                            <path d="M9 12l2 2 4-4" />
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Private
+                        </strong>
+
+                        <span>
+                            Your space stays yours
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MEMORIES -->
+
+                <div class="visual-feature">
+
+                    <div class="feature-icon">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <rect x="3" y="4" width="18" height="16" rx="3" />
+
+                            <circle cx="8" cy="9" r="1.5" />
+
+                            <path d="M21 15l-4-4-7 7" />
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Memories
+                        </strong>
+
+                        <span>
+                            Keep every moment
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FOREVER -->
+
+                <div class="visual-feature">
+
+                    <div class="feature-icon">
+
+                        <span class="infinity-small">
+                            ∞
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Forever
+                        </strong>
+
+                        <span>
+                            Built to last
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BACKGROUND DECORATION -->
+
+        <div class="orb orb-one"></div>
+
+        <div class="orb orb-two"></div>
+
+        <div class="orb orb-three"></div>
+
+        <div class="infinity-decoration">
+            ∞
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         RIGHT SIDE
+    ========================================== -->
+
+    <section class="auth-form-section">
+
+        <div class="auth-card">
+
+
+            <!-- MOBILE BRAND -->
+
+            <div class="mobile-brand">
+
+                <a href="{{ url_for('pages.home') }}" class="brand">
+
+                    <span class="brand-icon">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- HEADER -->
+
+            <div class="form-header">
+
+                <span class="form-badge">
+                    WELCOME BACK
+                </span>
+
+
+                <h2>
+                    Welcome back
+                </h2>
+
+
+                <p>
+                    Sign in to continue to your space.
+                </p>
+
+            </div>
+
+
+
+            <!-- =====================================
+                 LOGIN FORM
+            ====================================== -->
+
+            <form id="loginForm" novalidate>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
+
+                            <path d="M3 7l9 6 9-6" />
+
+                        </svg>
+
+
+                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <div class="label-row">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+
+                        <a href="#" class="forgot-link">
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+
+                    <div class="input-wrapper">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <rect x="4" y="10" width="16" height="11" rx="2" />
+
+                            <path d="M8 10V7a4 4 0 018 0v3" />
+
+                        </svg>
+
+
+                        <input type="password" id="password" name="password" placeholder="Enter your password"
+                            autocomplete="current-password" required>
+
+
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- REMEMBER ME -->
+
+                <div class="login-options">
+
+                    <label class="remember">
+
+                        <input type="checkbox" id="remember">
+
+                        <span class="custom-checkbox"></span>
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- MESSAGE -->
+
+                <div class="form-message" id="formMessage" role="alert"></div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button type="submit" class="submit-button" id="loginButton">
+
+                    <span>
+                        Login
+                    </span>
+
+
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+                        <path d="M5 12h14" />
+
+                        <path d="M13 6l6 6-6 6" />
+
+                    </svg>
+
+                </button>
+
+            </form>
+
+
+
+            <!-- REGISTER -->
+
+            <div class="register-link">
+
+                Don't have an account?
+
+                <a href="{{ url_for('pages.register') }}">
+                    Create account
+                </a>
+
+            </div>
+
+
+
+            <!-- SECURITY -->
+
+            <div class="secure-note">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                    <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
+
+                    <path d="M9 12l2 2 4-4" />
+
+                </svg>
+
+
+                <span>
+                    Your connection is secure.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            /* =====================================
+               ELEMENTS
+            ====================================== */
+
+            const form =
+                document.getElementById(
+                    "loginForm"
+                );
+
+
+            const emailInput =
+                document.getElementById(
+                    "email"
+                );
+
+
+            const passwordInput =
+                document.getElementById(
+                    "password"
+                );
+
+
+            const passwordToggle =
+                document.getElementById(
+                    "passwordToggle"
+                );
+
+
+            const message =
+                document.getElementById(
+                    "formMessage"
+                );
+
+
+            const loginButton =
+                document.getElementById(
+                    "loginButton"
+                );
+
+
+
+            /* =====================================
+               SHOW / HIDE PASSWORD
+            ====================================== */
+
+            passwordToggle.addEventListener(
+                "click",
+                function () {
+
+                    const isPassword =
+                        passwordInput.type === "password";
+
+
+                    passwordInput.type =
+                        isPassword
+                            ? "text"
+                            : "password";
+
+
+                    passwordToggle.textContent =
+                        isPassword
+                            ? "Hide"
+                            : "Show";
+
+
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        isPassword
+                            ? "Hide password"
+                            : "Show password"
+                    );
 
                 }
             );
 
-    </script>
 
-</body>
 
-</html>
+            /* =====================================
+               MESSAGE HELPER
+            ====================================== */
+
+            function showMessage(
+                text,
+                type
+            ) {
+
+                message.textContent =
+                    text;
+
+
+                message.className =
+                    "form-message " + type;
+
+            }
+
+
+
+            /* =====================================
+               LOGIN FORM
+            ====================================== */
+
+            form.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    showMessage(
+                        "",
+                        ""
+                    );
+
+
+                    const email =
+                        emailInput.value.trim();
+
+
+                    const password =
+                        passwordInput.value;
+
+
+                    /* -----------------------------
+                       VALIDATION
+                    ------------------------------ */
+
+                    if (!email) {
+
+                        showMessage(
+                            "Please enter your email address.",
+                            "error"
+                        );
+
+                        emailInput.focus();
+
+                        return;
+                    }
+
+
+                    if (!password) {
+
+                        showMessage(
+                            "Please enter your password.",
+                            "error"
+                        );
+
+                        passwordInput.focus();
+
+                        return;
+                    }
+
+
+                    if (password.length < 8) {
+
+                        showMessage(
+                            "Password must contain at least 8 characters.",
+                            "error"
+                        );
+
+                        passwordInput.focus();
+
+                        return;
+                    }
+
+
+
+                    /* -----------------------------
+                       TEMPORARY STATE
+                       
+                       API connection will be added
+                       in the next step.
+                    ------------------------------ */
+
+                    loginButton.disabled = true;
+
+
+                    const originalHTML =
+                        loginButton.innerHTML;
+
+
+                    loginButton.innerHTML = `
+                    <span>Signing in...</span>
+                `;
+
+
+                    /*
+                     * API integration comes next:
+                     *
+                     * POST /api/auth/login
+                     *
+                     * email
+                     * password
+                     */
+
+
+                    setTimeout(
+                        function () {
+
+                            console.log(
+                                "Login form validated"
+                            );
+
+
+                            loginButton.disabled =
+                                false;
+
+
+                            loginButton.innerHTML =
+                                originalHTML;
+
+                        },
+                        500
+                    );
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}
