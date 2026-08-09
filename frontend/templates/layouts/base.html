@@ -7,67 +7,37 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}everUS{% endblock %}</title>
+    <title>
+        {% block title %}everUS{% endblock %}
+    </title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="description"
+        content="everUS is a private space for preserving memories, conversations and moments that matter.">
 
-    {% block css %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+
+    {% block styles %}
+    {% endblock %}
 
 </head>
 
 <body>
 
-    <div class="app">
+    {% block content %}
+    {% endblock %}
 
-        <!-- Sidebar -->
+    {% block scripts %}
+    {% endblock %}
 
-        <aside class="sidebar">
-
-            <h2>everUS</h2>
-
-            <ul>
-
-                <li><a href="/dashboard">Dashboard</a></li>
-
-                <li><a href="/spaces">Spaces</a></li>
-
-                <li><a href="/gallery">Gallery</a></li>
-
-                <li><a href="/timeline">Timeline</a></li>
-
-                <li><a href="/journal">Journal</a></li>
-
-                <li><a href="/settings">Settings</a></li>
-
-            </ul>
-
-        </aside>
-
-        <!-- Main Content -->
-
-        <main class="content">
-
-            {% block content %}
-
-            {% endblock %}
-
-        </main>
-
-    </div>
-
-    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
-
-    {% block js %}{% endblock %}
-    
-    <li>
-    
-        <a href="#" onclick="logout()">
-    
-            Logout
-    
-        </a>
-    
-    </li>
 </body>
 
 </html>
