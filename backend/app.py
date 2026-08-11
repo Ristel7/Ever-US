@@ -1,23 +1,16 @@
 import socket_events
 import os
-
 from flask import Flask
-
 from routes.auth_routes import auth_bp
 from routes.user_routes import user_bp
 from routes.space_routes import space_bp
 from routes.invite_routes import invite_bp
 from routes.message_routes import message_bp
-
 from socketio_instance import socketio
-
 from web.page_routes import page_bp
 
 
-# =========================================================
 # PATH CONFIGURATION
-# =========================================================
-
 BASE_DIR = os.path.dirname(
     os.path.abspath(__file__)
 )
@@ -41,11 +34,7 @@ STATIC_DIR = os.path.join(
     "static"
 )
 
-
-# =========================================================
 # FLASK APP
-# =========================================================
-
 app = Flask(
     __name__,
     template_folder=TEMPLATE_DIR,
@@ -53,18 +42,10 @@ app = Flask(
     static_url_path="/static"
 )
 
-
-# =========================================================
 # SOCKET.IO
-# =========================================================
-
 socketio.init_app(app)
 
-
-# =========================================================
 # API ROUTES
-# =========================================================
-
 app.register_blueprint(
     auth_bp,
     url_prefix="/api/auth"
@@ -91,19 +72,12 @@ app.register_blueprint(
 )
 
 
-# =========================================================
 # WEB / PAGE ROUTES
-# =========================================================
-
 app.register_blueprint(
     page_bp
 )
 
-
-# =========================================================
 # APPLICATION START
-# =========================================================
-
 if __name__ == "__main__":
 
     socketio.run(

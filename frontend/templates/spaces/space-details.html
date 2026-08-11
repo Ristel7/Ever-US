@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Space | everUS</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/space_details.css') }}">
+
+</head>
+
+
+<body>
+
+    <div class="space-page">
+
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="space-sidebar">
+
+            <div class="sidebar-brand">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="brand">
+
+                    <span class="brand-mark">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <nav class="space-navigation">
+
+                <span class="navigation-label">
+                    SPACE
+                </span>
+
+
+                <a href="#overview" class="space-nav-item active" data-tab="overview">
+
+                    <i class="fa-solid fa-grid-2"></i>
+
+                    <span>
+                        Overview
+                    </span>
+
+                </a>
+
+
+                <a href="#memories" class="space-nav-item" data-tab="memories">
+
+                    <i class="fa-regular fa-images"></i>
+
+                    <span>
+                        Memories
+                    </span>
+
+                    <span class="nav-count">
+                        0
+                    </span>
+
+                </a>
+
+
+                <a href="#messages" class="space-nav-item" data-tab="messages">
+
+                    <i class="fa-regular fa-comments"></i>
+
+                    <span>
+                        Messages
+                    </span>
+
+                    <span class="nav-count">
+                        0
+                    </span>
+
+                </a>
+
+
+                <a href="#timeline" class="space-nav-item" data-tab="timeline">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                    <span>
+                        Timeline
+                    </span>
+
+                </a>
+
+
+                <a href="#journal" class="space-nav-item" data-tab="journal">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>
+                        Journal
+                    </span>
+
+                </a>
+
+
+                <div class="navigation-divider"></div>
+
+
+                <span class="navigation-label">
+                    PEOPLE
+                </span>
+
+
+                <a href="#members" class="space-nav-item" data-tab="members">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>
+                        Members
+                    </span>
+
+                </a>
+
+
+                <a href="#settings" class="space-nav-item" data-tab="settings">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>
+                        Space Settings
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="back-dashboard">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    <span>
+                        Back to Dashboard
+                    </span>
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+        <main class="space-main">
+
+
+            <!-- TOP BAR -->
+
+            <header class="space-topbar">
+
+                <div class="mobile-title">
+
+                    <button class="mobile-menu" id="mobileMenu">
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </div>
+
+
+                <div class="topbar-actions">
+
+                    <button class="topbar-icon" aria-label="Notifications">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot">
+                            2
+                        </span>
+
+                    </button>
+
+
+                    <div class="user-avatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+             SPACE HERO
+        ================================================== -->
+
+            <section class="space-hero">
+
+                <div class="hero-cover" id="spaceCover">
+
+                    <div class="cover-overlay"></div>
+
+
+                    <button class="change-cover" id="changeCover">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                        Change cover
+
+                    </button>
+
+                </div>
+
+
+                <div class="hero-content">
+
+                    <div class="hero-main">
+
+
+                        <div class="space-avatar">
+
+                            <i class="fa-solid fa-heart"></i>
+
+                        </div>
+
+
+                        <div class="space-title">
+
+                            <span class="space-type">
+                                PRIVATE SPACE
+                            </span>
+
+                            <h1 id="spaceName">
+                                Your Space
+                            </h1>
+
+                            <p id="spaceDescription">
+                                A private place for the moments
+                                that matter.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-actions">
+
+                        <button class="secondary-button" id="shareButton">
+
+                            <i class="fa-solid fa-share-nodes"></i>
+
+                            Share
+
+                        </button>
+
+
+                        <button class="primary-button" id="inviteButton">
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            Invite People
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MEMBERS -->
+
+                <div class="hero-members">
+
+                    <div class="member-stack">
+
+                        <span class="member-avatar avatar-purple">
+                            U
+                        </span>
+
+                        <span class="member-avatar avatar-pink">
+                            A
+                        </span>
+
+                        <span class="member-avatar avatar-blue">
+                            R
+                        </span>
+
+                        <span class="member-more">
+                            +0
+                        </span>
+
+                    </div>
+
+
+                    <span class="members-text">
+                        <strong id="memberCount">
+                            1 member
+                        </strong>
+
+                        in this space
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+            <div class="space-content">
+
+
+                <!-- TABS -->
+
+                <div class="content-tabs">
+
+                    <button class="content-tab active" data-content="overview">
+
+                        Overview
+
+                    </button>
+
+
+                    <button class="content-tab" data-content="memories">
+
+                        Memories
+
+                        <span>
+                            0
+                        </span>
+
+                    </button>
+
+
+                    <button class="content-tab" data-content="messages">
+
+                        Messages
+
+                    </button>
+
+
+                    <button class="content-tab" data-content="timeline">
+
+                        Timeline
+
+                    </button>
+
+
+                    <button class="content-tab" data-content="journal">
+
+                        Journal
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 OVERVIEW
+            ================================================== -->
+
+                <section class="content-view active" id="overview">
+
+
+                    <!-- QUICK STATS -->
+
+                    <div class="quick-stats">
+
+                        <article class="quick-stat">
+
+                            <div class="quick-stat-icon purple">
+                                <i class="fa-regular fa-images"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Memories
+                                </span>
+
+                                <strong>
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="quick-stat">
+
+                            <div class="quick-stat-icon pink">
+                                <i class="fa-regular fa-comments"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Messages
+                                </span>
+
+                                <strong>
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="quick-stat">
+
+                            <div class="quick-stat-icon blue">
+                                <i class="fa-solid fa-user-group"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Members
+                                </span>
+
+                                <strong>
+                                    1
+                                </strong>
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="quick-stat">
+
+                            <div class="quick-stat-icon green">
+                                <i class="fa-solid fa-timeline"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Timeline
+                                </span>
+
+                                <strong>
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+
+
+                    <!-- MAIN OVERVIEW GRID -->
+
+                    <div class="overview-grid">
+
+
+                        <!-- RECENT MEMORIES -->
+
+                        <section class="panel">
+
+                            <div class="panel-heading">
+
+                                <div>
+
+                                    <span>
+                                        MEMORIES
+                                    </span>
+
+                                    <h2>
+                                        Recent memories
+                                    </h2>
+
+                                </div>
+
+
+                                <button class="text-button" data-open-tab="memories">
+
+                                    View all
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <div class="memory-empty">
+
+                                <div class="empty-icon">
+
+                                    <i class="fa-regular fa-images"></i>
+
+                                </div>
+
+                                <h3>
+                                    Your story starts here
+                                </h3>
+
+                                <p>
+                                    Add photos and videos to
+                                    start building your memory.
+                                </p>
+
+                                <button class="empty-button" data-open-tab="memories">
+
+                                    <i class="fa-solid fa-plus"></i>
+
+                                    Add memory
+
+                                </button>
+
+                            </div>
+
+                        </section>
+
+
+
+                        <!-- ACTIVITY -->
+
+                        <section class="panel activity-panel">
+
+                            <div class="panel-heading">
+
+                                <div>
+
+                                    <span>
+                                        ACTIVITY
+                                    </span>
+
+                                    <h2>
+                                        Recent activity
+                                    </h2>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="activity-empty">
+
+                                <div class="activity-icon">
+
+                                    <i class="fa-regular fa-clock"></i>
+
+                                </div>
+
+                                <p>
+                                    Activity from this space
+                                    will appear here.
+                                </p>
+
+                            </div>
+
+                        </section>
+
+                    </div>
+
+
+
+                    <!-- WELCOME CARD -->
+
+                    <section class="welcome-card">
+
+                        <div class="welcome-card-content">
+
+                            <span>
+                                MAKE IT YOURS
+                            </span>
+
+                            <h2>
+                                A space for everything
+                                worth remembering.
+                            </h2>
+
+                            <p>
+                                Add your first memory,
+                                invite someone special,
+                                or start a conversation.
+                            </p>
+
+
+                            <div class="welcome-actions">
+
+                                <button class="welcome-button" data-open-tab="memories">
+
+                                    <i class="fa-regular fa-images"></i>
+
+                                    Add Memory
+
+                                </button>
+
+
+                                <button class="welcome-button outline" id="welcomeInvite">
+
+                                    <i class="fa-solid fa-user-plus"></i>
+
+                                    Invite People
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="welcome-decoration">
+
+                            <span>
+                                ∞
+                            </span>
+
+                        </div>
+
+                    </section>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 MEMORIES
+            ================================================== -->
+
+                <section class="content-view" id="memories">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span>
+                                YOUR COLLECTION
+                            </span>
+
+                            <h2>
+                                Memories
+                            </h2>
+
+                            <p>
+                                Keep your favorite moments
+                                together.
+                            </p>
+
+                        </div>
+
+
+                        <button class="primary-button">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Memory
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="gallery-empty">
+
+                        <div class="gallery-empty-icon">
+
+                            <i class="fa-regular fa-images"></i>
+
+                        </div>
+
+                        <h3>
+                            No memories yet
+                        </h3>
+
+                        <p>
+                            Upload your first photo or video
+                            and make this space yours.
+                        </p>
+
+                        <button class="primary-button">
+
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                            Upload Memory
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 MESSAGES
+            ================================================== -->
+
+                <section class="content-view" id="messages">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span>
+                                CONVERSATION
+                            </span>
+
+                            <h2>
+                                Messages
+                            </h2>
+
+                            <p>
+                                Talk, share and stay connected.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="messages-placeholder">
+
+                        <div class="messages-icon">
+
+                            <i class="fa-regular fa-comments"></i>
+
+                        </div>
+
+                        <h3>
+                            Start a conversation
+                        </h3>
+
+                        <p>
+                            Messages from this space will
+                            appear here.
+                        </p>
+
+                        <button class="primary-button">
+
+                            <i class="fa-solid fa-message"></i>
+
+                            Send a message
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 TIMELINE
+            ================================================== -->
+
+                <section class="content-view" id="timeline">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span>
+                                YOUR STORY
+                            </span>
+
+                            <h2>
+                                Timeline
+                            </h2>
+
+                            <p>
+                                Every important moment,
+                                in order.
+                            </p>
+
+                        </div>
+
+
+                        <button class="primary-button">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add event
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="timeline-empty">
+
+                        <div class="timeline-line"></div>
+
+                        <div class="timeline-empty-content">
+
+                            <div class="timeline-dot">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+
+                            <h3>
+                                Your timeline is empty
+                            </h3>
+
+                            <p>
+                                Add your first milestone
+                                and start your story.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 JOURNAL
+            ================================================== -->
+
+                <section class="content-view" id="journal">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span>
+                                PRIVATE THOUGHTS
+                            </span>
+
+                            <h2>
+                                Journal
+                            </h2>
+
+                            <p>
+                                Write down the moments
+                                you want to remember.
+                            </p>
+
+                        </div>
+
+
+                        <button class="primary-button">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                            New entry
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="journal-empty">
+
+                        <div class="journal-icon">
+
+                            <i class="fa-solid fa-book-open"></i>
+
+                        </div>
+
+                        <h3>
+                            Your journal is waiting
+                        </h3>
+
+                        <p>
+                            Start writing your first entry.
+                        </p>
+
+                        <button class="primary-button">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                            Write something
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 MEMBERS
+            ================================================== -->
+
+                <section class="content-view" id="members">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span>
+                                YOUR PEOPLE
+                            </span>
+
+                            <h2>
+                                Members
+                            </h2>
+
+                            <p>
+                                People who have access
+                                to this space.
+                            </p>
+
+                        </div>
+
+
+                        <button class="primary-button" id="membersInvite">
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            Invite People
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="members-card">
+
+                        <div class="member-row">
+
+                            <div class="member-avatar large avatar-purple">
+                                U
+                            </div>
+
+
+                            <div class="member-details">
+
+                                <strong>
+                                    You
+                                </strong>
+
+                                <span>
+                                    Owner
+                                </span>
+
+                            </div>
+
+
+                            <span class="owner-badge">
+                                OWNER
+                            </span>
+
+                        </div>
+
+
+                        <div class="members-empty">
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            <span>
+                                Invite people to share
+                                this space.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 SETTINGS
+            ================================================== -->
+
+                <section class="content-view" id="settings">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span>
+                                SPACE CONTROL
+                            </span>
+
+                            <h2>
+                                Space Settings
+                            </h2>
+
+                            <p>
+                                Manage your space and
+                                its preferences.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-grid">
+
+                        <article class="settings-card">
+
+                            <div class="settings-icon">
+                                <i class="fa-solid fa-pen"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    General
+                                </h3>
+
+                                <p>
+                                    Edit your space name,
+                                    description and type.
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </article>
+
+
+                        <article class="settings-card">
+
+                            <div class="settings-icon">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Privacy
+                                </h3>
+
+                                <p>
+                                    Control who can access
+                                    your space.
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </article>
+
+
+                        <article class="settings-card danger">
+
+                            <div class="settings-icon">
+                                <i class="fa-solid fa-trash"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Delete Space
+                                </h3>
+
+                                <p>
+                                    Permanently remove this
+                                    space and its content.
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     INVITE MODAL
+========================================================= -->
+
+    <div class="modal" id="inviteModal">
+
+        <div class="modal-card">
+
+            <button class="modal-close" id="closeInvite">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="modal-icon">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+            </div>
+
+
+            <span>
+                INVITE PEOPLE
+            </span>
+
+
+            <h2>
+                Bring your people in.
+            </h2>
+
+
+            <p>
+                Share the invite code below with someone
+                you want to add to this space.
+            </p>
+
+
+            <div class="invite-code">
+
+                <strong>
+                    EVER-US-XXXX
+                </strong>
+
+                <button id="copyInvite">
+
+                    <i class="fa-regular fa-copy"></i>
+
+                </button>
+
+            </div>
+
+
+            <button class="primary-button full-button" id="shareInvite">
+
+                <i class="fa-solid fa-share-nodes"></i>
+
+                Share invite
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="{{ url_for('static', filename='js/space_details.js') }}"></script>
+
+</body>
+
+</html>

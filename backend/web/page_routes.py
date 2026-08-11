@@ -43,3 +43,10 @@ def create_space_page():
     return render_template(
         "spaces/create_space.html"
     )
+
+
+@page_bp.route("/spaces/<space_id>")
+def space_details(space_id):
+    return render_template(
+        "spaces/space-details.html"
+    )
