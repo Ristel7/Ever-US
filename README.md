@@ -2150,35 +2150,6 @@ Building everUS provides practical experience with:
 
 ---
 
-# 💼 Resume Description
-
-### everUS — Private Memory Sharing Platform
-
-**Tech Stack:** Python, Flask, MongoDB Atlas, PyMongo, JWT, bcrypt, Cloudinary
-
-> Developed a private memory-sharing platform using Flask and MongoDB that enables users to create shared spaces, manage memberships, and securely collaborate through invitation-based access. Implemented JWT authentication, bcrypt password hashing, protected routes, role-based membership, Space CRUD operations, and invite-code functionality using a modular controller-service architecture.
-
----
-
-# 🎤 Interview Explanation
-
-If an interviewer asks:
-
-## "Tell me about your everUS project."
-
-You can answer:
-
-> everUS is a private digital memory-sharing platform that I am building for couples, families, and friends. The idea is to create a dedicated private Space where users can preserve conversations, photos, journals, important dates, and shared memories.
->
-> I built the backend using Python and Flask, with MongoDB Atlas as the database. I implemented user registration and login, bcrypt password hashing, JWT-based authentication, protected routes, user profiles, and a shared Space system.
->
-> One of the main parts of the project is the Space and Membership architecture. A user can create a Space, become its owner, generate or share an invite code, and allow another user to join as a member. I also implemented CRUD operations for Spaces and duplicate membership prevention.
->
-> For future media functionality, I planned Cloudinary for storing images, videos, and voice notes. The frontend and backend are separated, and the planned deployment architecture uses Vercel for the frontend, Render for the Flask backend, MongoDB Atlas for the database, and Cloudinary for media.
->
-> The project has helped me understand real backend architecture, authentication, authorization, database modeling, API design, and modular application development.
-
----
 
 # 🧠 What Makes everUS Different?
 
@@ -2368,7 +2339,7 @@ See the `LICENSE` file for complete license information.
 
 # 👨‍💻 Author
 
-## Ristel
+## Priyanshu Kumar 
 
 **Computer Science Engineering Student**
 
