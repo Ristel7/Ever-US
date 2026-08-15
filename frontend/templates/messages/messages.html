@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messages | everUS</title>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/messages.css') }}">
+
+</head>
+
+<body>
+
+    <div class="messages-page">
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="messages-sidebar" id="messagesSidebar">
+
+            <div class="sidebar-brand">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="brand">
+
+                    <span class="brand-mark">∞</span>
+
+                    <span>everUS</span>
+
+                </a>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-label">
+                    MAIN
+                </span>
+
+
+                <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
+                    <i class="fa-solid fa-grip"></i>
+                    <span>Dashboard</span>
+                </a>
+
+
+                <a href="#" class="nav-item">
+                    <i class="fa-regular fa-folder"></i>
+                    <span>Spaces</span>
+                </a>
+
+
+                <a href="{{ url_for('pages.memories') }}" class="nav-item">
+                    <i class="fa-regular fa-images"></i>
+                    <span>Memories</span>
+                </a>
+
+
+                <a href="{{ url_for('pages.messages') }}" class="nav-item active">
+                    <i class="fa-regular fa-comments"></i>
+                    <span>Messages</span>
+                    <span class="nav-badge">3</span>
+                </a>
+
+
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-timeline"></i>
+                    <span>Timeline</span>
+                </a>
+
+
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Journal</span>
+                </a>
+
+
+                <div class="nav-divider"></div>
+
+
+                <span class="nav-label">
+                    ACCOUNT
+                </span>
+
+
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>People</span>
+                </a>
+
+
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="back-dashboard">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================================
+         MAIN CHAT AREA
+    ====================================================== -->
+
+        <main class="messages-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="messages-topbar">
+
+                <div class="mobile-brand">
+
+                    <button class="mobile-menu" id="mobileMenu" type="button">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <span>everUS</span>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button class="topbar-icon" type="button">
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot">
+                            2
+                        </span>
+                    </button>
+
+
+                    <div class="user-avatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+             CHAT LAYOUT
+        ================================================== -->
+
+            <section class="chat-layout">
+
+
+                <!-- =============================================
+                 CONVERSATIONS
+            ============================================== -->
+
+                <aside class="conversation-panel">
+
+                    <div class="conversation-header">
+
+                        <div>
+
+                            <span class="panel-kicker">
+                                YOUR CONVERSATIONS
+                            </span>
+
+                            <h1>
+                                Messages
+                            </h1>
+
+                        </div>
+
+
+                        <button class="new-message" id="newMessage" type="button" title="New conversation">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+
+                    </div>
+
+
+                    <!-- SEARCH -->
+
+                    <div class="conversation-search">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input type="search" id="conversationSearch" placeholder="Search conversations...">
+
+                    </div>
+
+
+                    <!-- FILTER -->
+
+                    <div class="conversation-filter">
+
+                        <button class="conversation-filter-btn active" data-filter="all">
+                            All
+                        </button>
+
+                        <button class="conversation-filter-btn" data-filter="unread">
+                            Unread
+                        </button>
+
+                        <button class="conversation-filter-btn" data-filter="favorites">
+                            Favorites
+                        </button>
+
+                    </div>
+
+
+                    <!-- CONVERSATION LIST -->
+
+                    <div class="conversation-list" id="conversationList">
+
+
+                        <!-- Tanu -->
+
+                        <button class="conversation-item active" data-name="Tanu" data-unread="false">
+
+                            <div class="conversation-avatar avatar-purple">
+                                T
+                                <span class="online-dot"></span>
+                            </div>
+
+
+                            <div class="conversation-content">
+
+                                <div class="conversation-top">
+
+                                    <strong>
+                                        Tanu
+                                    </strong>
+
+                                    <time>
+                                        12:42 PM
+                                    </time>
+
+                                </div>
+
+
+                                <div class="conversation-bottom">
+
+                                    <span>
+                                        Hey, are you free tonight? ❤️
+                                    </span>
+
+                                    <i class="fa-regular fa-heart favorite-icon"></i>
+
+                                </div>
+
+                            </div>
+
+                        </button>
+
+
+                        <!-- College Friends -->
+
+                        <button class="conversation-item" data-name="College Friends" data-unread="true">
+
+                            <div class="conversation-avatar avatar-blue">
+                                CF
+                            </div>
+
+
+                            <div class="conversation-content">
+
+                                <div class="conversation-top">
+
+                                    <strong>
+                                        College Friends
+                                    </strong>
+
+                                    <time>
+                                        11:18 AM
+                                    </time>
+
+                                </div>
+
+
+                                <div class="conversation-bottom">
+
+                                    <span>
+                                        Rahul: Check this out 😂
+                                    </span>
+
+                                    <b class="unread-count">
+                                        3
+                                    </b>
+
+                                </div>
+
+                            </div>
+
+                        </button>
+
+
+                        <!-- Family -->
+
+                        <button class="conversation-item" data-name="Family" data-unread="false">
+
+                            <div class="conversation-avatar avatar-pink">
+                                F
+                            </div>
+
+
+                            <div class="conversation-content">
+
+                                <div class="conversation-top">
+
+                                    <strong>
+                                        Family
+                                    </strong>
+
+                                    <time>
+                                        Yesterday
+                                    </time>
+
+                                </div>
+
+
+                                <div class="conversation-bottom">
+
+                                    <span>
+                                        Mom sent a photo
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </button>
+
+
+                        <!-- EverUS Space -->
+
+                        <button class="conversation-item" data-name="Our EverUS Space" data-unread="false">
+
+                            <div class="conversation-avatar avatar-green">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+
+
+                            <div class="conversation-content">
+
+                                <div class="conversation-top">
+
+                                    <strong>
+                                        Our EverUS Space
+                                    </strong>
+
+                                    <time>
+                                        Monday
+                                    </time>
+
+                                </div>
+
+
+                                <div class="conversation-bottom">
+
+                                    <span>
+                                        A memory was added
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </button>
+
+
+                    </div>
+
+
+                    <!-- EMPTY SEARCH -->
+
+                    <div class="conversation-empty" id="conversationEmpty">
+
+                        <i class="fa-regular fa-comments"></i>
+
+                        <p>
+                            No conversations found.
+                        </p>
+
+                    </div>
+
+                </aside>
+
+
+                <!-- =============================================
+                 CHAT
+            ============================================== -->
+
+                <section class="chat-panel">
+
+
+                    <!-- CHAT HEADER -->
+
+                    <header class="chat-header">
+
+                        <div class="chat-person">
+
+                            <button class="mobile-back" id="mobileBack" type="button">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+
+
+                            <div class="chat-avatar avatar-purple">
+
+                                T
+
+                                <span class="online-dot"></span>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2>
+                                    Tanu
+                                </h2>
+
+                                <span class="chat-status">
+                                    <i class="fa-solid fa-circle"></i>
+                                    Online
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chat-actions">
+
+                            <button type="button" title="Search messages">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+
+
+                            <button type="button" title="Call">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+
+
+                            <button type="button" title="More">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+
+                        </div>
+
+                    </header>
+
+
+                    <!-- =================================================
+                     MESSAGES
+                ================================================== -->
+
+                    <div class="chat-messages" id="chatMessages">
+
+
+                        <div class="chat-date">
+                            <span>
+                                Today
+                            </span>
+                        </div>
+
+
+                        <!-- RECEIVED -->
+
+                        <div class="message-row received">
+
+                            <div class="message-avatar avatar-purple">
+                                T
+                            </div>
+
+
+                            <div class="message-group">
+
+                                <div class="message-bubble">
+
+                                    Hey ❤️
+
+                                </div>
+
+
+                                <div class="message-meta">
+                                    12:36 PM
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SENT -->
+
+                        <div class="message-row sent">
+
+                            <div class="message-group">
+
+                                <div class="message-bubble">
+
+                                    Heyyy! What's up?
+
+                                </div>
+
+
+                                <div class="message-meta">
+
+                                    12:37 PM
+
+                                    <i class="fa-solid fa-check-double read"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RECEIVED -->
+
+                        <div class="message-row received">
+
+                            <div class="message-avatar avatar-purple">
+                                T
+                            </div>
+
+
+                            <div class="message-group">
+
+                                <div class="message-bubble">
+
+                                    Just thinking about our trip
+                                    from last month 🥹
+
+                                </div>
+
+
+                                <div class="message-meta">
+                                    12:38 PM
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SENT IMAGE -->
+
+                        <div class="message-row sent">
+
+                            <div class="message-group">
+
+                                <div class="message-image">
+
+                                    <div class="image-placeholder">
+
+                                        <i class="fa-regular fa-image"></i>
+
+                                        <span>
+                                            Memory preview
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="message-meta">
+
+                                    12:39 PM
+
+                                    <i class="fa-solid fa-check-double read"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RECEIVED -->
+
+                        <div class="message-row received">
+
+                            <div class="message-avatar avatar-purple">
+                                T
+                            </div>
+
+
+                            <div class="message-group">
+
+                                <div class="message-bubble">
+
+                                    That day was honestly
+                                    one of my favorites. ❤️
+
+                                </div>
+
+
+                                <div class="message-meta">
+                                    12:41 PM
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TYPING -->
+
+                        <div class="typing-row" id="typingIndicator">
+
+                            <div class="message-avatar avatar-purple">
+                                T
+                            </div>
+
+                            <div class="typing-bubble">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- =================================================
+                     ATTACHMENT PREVIEW
+                ================================================== -->
+
+                    <div class="attachment-preview" id="attachmentPreview">
+
+                        <div class="attachment-info">
+
+                            <i class="fa-solid fa-paperclip"></i>
+
+                            <span id="attachmentName">
+                                file.jpg
+                            </span>
+
+                        </div>
+
+
+                        <button type="button" id="removeAttachment">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- =================================================
+                     MESSAGE COMPOSER
+                ================================================== -->
+
+                    <form class="message-composer" id="messageForm">
+
+                        <button type="button" class="composer-action" id="emojiButton" title="Emoji">
+                            <i class="fa-regular fa-face-smile"></i>
+                        </button>
+
+
+                        <label class="composer-action" for="attachmentInput" title="Attach file">
+
+                            <i class="fa-solid fa-paperclip"></i>
+
+                        </label>
+
+
+                        <input type="file" id="attachmentInput" hidden accept="image/*,video/*,.pdf">
+
+
+                        <input type="text" id="messageInput" placeholder="Write a message..." autocomplete="off">
+
+
+                        <button type="button" class="composer-action" id="voiceButton" title="Voice message">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+
+
+                        <button type="submit" class="send-button" id="sendButton" title="Send message">
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="composer-hint">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Your messages are private.
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================================
+     EMOJI PANEL
+========================================================= -->
+
+    <div class="emoji-panel" id="emojiPanel">
+
+        <button>❤️</button>
+        <button>😂</button>
+        <button>🥹</button>
+        <button>😍</button>
+        <button>😘</button>
+        <button>😭</button>
+        <button>🔥</button>
+        <button>✨</button>
+        <button>🙈</button>
+        <button>😊</button>
+        <button>🥰</button>
+        <button>🤍</button>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/messages.js') }}"></script>
+
+</body>
+
+</html>
