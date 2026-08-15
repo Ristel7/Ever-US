@@ -50,3 +50,10 @@ def space_details(space_id):
     return render_template(
         "spaces/space-details.html"
     )
+
+
+@page_bp.route("/memories")
+def memories():
+    return render_template(
+        "memories/memories.html"
+    )
