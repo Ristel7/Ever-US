@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Memories | everUS</title>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/memories.css') }}">
+
+</head>
+
+
+<body>
+
+    <div class="memories-page">
+
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="memories-sidebar">
+
+            <div class="sidebar-brand">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="brand">
+
+                    <span class="brand-mark">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-label">
+                    MAIN
+                </span>
+
+
+                <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
+
+                    <i class="fa-solid fa-grid-2"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-regular fa-folder"></i>
+
+                    <span>
+                        Spaces
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item active">
+
+                    <i class="fa-regular fa-images"></i>
+
+                    <span>
+                        Memories
+                    </span>
+
+                    <span class="nav-badge">
+                        0
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-regular fa-comments"></i>
+
+                    <span>
+                        Messages
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                    <span>
+                        Timeline
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>
+                        Journal
+                    </span>
+
+                </a>
+
+
+                <div class="nav-divider"></div>
+
+
+                <span class="nav-label">
+                    ACCOUNT
+                </span>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>
+                        People
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="back-dashboard">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+        <main class="memories-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="memories-topbar">
+
+                <div class="mobile-brand">
+
+                    <button class="mobile-menu" id="mobileMenu">
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button class="topbar-icon">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot">
+                            2
+                        </span>
+
+                    </button>
+
+
+                    <div class="user-avatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+            <section class="page-header">
+
+                <div class="header-copy">
+
+                    <span class="eyebrow">
+                        YOUR COLLECTION
+                    </span>
+
+                    <h1>
+                        Memories
+                    </h1>
+
+                    <p>
+                        Keep the moments that matter,
+                        all in one private place.
+                    </p>
+
+                </div>
+
+
+                <button class="upload-button" id="openUpload">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Memory
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =================================================
+             MEMORY TOOLBAR
+        ================================================== -->
+
+            <section class="memory-toolbar">
+
+
+                <!-- FILTERS -->
+
+                <div class="memory-filters">
+
+                    <button class="filter-button active" data-filter="all">
+                        All
+                    </button>
+
+                    <button class="filter-button" data-filter="photos">
+                        <i class="fa-regular fa-image"></i>
+                        Photos
+                    </button>
+
+                    <button class="filter-button" data-filter="videos">
+                        <i class="fa-solid fa-play"></i>
+                        Videos
+                    </button>
+
+                    <button class="filter-button" data-filter="favorites">
+                        <i class="fa-regular fa-heart"></i>
+                        Favorites
+                    </button>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="memory-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="search" id="memorySearch" placeholder="Search memories...">
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+             ALBUMS
+        ================================================== -->
+
+            <section class="albums-section">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span>
+                            ORGANIZE
+                        </span>
+
+                        <h2>
+                            Albums
+                        </h2>
+
+                    </div>
+
+
+                    <button class="view-button">
+
+                        View all
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="albums-grid">
+
+
+                    <!-- ALBUM 1 -->
+
+                    <article class="album-card">
+
+                        <div class="album-cover album-purple">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </div>
+
+                        <div class="album-info">
+
+                            <h3>
+                                Favorites
+                            </h3>
+
+                            <span>
+                                0 memories
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- ALBUM 2 -->
+
+                    <article class="album-card">
+
+                        <div class="album-cover album-blue">
+
+                            <i class="fa-solid fa-plane"></i>
+
+                        </div>
+
+                        <div class="album-info">
+
+                            <h3>
+                                Trips
+                            </h3>
+
+                            <span>
+                                0 memories
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- ALBUM 3 -->
+
+                    <article class="album-card">
+
+                        <div class="album-cover album-pink">
+
+                            <i class="fa-solid fa-cake-candles"></i>
+
+                        </div>
+
+                        <div class="album-info">
+
+                            <h3>
+                                Celebrations
+                            </h3>
+
+                            <span>
+                                0 memories
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- CREATE ALBUM -->
+
+                    <button class="album-card create-album" id="createAlbum">
+
+                        <div class="create-album-icon">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                        </div>
+
+                        <div class="album-info">
+
+                            <h3>
+                                Create album
+                            </h3>
+
+                            <span>
+                                Organize your memories
+                            </span>
+
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+             RECENT MEMORIES
+        ================================================== -->
+
+            <section class="recent-section">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span>
+                            YOUR STORY
+                        </span>
+
+                        <h2>
+                            Recent memories
+                        </h2>
+
+                    </div>
+
+
+                    <div class="view-options">
+
+                        <button class="view-option active" data-view="grid">
+
+                            <i class="fa-solid fa-grip"></i>
+
+                        </button>
+
+
+                        <button class="view-option" data-view="list">
+
+                            <i class="fa-solid fa-list"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- EMPTY STATE -->
+
+                <div class="memory-empty" id="memoryEmpty">
+
+                    <div class="empty-visual">
+
+                        <div class="floating-photo photo-one">
+
+                            <i class="fa-regular fa-image"></i>
+
+                        </div>
+
+
+                        <div class="floating-photo photo-two">
+
+                            <i class="fa-solid fa-play"></i>
+
+                        </div>
+
+
+                        <div class="main-camera">
+
+                            <i class="fa-solid fa-camera-retro"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="empty-kicker">
+                        YOUR FIRST MEMORY
+                    </span>
+
+
+                    <h2>
+                        Nothing here yet.
+                    </h2>
+
+
+                    <p>
+                        Every great story starts with
+                        a single moment. Add your first
+                        photo or video to begin.
+                    </p>
+
+
+                    <button class="empty-upload" id="emptyUpload">
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        Upload your first memory
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- MEMORY GRID -->
+
+                <div class="memory-grid hidden" id="memoryGrid">
+
+                    <!-- Future API memories will appear here -->
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     UPLOAD MODAL
+========================================================= -->
+
+    <div class="upload-modal" id="uploadModal">
+
+        <div class="upload-card">
+
+
+            <button class="modal-close" id="closeUpload">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="modal-header">
+
+                <div class="modal-icon">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                </div>
+
+
+                <span>
+                    ADD MEMORY
+                </span>
+
+
+                <h2>
+                    Save a moment.
+                </h2>
+
+
+                <p>
+                    Upload a photo or video and keep
+                    it safely inside your space.
+                </p>
+
+            </div>
+
+
+
+            <!-- DROPZONE -->
+
+            <label class="dropzone" for="memoryFile" id="dropzone">
+
+                <input type="file" id="memoryFile" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm"
+                    multiple>
+
+
+                <div class="drop-icon">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                </div>
+
+
+                <strong>
+                    Drop your memories here
+                </strong>
+
+
+                <span>
+                    or click to browse
+                </span>
+
+
+                <small>
+                    JPG, PNG, WEBP, MP4 or WEBM
+                </small>
+
+            </label>
+
+
+
+            <!-- FILE PREVIEW -->
+
+            <div class="file-preview" id="filePreview"></div>
+
+
+
+            <!-- MODAL ACTIONS -->
+
+            <div class="modal-actions">
+
+                <button class="cancel-button" id="cancelUpload">
+                    Cancel
+                </button>
+
+
+                <button class="save-button" id="saveMemory" disabled>
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    Save Memory
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="{{ url_for('static', filename='js/memories.js') }}"></script>
+
+</body>
+
+</html>
