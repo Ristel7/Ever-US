@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Timeline | everUS</title>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/timeline.css') }}">
+
+</head>
+
+
+<body>
+
+    <div class="timeline-page">
+
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="timeline-sidebar" id="timelineSidebar">
+
+            <div class="sidebar-brand">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="brand">
+
+                    <span class="brand-mark">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-label">
+                    MAIN
+                </span>
+
+
+                <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
+
+                    <i class="fa-solid fa-grip"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-regular fa-folder"></i>
+
+                    <span>
+                        Spaces
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.memories') }}" class="nav-item">
+
+                    <i class="fa-regular fa-images"></i>
+
+                    <span>
+                        Memories
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.messages') }}" class="nav-item">
+
+                    <i class="fa-regular fa-comments"></i>
+
+                    <span>
+                        Messages
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.timeline') }}" class="nav-item active">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                    <span>
+                        Timeline
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>
+                        Journal
+                    </span>
+
+                </a>
+
+
+                <div class="nav-divider"></div>
+
+
+                <span class="nav-label">
+                    ACCOUNT
+                </span>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>
+                        People
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="back-dashboard">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+        <main class="timeline-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="timeline-topbar">
+
+                <div class="mobile-brand">
+
+                    <button type="button" class="mobile-menu" id="mobileMenu">
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button class="topbar-icon" type="button">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot">
+                            2
+                        </span>
+
+                    </button>
+
+
+                    <div class="user-avatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+            <section class="timeline-header">
+
+                <div class="header-copy">
+
+                    <span class="eyebrow">
+                        YOUR STORY
+                    </span>
+
+                    <h1>
+                        Timeline
+                    </h1>
+
+                    <p>
+                        Every chapter, milestone and moment
+                        that made your story special.
+                    </p>
+
+                </div>
+
+
+                <button type="button" class="add-event-button" id="openEventModal">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Event
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =================================================
+             TIMELINE CONTROLS
+        ================================================== -->
+
+            <section class="timeline-controls">
+
+
+                <div class="year-filter">
+
+                    <button class="year-button active" data-year="all">
+                        All
+                    </button>
+
+                    <button class="year-button" data-year="2026">
+                        2026
+                    </button>
+
+                    <button class="year-button" data-year="2025">
+                        2025
+                    </button>
+
+                    <button class="year-button" data-year="2024">
+                        2024
+                    </button>
+
+                </div>
+
+
+                <div class="timeline-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="search" id="timelineSearch" placeholder="Search timeline...">
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+             TIMELINE CONTENT
+        ================================================== -->
+
+            <section class="timeline-content">
+
+
+                <!-- =============================================
+                 YEAR 2026
+            ============================================== -->
+
+                <div class="timeline-year" data-year="2026">
+
+                    <div class="year-marker">
+
+                        <span>
+                            2026
+                        </span>
+
+                    </div>
+
+
+                    <div class="timeline-line"></div>
+
+
+                    <!-- EVENT -->
+
+                    <article class="timeline-event" data-title="A new beginning" data-year="2026">
+
+                        <div class="event-dot">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+
+
+                        <div class="event-card">
+
+                            <div class="event-top">
+
+                                <div>
+
+                                    <span class="event-date">
+                                        JANUARY 12, 2026
+                                    </span>
+
+                                    <h2>
+                                        A new beginning
+                                    </h2>
+
+                                </div>
+
+
+                                <button class="event-menu" type="button">
+
+                                    <i class="fa-solid fa-ellipsis"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <p class="event-description">
+
+                                Every beautiful story starts
+                                somewhere. This was one of
+                                those moments worth keeping.
+
+                            </p>
+
+
+                            <div class="event-meta">
+
+                                <span>
+
+                                    <i class="fa-solid fa-location-dot"></i>
+
+                                    Bhopal
+
+                                </span>
+
+
+                                <span>
+
+                                    <i class="fa-regular fa-clock"></i>
+
+                                    7:42 PM
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="event-tags">
+
+                                <span class="tag purple">
+                                    Milestone
+                                </span>
+
+                                <span class="tag">
+                                    Important
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- EVENT -->
+
+                    <article class="timeline-event" data-title="Our favorite evening" data-year="2026">
+
+                        <div class="event-dot photo-dot">
+
+                            <i class="fa-regular fa-image"></i>
+
+                        </div>
+
+
+                        <div class="event-card">
+
+                            <div class="event-top">
+
+                                <div>
+
+                                    <span class="event-date">
+                                        FEBRUARY 08, 2026
+                                    </span>
+
+                                    <h2>
+                                        Our favorite evening
+                                    </h2>
+
+                                </div>
+
+
+                                <button class="event-menu" type="button">
+
+                                    <i class="fa-solid fa-ellipsis"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <p class="event-description">
+
+                                A simple evening that somehow
+                                became one of the memories we
+                                keep coming back to.
+
+                            </p>
+
+
+                            <div class="event-photo">
+
+                                <div class="event-photo-placeholder">
+
+                                    <i class="fa-regular fa-images"></i>
+
+                                    <span>
+                                        Memory photo
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="event-meta">
+
+                                <span>
+
+                                    <i class="fa-solid fa-location-dot"></i>
+
+                                    Our favorite place
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="event-tags">
+
+                                <span class="tag pink">
+                                    Memory
+                                </span>
+
+                                <span class="tag">
+                                    Favorite
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+
+                <!-- =============================================
+                 YEAR 2025
+            ============================================== -->
+
+                <div class="timeline-year" data-year="2025">
+
+                    <div class="year-marker">
+
+                        <span>
+                            2025
+                        </span>
+
+                    </div>
+
+
+                    <div class="timeline-line"></div>
+
+
+                    <!-- EVENT -->
+
+                    <article class="timeline-event" data-title="First adventure" data-year="2025">
+
+                        <div class="event-dot blue-dot">
+
+                            <i class="fa-solid fa-plane"></i>
+
+                        </div>
+
+
+                        <div class="event-card">
+
+                            <div class="event-top">
+
+                                <div>
+
+                                    <span class="event-date">
+                                        AUGUST 24, 2025
+                                    </span>
+
+                                    <h2>
+                                        Our first adventure
+                                    </h2>
+
+                                </div>
+
+
+                                <button class="event-menu" type="button">
+
+                                    <i class="fa-solid fa-ellipsis"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <p class="event-description">
+
+                                New places, random pictures,
+                                too many laughs and a memory
+                                we definitely want to keep.
+
+                            </p>
+
+
+                            <div class="event-meta">
+
+                                <span>
+
+                                    <i class="fa-solid fa-location-dot"></i>
+
+                                    Somewhere beautiful
+
+                                </span>
+
+
+                                <span>
+
+                                    <i class="fa-regular fa-clock"></i>
+
+                                    All day
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="event-tags">
+
+                                <span class="tag blue">
+                                    Trip
+                                </span>
+
+                                <span class="tag">
+                                    Adventure
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- EVENT -->
+
+                    <article class="timeline-event" data-title="The beginning" data-year="2025">
+
+                        <div class="event-dot green-dot">
+
+                            <i class="fa-solid fa-sparkles"></i>
+
+                        </div>
+
+
+                        <div class="event-card">
+
+                            <div class="event-top">
+
+                                <div>
+
+                                    <span class="event-date">
+                                        MAY 16, 2025
+                                    </span>
+
+                                    <h2>
+                                        The beginning
+                                    </h2>
+
+                                </div>
+
+
+                                <button class="event-menu" type="button">
+
+                                    <i class="fa-solid fa-ellipsis"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <p class="event-description">
+
+                                The first page of something
+                                that would become much bigger
+                                than we expected.
+
+                            </p>
+
+
+                            <div class="event-meta">
+
+                                <span>
+
+                                    <i class="fa-solid fa-location-dot"></i>
+
+                                    Bhopal
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="event-tags">
+
+                                <span class="tag green">
+                                    Beginning
+                                </span>
+
+                                <span class="tag">
+                                    Special
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 TIMELINE END
+            ================================================== -->
+
+                <div class="timeline-end">
+
+                    <div class="end-icon">
+
+                        <i class="fa-solid fa-infinity"></i>
+
+                    </div>
+
+                    <span>
+                        More chapters are waiting to be written.
+                    </span>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+             NO RESULTS
+        ================================================== -->
+
+            <section class="timeline-empty" id="timelineEmpty">
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                </div>
+
+                <h2>
+                    No moments found
+                </h2>
+
+                <p>
+                    Try another year or search for
+                    something different.
+                </p>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     ADD EVENT MODAL
+========================================================= -->
+
+    <div class="event-modal" id="eventModal">
+
+        <div class="event-modal-card">
+
+
+            <button type="button" class="modal-close" id="closeEventModal">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="modal-header">
+
+                <div class="modal-icon">
+
+                    <i class="fa-solid fa-sparkles"></i>
+
+                </div>
+
+
+                <span>
+                    NEW TIMELINE EVENT
+                </span>
+
+
+                <h2>
+                    Add a moment.
+                </h2>
+
+
+                <p>
+                    Save an important date, milestone
+                    or memory to your story.
+                </p>
+
+            </div>
+
+
+
+            <!-- FORM -->
+
+            <form id="eventForm">
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="eventTitle">
+                            Event title
+                        </label>
+
+                        <input type="text" id="eventTitle" placeholder="e.g. Our first trip" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="eventDate">
+                            Date
+                        </label>
+
+                        <input type="date" id="eventDate" required>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="eventDescription">
+                        Description
+                    </label>
+
+                    <textarea id="eventDescription" rows="4"
+                        placeholder="Tell the story behind this moment..."></textarea>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="eventLocation">
+                            Location
+                        </label>
+
+                        <div class="input-icon">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <input type="text" id="eventLocation" placeholder="Where did it happen?">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="eventCategory">
+                            Category
+                        </label>
+
+                        <select id="eventCategory">
+
+                            <option value="memory">
+                                Memory
+                            </option>
+
+                            <option value="milestone">
+                                Milestone
+                            </option>
+
+                            <option value="trip">
+                                Trip
+                            </option>
+
+                            <option value="celebration">
+                                Celebration
+                            </option>
+
+                            <option value="special">
+                                Special
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button type="button" class="cancel-button" id="cancelEvent">
+                        Cancel
+                    </button>
+
+
+                    <button type="submit" class="save-event">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add to Timeline
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="{{ url_for('static', filename='js/timeline.js') }}"></script>
+
+</body>
+
+</html>

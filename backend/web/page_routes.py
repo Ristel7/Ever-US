@@ -64,3 +64,10 @@ def messages():
     return render_template(
         "messages/messages.html"
     )
+
+
+@page_bp.route("/timeline")
+def timeline():
+    return render_template(
+        "timeline/timeline.html"
+    )
