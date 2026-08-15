@@ -71,3 +71,10 @@ def timeline():
     return render_template(
         "timeline/timeline.html"
     )
+
+
+@page_bp.route("/journal")
+def journal():
+    return render_template(
+        "journal/journal.html"
+    )

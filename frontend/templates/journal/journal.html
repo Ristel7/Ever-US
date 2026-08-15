@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Write, reflect and preserve your thoughts privately with everUS.">
+
+    <title>Journal | everUS</title>
+
+
+    <!-- FAVICON -->
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <!-- JOURNAL CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/journal.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <div class="journal-page">
+
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="journal-sidebar" id="journalSidebar">
+
+            <div class="sidebar-brand">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="brand">
+
+                    <span class="brand-mark">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+
+                <span class="nav-label">
+                    MAIN
+                </span>
+
+
+                <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
+
+                    <i class="fa-solid fa-grip"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-regular fa-folder"></i>
+
+                    <span>
+                        Spaces
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.memories') }}" class="nav-item">
+
+                    <i class="fa-regular fa-images"></i>
+
+                    <span>
+                        Memories
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.messages') }}" class="nav-item">
+
+                    <i class="fa-regular fa-comments"></i>
+
+                    <span>
+                        Messages
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.timeline') }}" class="nav-item">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                    <span>
+                        Timeline
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.journal') }}" class="nav-item active">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>
+                        Journal
+                    </span>
+
+                </a>
+
+
+                <div class="nav-divider"></div>
+
+
+                <span class="nav-label">
+                    ACCOUNT
+                </span>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>
+                        People
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="back-dashboard">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+        <main class="journal-main">
+
+
+            <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+            <header class="journal-topbar">
+
+                <div class="mobile-brand">
+
+                    <button type="button" class="mobile-menu" id="mobileMenu">
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+
+                    <span>
+                        everUS
+                    </span>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button type="button" class="topbar-icon">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot">
+                            2
+                        </span>
+
+                    </button>
+
+
+                    <div class="user-avatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+             HEADER
+        ================================================== -->
+
+            <section class="journal-header">
+
+                <div class="header-copy">
+
+                    <span class="eyebrow">
+                        YOUR THOUGHTS
+                    </span>
+
+
+                    <h1>
+                        Journal
+                    </h1>
+
+
+                    <p>
+                        A quiet place for your thoughts,
+                        feelings and little moments.
+                    </p>
+
+                </div>
+
+
+                <button type="button" class="new-entry-button" id="openJournalModal">
+
+                    <i class="fa-solid fa-pen"></i>
+
+                    New Entry
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =================================================
+             JOURNAL TOOLBAR
+        ================================================== -->
+
+            <section class="journal-toolbar">
+
+
+                <div class="journal-filters">
+
+                    <button type="button" class="journal-filter active" data-filter="all">
+                        All Entries
+                    </button>
+
+
+                    <button type="button" class="journal-filter" data-filter="favorites">
+
+                        <i class="fa-regular fa-heart"></i>
+
+                        Favorites
+
+                    </button>
+
+
+                    <button type="button" class="journal-filter" data-filter="private">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Private
+
+                    </button>
+
+                </div>
+
+
+                <div class="journal-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="search" id="journalSearch" placeholder="Search entries...">
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+             JOURNAL CONTENT
+        ================================================== -->
+
+            <section class="journal-content">
+
+
+                <!-- =================================================
+                 JOURNAL STATS
+            ================================================== -->
+
+                <div class="journal-stats">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon purple">
+
+                            <i class="fa-solid fa-book-open"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Total Entries
+                            </span>
+
+                            <strong>
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon pink">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Favorites
+                            </span>
+
+                            <strong>
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+
+                            <i class="fa-solid fa-fire"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Writing Streak
+                            </span>
+
+                            <strong>
+                                0 days
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Privacy
+                            </span>
+
+                            <strong>
+                                Private
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 FEATURED ENTRY
+            ================================================== -->
+
+                <div class="featured-entry">
+
+                    <div class="featured-content">
+
+                        <div class="featured-label">
+
+                            <i class="fa-solid fa-sparkles"></i>
+
+                            JOURNAL PROMPT
+
+                        </div>
+
+
+                        <h2>
+                            What is one moment
+                            you never want to forget?
+                        </h2>
+
+
+                        <p>
+                            Sometimes the smallest moments
+                            become the memories we carry
+                            forever.
+                        </p>
+
+
+                        <button type="button" class="prompt-button" id="usePrompt">
+
+                            Write about it
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="featured-art">
+
+                        <div class="journal-orbit orbit-one"></div>
+
+                        <div class="journal-orbit orbit-two"></div>
+
+                        <div class="journal-book">
+
+                            <i class="fa-solid fa-book-open"></i>
+
+                        </div>
+
+                        <span class="spark spark-one">
+                            ✦
+                        </span>
+
+                        <span class="spark spark-two">
+                            ✦
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 RECENT ENTRIES
+            ================================================== -->
+
+                <div class="entries-header">
+
+                    <div>
+
+                        <span>
+                            YOUR WRITING
+                        </span>
+
+                        <h2>
+                            Recent entries
+                        </h2>
+
+                    </div>
+
+
+                    <button type="button" class="sort-button" id="sortButton">
+
+                        <i class="fa-solid fa-arrow-down-wide-short"></i>
+
+                        Newest first
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+                <div class="journal-empty" id="journalEmpty">
+
+                    <div class="empty-book">
+
+                        <i class="fa-solid fa-feather-pointed"></i>
+
+                    </div>
+
+
+                    <span class="empty-kicker">
+                        YOUR JOURNAL
+                    </span>
+
+
+                    <h2>
+                        Your story starts here.
+                    </h2>
+
+
+                    <p>
+                        Write down a thought, a feeling,
+                        a memory or simply how your day went.
+                        This space is yours.
+                    </p>
+
+
+                    <button type="button" class="empty-create" id="emptyCreate">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                        Write your first entry
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 ENTRY GRID
+            ================================================== -->
+
+                <div class="entries-grid hidden" id="entriesGrid">
+
+
+                    <!-- Future API entries will appear here -->
+
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     JOURNAL MODAL
+========================================================= -->
+
+    <div class="journal-modal" id="journalModal">
+
+        <div class="journal-modal-card">
+
+
+            <button type="button" class="modal-close" id="closeJournalModal">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header">
+
+                <div class="modal-icon">
+
+                    <i class="fa-solid fa-feather-pointed"></i>
+
+                </div>
+
+
+                <span>
+                    NEW JOURNAL ENTRY
+                </span>
+
+
+                <h2>
+                    Write something.
+                </h2>
+
+
+                <p>
+                    There is no right way to journal.
+                    Just start with what is on your mind.
+                </p>
+
+            </div>
+
+
+
+            <!-- FORM -->
+
+            <form id="journalForm">
+
+
+                <div class="entry-title-group">
+
+                    <input type="text" id="entryTitle" placeholder="Give this entry a title..." maxlength="100"
+                        required>
+
+                </div>
+
+
+                <!-- MOOD -->
+
+                <div class="mood-section">
+
+                    <label>
+                        How are you feeling?
+                    </label>
+
+
+                    <div class="mood-options">
+
+
+                        <button type="button" class="mood-option" data-mood="happy" title="Happy">
+                            😊
+                        </button>
+
+
+                        <button type="button" class="mood-option" data-mood="loved" title="Loved">
+                            🥰
+                        </button>
+
+
+                        <button type="button" class="mood-option" data-mood="calm" title="Calm">
+                            😌
+                        </button>
+
+
+                        <button type="button" class="mood-option" data-mood="sad" title="Sad">
+                            😔
+                        </button>
+
+
+                        <button type="button" class="mood-option" data-mood="excited" title="Excited">
+                            🤩
+                        </button>
+
+
+                        <button type="button" class="mood-option" data-mood="thoughtful" title="Thoughtful">
+                            🥹
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+
+                <div class="entry-editor">
+
+                    <textarea id="entryContent" placeholder="Start writing your thoughts..." maxlength="5000"
+                        required></textarea>
+
+
+                    <div class="editor-footer">
+
+                        <span>
+                            <i class="fa-solid fa-lock"></i>
+
+                            Private entry
+
+                        </span>
+
+
+                        <span id="wordCounter">
+                            0 words · 0 characters
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TAGS -->
+
+                <div class="tag-section">
+
+                    <label>
+                        Add tags
+                    </label>
+
+
+                    <input type="text" id="entryTags" placeholder="e.g. memories, travel, thoughts">
+
+                </div>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="modal-actions">
+
+                    <button type="button" class="cancel-button" id="cancelJournal">
+                        Cancel
+                    </button>
+
+
+                    <button type="submit" class="save-entry" id="saveEntry">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Save Entry
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     ENTRY READER
+========================================================= -->
+
+    <div class="reader-modal" id="readerModal">
+
+        <div class="reader-card">
+
+            <button type="button" class="reader-close" id="closeReader">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="reader-top">
+
+                <span id="readerDate">
+                    TODAY
+                </span>
+
+
+                <span id="readerMood">
+                    🥰
+                </span>
+
+            </div>
+
+
+            <h2 id="readerTitle">
+                Journal Entry
+            </h2>
+
+
+            <div class="reader-content" id="readerContent"></div>
+
+
+            <div class="reader-bottom">
+
+                <span>
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Private
+
+                </span>
+
+
+                <button type="button" id="readerFavorite">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                    Favorite
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="{{ url_for('static', filename='js/journal.js') }}"></script>
+
+</body>
+
+</html>
