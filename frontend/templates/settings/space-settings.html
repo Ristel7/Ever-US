@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Manage your everUS space settings.">
+
+    <title>Space Settings | everUS</title>
+
+
+    <!-- Favicon -->
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/space-settings.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <div class="settings-page">
+
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="settings-sidebar" id="settingsSidebar">
+
+            <div class="sidebar-brand">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="brand">
+
+                    <span class="brand-mark">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-label">
+                    MAIN
+                </span>
+
+
+                <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
+
+                    <i class="fa-solid fa-grip"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-regular fa-folder"></i>
+
+                    <span>
+                        Spaces
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.memories') }}" class="nav-item">
+
+                    <i class="fa-regular fa-images"></i>
+
+                    <span>
+                        Memories
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.messages') }}" class="nav-item">
+
+                    <i class="fa-regular fa-comments"></i>
+
+                    <span>
+                        Messages
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.timeline') }}" class="nav-item">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                    <span>
+                        Timeline
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.journal') }}" class="nav-item">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>
+                        Journal
+                    </span>
+
+                </a>
+
+
+                <div class="nav-divider"></div>
+
+
+                <span class="nav-label">
+                    ACCOUNT
+                </span>
+
+
+                <a href="{{ url_for('pages.members') }}" class="nav-item">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>
+                        People
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.space_settings') }}" class="nav-item active">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="back-dashboard">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+        <main class="settings-main">
+
+
+            <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+            <header class="settings-topbar">
+
+                <div class="mobile-brand">
+
+                    <button type="button" class="mobile-menu" id="mobileMenu">
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+
+                    <span>
+                        everUS
+                    </span>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button type="button" class="topbar-icon">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot">
+                            2
+                        </span>
+
+                    </button>
+
+
+                    <div class="user-avatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+             HEADER
+        ================================================== -->
+
+            <section class="settings-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        SPACE MANAGEMENT
+                    </span>
+
+
+                    <h1>
+                        Space Settings
+                    </h1>
+
+
+                    <p>
+                        Manage your space, privacy and
+                        member permissions.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+             SETTINGS LAYOUT
+        ================================================== -->
+
+            <section class="settings-layout">
+
+
+                <!-- SETTINGS NAV -->
+
+                <aside class="settings-menu">
+
+                    <button type="button" class="settings-menu-item active" data-section="general">
+
+                        <i class="fa-solid fa-sliders"></i>
+
+                        <span>
+
+                            <strong>
+                                General
+                            </strong>
+
+                            <small>
+                                Space information
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                    <button type="button" class="settings-menu-item" data-section="privacy">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <span>
+
+                            <strong>
+                                Privacy
+                            </strong>
+
+                            <small>
+                                Access & security
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                    <button type="button" class="settings-menu-item" data-section="notifications">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span>
+
+                            <strong>
+                                Notifications
+                            </strong>
+
+                            <small>
+                                Stay updated
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                    <button type="button" class="settings-menu-item" data-section="danger">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <span>
+
+                            <strong>
+                                Danger Zone
+                            </strong>
+
+                            <small>
+                                Irreversible actions
+                            </small>
+
+                        </span>
+
+                    </button>
+
+                </aside>
+
+
+
+                <!-- =================================================
+                 SETTINGS CONTENT
+            ================================================== -->
+
+                <div class="settings-content">
+
+
+                    <!-- =================================================
+                     GENERAL
+                ================================================== -->
+
+                    <section class="settings-section active" id="general">
+
+                        <div class="section-title">
+
+                            <span class="section-icon purple">
+
+                                <i class="fa-solid fa-sliders"></i>
+
+                            </span>
+
+
+                            <div>
+
+                                <h2>
+                                    General
+                                </h2>
+
+                                <p>
+                                    Update the basic information
+                                    about your space.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SPACE PROFILE -->
+
+                        <div class="profile-card">
+
+                            <div class="space-profile-icon">
+
+                                <i class="fa-solid fa-heart"></i>
+
+                            </div>
+
+
+                            <div class="profile-copy">
+
+                                <span>
+                                    SPACE PROFILE
+                                </span>
+
+                                <h3>
+                                    Priyanshu ❤️ Tanu
+                                </h3>
+
+                                <p>
+                                    Couple Space
+                                </p>
+
+                            </div>
+
+
+                            <button type="button" class="change-icon" id="changeSpaceIcon">
+
+                                <i class="fa-solid fa-camera"></i>
+
+                                Change
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- FORM -->
+
+                        <form id="generalForm" class="settings-form">
+
+                            <div class="form-group">
+
+                                <label for="spaceName">
+                                    Space Name
+                                </label>
+
+                                <input type="text" id="spaceName" value="Priyanshu ❤️ Tanu" maxlength="60">
+
+                                <small>
+                                    Give your space a name
+                                    that means something to you.
+                                </small>
+
+                            </div>
+
+
+                            <div class="form-row">
+
+                                <div class="form-group">
+
+                                    <label for="spaceType">
+                                        Space Type
+                                    </label>
+
+                                    <select id="spaceType">
+
+                                        <option value="couple" selected>
+                                            Couple
+                                        </option>
+
+                                        <option value="friends">
+                                            Friends
+                                        </option>
+
+                                        <option value="family">
+                                            Family
+                                        </option>
+
+                                        <option value="private">
+                                            Private
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="spaceCreated">
+                                        Created
+                                    </label>
+
+                                    <input type="text" id="spaceCreated" value="Today" disabled>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="spaceDescription">
+                                    Description
+                                </label>
+
+                                <textarea id="spaceDescription" maxlength="300"
+                                    placeholder="Tell something about this space...">A private place for our memories, conversations and moments.</textarea>
+
+                                <small id="descriptionCounter">
+                                    75 / 300 characters
+                                </small>
+
+                            </div>
+
+
+                            <div class="form-actions">
+
+                                <button type="button" class="reset-button" id="resetGeneral">
+                                    Reset
+                                </button>
+
+
+                                <button type="submit" class="save-button">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                    Save Changes
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </section>
+
+
+
+                    <!-- =================================================
+                     PRIVACY
+                ================================================== -->
+
+                    <section class="settings-section" id="privacy">
+
+                        <div class="section-title">
+
+                            <span class="section-icon green">
+
+                                <i class="fa-solid fa-shield-halved"></i>
+
+                            </span>
+
+
+                            <div>
+
+                                <h2>
+                                    Privacy & Access
+                                </h2>
+
+                                <p>
+                                    Control who can access
+                                    your space.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="privacy-status">
+
+                            <div class="privacy-shield">
+
+                                <i class="fa-solid fa-lock"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    CURRENT PRIVACY
+                                </span>
+
+                                <h3>
+                                    Private Space
+                                </h3>
+
+                                <p>
+                                    Only invited members can
+                                    access this space.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="setting-list">
+
+
+                            <div class="setting-row">
+
+                                <div class="setting-row-icon purple">
+
+                                    <i class="fa-solid fa-user-plus"></i>
+
+                                </div>
+
+
+                                <div class="setting-copy">
+
+                                    <strong>
+                                        Allow members to invite
+                                    </strong>
+
+                                    <span>
+                                        Members can invite other
+                                        people to this space.
+                                    </span>
+
+                                </div>
+
+
+                                <label class="toggle">
+
+                                    <input type="checkbox" id="memberInvites" checked>
+
+                                    <span class="toggle-slider"></span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <div class="setting-row">
+
+                                <div class="setting-row-icon blue">
+
+                                    <i class="fa-solid fa-link"></i>
+
+                                </div>
+
+
+                                <div class="setting-copy">
+
+                                    <strong>
+                                        Invite link
+                                    </strong>
+
+                                    <span>
+                                        Allow people with the
+                                        invite link to request access.
+                                    </span>
+
+                                </div>
+
+
+                                <label class="toggle">
+
+                                    <input type="checkbox" id="inviteLink" checked>
+
+                                    <span class="toggle-slider"></span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <div class="setting-row">
+
+                                <div class="setting-row-icon pink">
+
+                                    <i class="fa-solid fa-image"></i>
+
+                                </div>
+
+
+                                <div class="setting-copy">
+
+                                    <strong>
+                                        Member content visibility
+                                    </strong>
+
+                                    <span>
+                                        Members can see content
+                                        shared inside the space.
+                                    </span>
+
+                                </div>
+
+
+                                <label class="toggle">
+
+                                    <input type="checkbox" id="contentVisibility" checked>
+
+                                    <span class="toggle-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="privacy-note">
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            <span>
+                                Privacy changes affect everyone
+                                in this space.
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button type="button" class="save-button" id="savePrivacy">
+
+                                <i class="fa-solid fa-check"></i>
+
+                                Save Privacy Settings
+
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =================================================
+                     NOTIFICATIONS
+                ================================================== -->
+
+                    <section class="settings-section" id="notifications">
+
+                        <div class="section-title">
+
+                            <span class="section-icon pink">
+
+                                <i class="fa-regular fa-bell"></i>
+
+                            </span>
+
+
+                            <div>
+
+                                <h2>
+                                    Notifications
+                                </h2>
+
+                                <p>
+                                    Choose what you want to
+                                    be notified about.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="setting-list">
+
+
+                            <div class="setting-row">
+
+                                <div class="setting-row-icon purple">
+
+                                    <i class="fa-regular fa-comments"></i>
+
+                                </div>
+
+
+                                <div class="setting-copy">
+
+                                    <strong>
+                                        New messages
+                                    </strong>
+
+                                    <span>
+                                        Get notified when someone
+                                        sends a message.
+                                    </span>
+
+                                </div>
+
+
+                                <label class="toggle">
+
+                                    <input type="checkbox" checked>
+
+                                    <span class="toggle-slider"></span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <div class="setting-row">
+
+                                <div class="setting-row-icon pink">
+
+                                    <i class="fa-regular fa-images"></i>
+
+                                </div>
+
+
+                                <div class="setting-copy">
+
+                                    <strong>
+                                        New memories
+                                    </strong>
+
+                                    <span>
+                                        Get notified when a new
+                                        memory is added.
+                                    </span>
+
+                                </div>
+
+
+                                <label class="toggle">
+
+                                    <input type="checkbox" checked>
+
+                                    <span class="toggle-slider"></span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <div class="setting-row">
+
+                                <div class="setting-row-icon green">
+
+                                    <i class="fa-solid fa-user-plus"></i>
+
+                                </div>
+
+
+                                <div class="setting-copy">
+
+                                    <strong>
+                                        Member activity
+                                    </strong>
+
+                                    <span>
+                                        Get notified about new
+                                        members and invitations.
+                                    </span>
+
+                                </div>
+
+
+                                <label class="toggle">
+
+                                    <input type="checkbox" checked>
+
+                                    <span class="toggle-slider"></span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <div class="setting-row">
+
+                                <div class="setting-row-icon blue">
+
+                                    <i class="fa-solid fa-timeline"></i>
+
+                                </div>
+
+
+                                <div class="setting-copy">
+
+                                    <strong>
+                                        Timeline updates
+                                    </strong>
+
+                                    <span>
+                                        Get notified when important
+                                        moments are added.
+                                    </span>
+
+                                </div>
+
+
+                                <label class="toggle">
+
+                                    <input type="checkbox">
+
+                                    <span class="toggle-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button type="button" class="save-button" id="saveNotifications">
+
+                                <i class="fa-solid fa-check"></i>
+
+                                Save Notification Settings
+
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =================================================
+                     DANGER ZONE
+                ================================================== -->
+
+                    <section class="settings-section" id="danger">
+
+                        <div class="section-title">
+
+                            <span class="section-icon red">
+
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            </span>
+
+
+                            <div>
+
+                                <h2>
+                                    Danger Zone
+                                </h2>
+
+                                <p>
+                                    Actions here can permanently
+                                    affect your space.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="danger-card">
+
+
+                            <div class="danger-row">
+
+                                <div>
+
+                                    <h3>
+                                        Leave this space
+                                    </h3>
+
+                                    <p>
+                                        You will no longer have
+                                        access to this space or
+                                        its content.
+                                    </p>
+
+                                </div>
+
+
+                                <button type="button" class="danger-outline" id="leaveSpace">
+
+                                    Leave Space
+
+                                </button>
+
+                            </div>
+
+
+
+                            <div class="danger-divider"></div>
+
+
+
+                            <div class="danger-row">
+
+                                <div>
+
+                                    <h3>
+                                        Delete this space
+                                    </h3>
+
+                                    <p>
+                                        Permanently delete this
+                                        space and all of its
+                                        memories, messages and data.
+                                    </p>
+
+                                </div>
+
+
+                                <button type="button" class="delete-button" id="deleteSpace">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                    Delete Space
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="danger-warning">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            <div>
+
+                                <strong>
+                                    Be careful
+                                </strong>
+
+                                <p>
+                                    Deleted space data cannot
+                                    be recovered.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     CONFIRMATION MODAL
+========================================================= -->
+
+    <div class="confirm-modal" id="confirmModal">
+
+        <div class="confirm-card">
+
+            <div class="confirm-icon" id="confirmIcon">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+            </div>
+
+
+            <h2 id="confirmTitle">
+                Are you sure?
+            </h2>
+
+
+            <p id="confirmMessage">
+                This action cannot be undone.
+            </p>
+
+
+            <div class="confirm-actions">
+
+                <button type="button" class="confirm-cancel" id="confirmCancel">
+                    Cancel
+                </button>
+
+
+                <button type="button" class="confirm-danger" id="confirmAction">
+                    Continue
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="{{ url_for('static', filename='js/space-settings.js') }}"></script>
+
+</body>
+
+</html>

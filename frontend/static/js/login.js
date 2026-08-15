@@ -7,9 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // ELEMENTS
     // =====================================================
 
-    const loginForm = document.getElementById("loginForm");
+    const loginForm =
+        document.getElementById("loginForm");
 
-    const emailInput = document.getElementById("email");
+    const emailInput =
+        document.getElementById("email");
 
     const passwordInput =
         document.getElementById("password");
@@ -25,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // CHECK FORM
+    // CHECK LOGIN FORM
     // =====================================================
 
     if (!loginForm) {
@@ -39,10 +41,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
+    // CHECK IF ALREADY LOGGED IN
+    // =====================================================
+
+    const existingToken =
+        localStorage.getItem("access_token");
+
+
+    if (existingToken) {
+
+        console.log(
+            "Existing authentication token found."
+        );
+
+        // Don't automatically redirect for now.
+        // This makes testing easier.
+
+    }
+
+
+    // =====================================================
     // PASSWORD SHOW / HIDE
     // =====================================================
 
-    if (passwordToggle) {
+    if (
+        passwordToggle &&
+        passwordInput
+    ) {
 
         passwordToggle.addEventListener(
             "click",
@@ -90,13 +115,21 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        message.textContent = text;
+
+        message.textContent =
+            text;
+
 
         message.className =
             "form-message";
 
+
         if (type) {
-            message.classList.add(type);
+
+            message.classList.add(
+                type
+            );
+
         }
 
     }
@@ -118,9 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            // -------------------------------------------------
-            // GET VALUES
-            // -------------------------------------------------
+            // =================================================
+            // GET FORM VALUES
+            // =================================================
 
             const email =
                 emailInput.value.trim();
@@ -129,16 +162,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 passwordInput.value;
 
 
-            // -------------------------------------------------
-            // CLEAR OLD MESSAGE
-            // -------------------------------------------------
+            // =================================================
+            // CLEAR MESSAGE
+            // =================================================
 
             showMessage("");
 
 
-            // -------------------------------------------------
+            // =================================================
             // VALIDATION
-            // -------------------------------------------------
+            // =================================================
 
             if (!email) {
 
@@ -179,18 +212,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            // -------------------------------------------------
+            // =================================================
             // LOADING STATE
-            // -------------------------------------------------
+            // =================================================
 
             const originalButtonHTML =
                 loginButton.innerHTML;
 
 
-            loginButton.disabled = true;
+            loginButton.disabled =
+                true;
 
 
             loginButton.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
                 <span>Signing in...</span>
             `;
 
@@ -231,12 +266,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                // -------------------------------------------------
-                // READ RESPONSE
-                // -------------------------------------------------
+                // =================================================
+                // READ RESPONSE SAFELY
+                // =================================================
 
-                const result =
-                    await response.json();
+                let result;
+
+
+                try {
+
+                    result =
+                        await response.json();
+
+                } catch (jsonError) {
+
+                    console.error(
+                        "Invalid JSON response:",
+                        jsonError
+                    );
+
+
+                    showMessage(
+                        "The server returned an invalid response.",
+                        "error"
+                    );
+
+                    return;
+                }
 
 
                 console.log(
@@ -260,12 +316,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         "error"
                     );
 
+                    console.warn(
+                        "Login failed:",
+                        result.message
+                    );
+
                     return;
                 }
 
 
                 // =================================================
-                // CHECK TOKEN
+                // CHECK JWT TOKEN
                 // =================================================
 
                 if (!result.token) {
@@ -273,6 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.error(
                         "Login successful but no token was returned."
                     );
+
 
                     showMessage(
                         "Login failed: authentication token was not received.",
@@ -284,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 // =================================================
-                // SAVE JWT TOKEN
+                // SAVE JWT
                 // =================================================
 
                 localStorage.setItem(
@@ -293,8 +355,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
+                console.log(
+                    "JWT token saved successfully."
+                );
+
+
                 // =================================================
-                // SAVE USER DATA
+                // SAVE USER
                 // =================================================
 
                 if (result.user) {
@@ -306,22 +373,27 @@ document.addEventListener("DOMContentLoaded", () => {
                         )
                     );
 
+
+                    console.log(
+                        "User data saved:",
+                        result.user
+                    );
+
                 }
 
 
-                console.log(
-                    "JWT token saved successfully"
-                );
+                // =================================================
+                // SAVE LOGIN STATE
+                // =================================================
 
-
-                console.log(
-                    "User:",
-                    result.user
+                localStorage.setItem(
+                    "is_logged_in",
+                    "true"
                 );
 
 
                 // =================================================
-                // SUCCESS MESSAGE
+                // SUCCESS
                 // =================================================
 
                 showMessage(
@@ -330,8 +402,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
+                console.log(
+                    "Authentication completed successfully."
+                );
+
+
                 // =================================================
-                // REDIRECT TO DASHBOARD
+                // REDIRECT
                 // =================================================
 
                 setTimeout(
@@ -354,7 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
             catch (error) {
 
                 console.error(
-                    "Login error:",
+                    "Login request failed:",
                     error
                 );
 

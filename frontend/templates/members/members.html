@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Manage your everUS space members and invitations.">
+
+    <title>People | everUS</title>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/members.css') }}">
+
+</head>
+
+<body>
+
+    <div class="members-page">
+
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="members-sidebar" id="membersSidebar">
+
+            <div class="sidebar-brand">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="brand">
+
+                    <span class="brand-mark">
+                        ∞
+                    </span>
+
+                    <span>
+                        everUS
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-label">
+                    MAIN
+                </span>
+
+
+                <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
+                    <i class="fa-solid fa-grip"></i>
+                    <span>Dashboard</span>
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-regular fa-folder"></i>
+
+                    <span>Spaces</span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.memories') }}" class="nav-item">
+
+                    <i class="fa-regular fa-images"></i>
+
+                    <span>Memories</span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.messages') }}" class="nav-item">
+
+                    <i class="fa-regular fa-comments"></i>
+
+                    <span>Messages</span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.timeline') }}" class="nav-item">
+
+                    <i class="fa-solid fa-timeline"></i>
+
+                    <span>Timeline</span>
+
+                </a>
+
+
+                <a href="{{ url_for('pages.journal') }}" class="nav-item">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>Journal</span>
+
+                </a>
+
+
+                <div class="nav-divider"></div>
+
+
+                <span class="nav-label">
+                    ACCOUNT
+                </span>
+
+
+                <a href="{{ url_for('pages.members') }}" class="nav-item active">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>People</span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="{{ url_for('pages.dashboard') }}" class="back-dashboard">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+        <main class="members-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="members-topbar">
+
+                <div class="mobile-brand">
+
+                    <button type="button" class="mobile-menu" id="mobileMenu">
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+                    <span>everUS</span>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button type="button" class="topbar-icon">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot">
+                            2
+                        </span>
+
+                    </button>
+
+
+                    <div class="user-avatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
+
+            <section class="members-header">
+
+                <div class="header-copy">
+
+                    <span class="eyebrow">
+                        YOUR SPACE
+                    </span>
+
+                    <h1>
+                        People
+                    </h1>
+
+                    <p>
+                        Invite the people who make your
+                        memories worth keeping.
+                    </p>
+
+                </div>
+
+
+                <button type="button" class="invite-button" id="openInviteModal">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Invite Someone
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =====================================================
+             SPACE CARD
+        ====================================================== -->
+
+            <section class="members-content">
+
+
+                <div class="space-banner">
+
+                    <div class="space-info">
+
+                        <div class="space-avatar">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+
+
+                        <div>
+
+                            <span class="space-label">
+                                CURRENT SPACE
+                            </span>
+
+                            <h2>
+                                Priyanshu ❤️ Tanu
+                            </h2>
+
+                            <p>
+                                Couple Space
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="space-status">
+
+                        <span class="status-dot"></span>
+
+                        Private Space
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 STATS
+            ================================================== -->
+
+                <div class="member-stats">
+
+                    <div class="member-stat">
+
+                        <div class="stat-icon purple">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Members
+                            </span>
+
+                            <strong id="memberCount">
+                                2
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="member-stat">
+
+                        <div class="stat-icon pink">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Invitations
+                            </span>
+
+                            <strong>
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="member-stat">
+
+                        <div class="stat-icon green">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Privacy
+                            </span>
+
+                            <strong>
+                                Private
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 INVITE CARD
+            ================================================== -->
+
+                <section class="invite-card">
+
+                    <div class="invite-copy">
+
+                        <div class="invite-icon">
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="invite-kicker">
+                                INVITE TO YOUR SPACE
+                            </span>
+
+                            <h2>
+                                Bring someone into your story.
+                            </h2>
+
+                            <p>
+                                Share your invite code with someone
+                                you trust and let them join this space.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="invite-code-area">
+
+                        <span>
+                            YOUR INVITE CODE
+                        </span>
+
+
+                        <div class="invite-code-row">
+
+                            <strong id="inviteCode">
+                                EVUS-7K29X
+                            </strong>
+
+
+                            <button type="button" id="copyInvite" class="copy-button" title="Copy invite code">
+
+                                <i class="fa-regular fa-copy"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <button type="button" class="invite-main-button" id="inviteMainButton">
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        Invite
+
+                    </button>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 MEMBERS HEADER
+            ================================================== -->
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span>
+                            SPACE MEMBERS
+                        </span>
+
+                        <h2>
+                            Everyone here
+                        </h2>
+
+                    </div>
+
+
+                    <div class="member-search">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input type="search" id="memberSearch" placeholder="Search members...">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 MEMBERS LIST
+            ================================================== -->
+
+                <section class="members-list" id="membersList">
+
+
+                    <!-- MEMBER -->
+
+                    <article class="member-card" data-name="Priyanshu Kumar">
+
+                        <div class="member-left">
+
+                            <div class="member-avatar purple-avatar">
+                                P
+                            </div>
+
+
+                            <div class="member-details">
+
+                                <div class="member-name-row">
+
+                                    <h3>
+                                        Priyanshu Kumar
+                                    </h3>
+
+                                    <span class="owner-badge">
+                                        Owner
+                                    </span>
+
+                                </div>
+
+
+                                <p>
+                                    priyanshu@example.com
+                                </p>
+
+
+                                <span class="member-active">
+
+                                    <span></span>
+
+                                    Active now
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="member-actions">
+
+                            <span class="joined-date">
+                                Joined today
+                            </span>
+
+
+                            <button type="button" class="member-menu" data-member="Priyanshu Kumar">
+
+                                <i class="fa-solid fa-ellipsis"></i>
+
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- MEMBER -->
+
+                    <article class="member-card" data-name="Tanu">
+
+                        <div class="member-left">
+
+                            <div class="member-avatar pink-avatar">
+                                T
+                            </div>
+
+
+                            <div class="member-details">
+
+                                <div class="member-name-row">
+
+                                    <h3>
+                                        Tanu
+                                    </h3>
+
+                                    <span class="member-badge">
+                                        Member
+                                    </span>
+
+                                </div>
+
+
+                                <p>
+                                    tanu@example.com
+                                </p>
+
+
+                                <span class="member-offline">
+
+                                    <span></span>
+
+                                    Offline
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="member-actions">
+
+                            <span class="joined-date">
+                                Joined today
+                            </span>
+
+
+                            <button type="button" class="member-menu" data-member="Tanu">
+
+                                <i class="fa-solid fa-ellipsis"></i>
+
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- EMPTY SEARCH -->
+
+                    <div class="member-search-empty" id="memberSearchEmpty">
+
+                        <i class="fa-solid fa-user-slash"></i>
+
+                        <h3>
+                            No member found
+                        </h3>
+
+                        <p>
+                            Try searching with a different name.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 PRIVACY NOTE
+            ================================================== -->
+
+                <div class="privacy-note">
+
+                    <div class="privacy-note-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Your space is private.
+                        </strong>
+
+                        <p>
+                            Only members you invite can access
+                            the memories, conversations and
+                            content inside this space.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     INVITE MODAL
+========================================================= -->
+
+    <div class="invite-modal" id="inviteModal">
+
+        <div class="invite-modal-card">
+
+
+            <button type="button" class="modal-close" id="closeInviteModal">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="modal-icon">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+            </div>
+
+
+            <span class="modal-kicker">
+                INVITE SOMEONE
+            </span>
+
+
+            <h2>
+                Invite them to your space.
+            </h2>
+
+
+            <p>
+                Share the invite code or send an
+                invitation directly.
+            </p>
+
+
+
+            <!-- CODE -->
+
+            <div class="modal-code-box">
+
+                <span>
+                    INVITE CODE
+                </span>
+
+
+                <div>
+
+                    <strong>
+                        EVUS-7K29X
+                    </strong>
+
+
+                    <button type="button" id="modalCopyCode">
+
+                        <i class="fa-regular fa-copy"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <form id="inviteForm">
+
+                <label for="inviteEmail">
+                    Email address
+                </label>
+
+
+                <div class="invite-input">
+
+                    <i class="fa-regular fa-envelope"></i>
+
+                    <input type="email" id="inviteEmail" placeholder="friend@example.com">
+
+                </div>
+
+
+                <button type="submit" class="send-invite">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Send Invitation
+
+                </button>
+
+            </form>
+
+
+            <div class="or-divider">
+
+                <span>
+                    OR
+                </span>
+
+            </div>
+
+
+            <button type="button" class="copy-link-button" id="copyInviteLink">
+
+                <i class="fa-solid fa-link"></i>
+
+                Copy Invite Link
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     MEMBER MENU
+========================================================= -->
+
+    <div class="member-action-menu" id="memberActionMenu">
+
+        <button type="button" id="viewMember">
+
+            <i class="fa-regular fa-user"></i>
+
+            View Profile
+
+        </button>
+
+
+        <button type="button" id="messageMember">
+
+            <i class="fa-regular fa-message"></i>
+
+            Message
+
+        </button>
+
+
+        <button type="button" class="danger" id="removeMember">
+
+            <i class="fa-solid fa-user-minus"></i>
+
+            Remove Member
+
+        </button>
+
+    </div>
+
+
+
+    <script src="{{ url_for('static', filename='js/members.js') }}"></script>
+
+</body>
+
+</html>

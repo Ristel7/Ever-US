@@ -78,3 +78,17 @@ def journal():
     return render_template(
         "journal/journal.html"
     )
+
+
+@page_bp.route("/members")
+def members():
+    return render_template(
+        "members/members.html"
+    )
+
+
+@page_bp.route("/space-settings")
+def space_settings():
+    return render_template(
+        "settings/space-settings.html"
+    )
