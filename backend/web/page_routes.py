@@ -57,3 +57,10 @@ def memories():
     return render_template(
         "memories/memories.html"
     )
+
+
+@page_bp.route("/messages")
+def messages():
+    return render_template(
+        "messages/messages.html"
+    )
