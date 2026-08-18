@@ -199,7 +199,7 @@ Example:
              ┌───────────┴───────────┐
              │                       │
              ▼                       ▼
-       Priyanshu ❤️ Tanu       College Friends
+       Person 1 ❤️ Person 2       College Friends
              │                       │
              ▼                       ▼
           Couple                    Friends
@@ -238,7 +238,7 @@ Example:
        ┌─────────────┴─────────────┐
        │                           │
        ▼                           ▼
-Priyanshu ❤️ Tanu             College Friends
+Person 1 ❤️ Person 2             College Friends
        │                           │
        ▼                           ▼
     Couple                       Friends
@@ -573,7 +573,7 @@ Example:
 ```json
 {
     "_id": "...",
-    "name": "Priyanshu ❤️ Tanu",
+    "name": "Person 1 ❤️ Person 2",
     "type": "couple",
     "owner_id": "..."
 }
