@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 () => {
 
                     location.href =
-                        `/space-details/${encodeURIComponent(spaceId)}`;
+                        `/spaces/${encodeURIComponent(spaceId)}`;
 
                 }
             );
