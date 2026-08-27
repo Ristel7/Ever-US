@@ -1,158 +1,301 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // =====================================================
-    // ELEMENTS
-    // =====================================================
+    const token = localStorage.getItem("access_token");
 
-    const navItems =
-        document.querySelectorAll(
-            ".space-nav-item"
-        );
+    if (!token) {
+        window.location.href = "/login";
+        return;
+    }
 
-    const contentTabs =
-        document.querySelectorAll(
-            ".content-tab"
-        );
+    const navItems = document.querySelectorAll(".space-nav-item");
+    const contentTabs = document.querySelectorAll(".content-tab");
+    const contentViews = document.querySelectorAll(".content-view");
+    const openTabButtons = document.querySelectorAll("[data-open-tab]");
 
-    const contentViews =
-        document.querySelectorAll(
-            ".content-view"
-        );
+    const spaceName = document.getElementById("spaceName");
+    const spaceDescription = document.getElementById("spaceDescription");
+    const memberCount = document.getElementById("memberCount");
+    const spaceCover = document.getElementById("spaceCover");
 
-    const openTabButtons =
-        document.querySelectorAll(
-            "[data-open-tab]"
-        );
+    const urlParts = window.location.pathname.split("/").filter(Boolean);
+    const spaceId = urlParts[urlParts.length - 1];
 
+    if (!spaceId || spaceId === "space-details") {
+        console.error("Space ID was not found in the URL.");
+        return;
+    }
 
-    // =====================================================
-    // TAB FUNCTION
-    // =====================================================
+    async function api(url, options = {}) {
+
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                ...(options.headers || {}),
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status === 401) {
+            localStorage.clear();
+            window.location.href = "/login";
+            return null;
+        }
+
+        return response;
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
 
     function openTab(tabName) {
 
-        // Sidebar navigation
-        navItems.forEach((item) => {
-
+        navItems.forEach(item => {
             item.classList.toggle(
                 "active",
                 item.dataset.tab === tabName
             );
-
         });
 
-
-        // Content tabs
-        contentTabs.forEach((tab) => {
-
+        contentTabs.forEach(tab => {
             tab.classList.toggle(
                 "active",
                 tab.dataset.content === tabName
             );
-
         });
 
-
-        // Content sections
-        contentViews.forEach((view) => {
-
+        contentViews.forEach(view => {
             view.classList.toggle(
                 "active",
                 view.id === tabName
             );
-
         });
 
-
-        // Update URL hash
         history.replaceState(
             null,
             "",
             `#${tabName}`
         );
+    }
+
+    navItems.forEach(item => {
+
+        item.addEventListener("click", event => {
+
+            event.preventDefault();
+
+            openTab(item.dataset.tab);
+
+        });
+
+    });
+
+    contentTabs.forEach(tab => {
+
+        tab.addEventListener("click", () => {
+
+            openTab(tab.dataset.content);
+
+        });
+
+    });
+
+    openTabButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            openTab(button.dataset.openTab);
+
+        });
+
+    });
+
+    const initialHash =
+        window.location.hash.replace("#", "");
+
+    if (
+        initialHash &&
+        document.getElementById(initialHash)
+    ) {
+        openTab(initialHash);
+    }
+
+
+    async function loadSpace() {
+
+        try {
+
+            console.log("Loading space:", spaceId);
+
+            const response =
+                await api(`/api/spaces/${spaceId}`);
+
+            if (!response) {
+                return;
+            }
+
+            const result =
+                await response.json();
+
+            console.log(
+                "Space API response:",
+                result
+            );
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load space."
+                );
+
+            }
+
+            const space =
+                result.data?.space ||
+                result.data;
+
+            if (!space) {
+
+                throw new Error(
+                    "Space data was not returned."
+                );
+
+            }
+
+            console.log(
+                "Loaded space:",
+                space
+            );
+
+            const name =
+                space.space_name ||
+                space.name ||
+                "Untitled Space";
+
+            const description =
+                space.description ||
+                "A private place for the moments that matter.";
+
+            spaceName.textContent = name;
+
+            spaceDescription.textContent =
+                description;
+
+
+            const typeElement =
+                document.querySelector(".space-type");
+
+            if (typeElement) {
+
+                const type =
+                    space.space_type ||
+                    space.type ||
+                    "private";
+
+                typeElement.textContent =
+                    `${String(type).toUpperCase()} SPACE`;
+
+            }
+
+
+            if (
+                space.cover_image &&
+                spaceCover
+            ) {
+
+                spaceCover.style.backgroundImage =
+                    `url("${escapeHtml(space.cover_image)}")`;
+
+            }
+
+
+            const members =
+                Array.isArray(space.members)
+                    ? space.members
+                    : [];
+
+            const count =
+                space.member_count ??
+                members.length ??
+                1;
+
+            if (memberCount) {
+
+                memberCount.textContent =
+                    `${count} ${count === 1 ? "member" : "members"}`;
+
+            }
+
+
+            updateMemberAvatars(members);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Space loading error:",
+                error
+            );
+
+            if (spaceName) {
+
+                spaceName.textContent =
+                    "Unable to load space";
+
+            }
+
+            if (spaceDescription) {
+
+                spaceDescription.textContent =
+                    error.message;
+
+            }
+
+        }
 
     }
 
 
-    // =====================================================
-    // SIDEBAR NAVIGATION
-    // =====================================================
+    function updateMemberAvatars(members) {
 
-    navItems.forEach((item) => {
+        if (!Array.isArray(members) || !members.length) {
+            return;
+        }
 
-        item.addEventListener(
-            "click",
-            (event) => {
+        const avatars =
+            document.querySelectorAll(
+                ".member-stack .member-avatar"
+            );
 
-                event.preventDefault();
+        members
+            .slice(0, 3)
+            .forEach((member, index) => {
 
-                openTab(
-                    item.dataset.tab
-                );
+                if (!avatars[index]) {
+                    return;
+                }
 
-            }
-        );
+                const name =
+                    member.name ||
+                    member.user_name ||
+                    member.email ||
+                    "U";
 
-    });
+                avatars[index].textContent =
+                    name.charAt(0).toUpperCase();
 
-
-    // =====================================================
-    // CONTENT TABS
-    // =====================================================
-
-    contentTabs.forEach((tab) => {
-
-        tab.addEventListener(
-            "click",
-            () => {
-
-                openTab(
-                    tab.dataset.content
-                );
-
-            }
-        );
-
-    });
-
-
-    // =====================================================
-    // OPEN TAB BUTTONS
-    // =====================================================
-
-    openTabButtons.forEach((button) => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                openTab(
-                    button.dataset.openTab
-                );
-
-            }
-        );
-
-    });
-
-
-    // =====================================================
-    // OPEN HASH TAB
-    // =====================================================
-
-    const hash =
-        window.location.hash.replace(
-            "#",
-            ""
-        );
-
-
-    if (
-        hash &&
-        document.getElementById(hash)
-    ) {
-
-        openTab(hash);
+            });
 
     }
 
@@ -162,9 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     const inviteModal =
-        document.getElementById(
-            "inviteModal"
-        );
+        document.getElementById("inviteModal");
 
     const inviteButtons = [
         document.getElementById("inviteButton"),
@@ -172,26 +313,27 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("membersInvite")
     ];
 
-
     function openInviteModal() {
 
-        inviteModal.classList.add(
-            "open"
-        );
+        if (!inviteModal) {
+            return;
+        }
+
+        inviteModal.classList.add("open");
 
     }
-
 
     function closeInviteModal() {
 
-        inviteModal.classList.remove(
-            "open"
-        );
+        if (!inviteModal) {
+            return;
+        }
+
+        inviteModal.classList.remove("open");
 
     }
 
-
-    inviteButtons.forEach((button) => {
+    inviteButtons.forEach(button => {
 
         if (!button) {
             return;
@@ -205,29 +347,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    document
-        .getElementById("closeInvite")
-        .addEventListener(
+    const closeInvite =
+        document.getElementById("closeInvite");
+
+    if (closeInvite) {
+
+        closeInvite.addEventListener(
             "click",
             closeInviteModal
         );
 
+    }
 
-    inviteModal.addEventListener(
-        "click",
-        (event) => {
 
-            if (
-                event.target ===
-                inviteModal
-            ) {
+    if (inviteModal) {
 
-                closeInviteModal();
+        inviteModal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    inviteModal
+                ) {
+
+                    closeInviteModal();
+
+                }
 
             }
+        );
 
-        }
-    );
+    }
 
 
     // =====================================================
@@ -235,56 +386,57 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     const copyInvite =
-        document.getElementById(
-            "copyInvite"
-        );
+        document.getElementById("copyInvite");
 
+    if (copyInvite) {
 
-    copyInvite.addEventListener(
-        "click",
-        async () => {
+        copyInvite.addEventListener(
+            "click",
+            async () => {
 
-            const code =
-                document
-                    .querySelector(
+                const codeElement =
+                    document.querySelector(
                         ".invite-code strong"
-                    )
-                    .textContent;
+                    );
 
+                if (!codeElement) {
+                    return;
+                }
 
-            try {
+                const code =
+                    codeElement.textContent.trim();
 
-                await navigator.clipboard.writeText(
-                    code
-                );
+                try {
 
+                    await navigator.clipboard.writeText(
+                        code
+                    );
 
-                copyInvite.innerHTML =
-                    `<i class="fa-solid fa-check"></i>`;
+                    copyInvite.innerHTML =
+                        `<i class="fa-solid fa-check"></i>`;
 
-
-                setTimeout(
-                    () => {
+                    setTimeout(() => {
 
                         copyInvite.innerHTML =
                             `<i class="fa-regular fa-copy"></i>`;
 
-                    },
-                    1500
-                );
+                    }, 1500);
 
+                }
 
-            } catch (error) {
+                catch (error) {
 
-                console.error(
-                    "Copy failed:",
-                    error
-                );
+                    console.error(
+                        "Copy failed:",
+                        error
+                    );
+
+                }
 
             }
+        );
 
-        }
-    );
+    }
 
 
     // =====================================================
@@ -292,21 +444,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     const shareButton =
-        document.getElementById(
-            "shareButton"
-        );
+        document.getElementById("shareButton");
 
     const shareInvite =
-        document.getElementById(
-            "shareInvite"
-        );
-
+        document.getElementById("shareInvite");
 
     async function shareSpace() {
 
         const shareData = {
 
-            title: "everUS Space",
+            title: spaceName
+                ? spaceName.textContent
+                : "everUS Space",
 
             text:
                 "Join my private everUS space.",
@@ -316,10 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         };
 
-
-        if (
-            navigator.share
-        ) {
+        if (navigator.share) {
 
             try {
 
@@ -327,35 +473,57 @@ document.addEventListener("DOMContentLoaded", () => {
                     shareData
                 );
 
-            } catch {
-                // User cancelled
             }
 
-        } else {
+            catch {
 
-            await navigator.clipboard.writeText(
-                window.location.href
-            );
+            }
 
-            alert(
-                "Space link copied!"
-            );
+        }
+
+        else {
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+                alert(
+                    "Space link copied!"
+                );
+
+            }
+
+            catch {
+
+                alert(
+                    "Unable to copy space link."
+                );
+
+            }
 
         }
 
     }
 
+    if (shareButton) {
 
-    shareButton.addEventListener(
-        "click",
-        shareSpace
-    );
+        shareButton.addEventListener(
+            "click",
+            shareSpace
+        );
 
+    }
 
-    shareInvite.addEventListener(
-        "click",
-        shareSpace
-    );
+    if (shareInvite) {
+
+        shareInvite.addEventListener(
+            "click",
+            shareSpace
+        );
+
+    }
 
 
     // =====================================================
@@ -363,93 +531,88 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     const mobileMenu =
-        document.getElementById(
-            "mobileMenu"
-        );
+        document.getElementById("mobileMenu");
 
     const sidebar =
-        document.querySelector(
-            ".space-sidebar"
+        document.querySelector(".space-sidebar");
+
+    if (mobileMenu && sidebar) {
+
+        mobileMenu.addEventListener(
+            "click",
+            () => {
+
+                sidebar.classList.toggle(
+                    "open"
+                );
+
+            }
         );
 
-
-    mobileMenu.addEventListener(
-        "click",
-        () => {
-
-            sidebar.classList.toggle(
-                "open"
-            );
-
-        }
-    );
+    }
 
 
     // =====================================================
-    // COVER IMAGE UI
+    // COVER IMAGE PREVIEW
     // =====================================================
 
     const changeCover =
-        document.getElementById(
-            "changeCover"
-        );
+        document.getElementById("changeCover");
 
-    changeCover.addEventListener(
-        "click",
-        () => {
+    if (changeCover && spaceCover) {
 
-            const input =
-                document.createElement(
-                    "input"
+        changeCover.addEventListener(
+            "click",
+            () => {
+
+                const input =
+                    document.createElement("input");
+
+                input.type = "file";
+
+                input.accept =
+                    "image/png,image/jpeg,image/webp";
+
+
+                input.addEventListener(
+                    "change",
+                    () => {
+
+                        const file =
+                            input.files[0];
+
+                        if (!file) {
+                            return;
+                        }
+
+                        const reader =
+                            new FileReader();
+
+                        reader.onload =
+                            event => {
+
+                                spaceCover.style.backgroundImage =
+                                    `url("${event.target.result}")`;
+
+                            };
+
+                        reader.readAsDataURL(file);
+
+                    }
                 );
 
-            input.type = "file";
+                input.click();
 
-            input.accept =
-                "image/png,image/jpeg,image/webp";
+            }
+        );
 
-
-            input.addEventListener(
-                "change",
-                () => {
-
-                    const file =
-                        input.files[0];
-
-                    if (!file) {
-                        return;
-                    }
+    }
 
 
-                    const reader =
-                        new FileReader();
+    // =====================================================
+    // LOAD SPACE
+    // =====================================================
 
-
-                    reader.onload =
-                        (event) => {
-
-                            document
-                                .getElementById(
-                                    "spaceCover"
-                                )
-                                .style.backgroundImage =
-                                `url("${event.target.result}")`;
-
-                        };
-
-
-                    reader.readAsDataURL(
-                        file
-                    );
-
-                }
-            );
-
-
-            input.click();
-
-        }
-    );
-
+    loadSpace();
 
 });
