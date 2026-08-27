@@ -94,4 +94,8 @@ def space_settings():
     )
 
 
-
+@page_bp.route("/join-space")
+def join_space_page():
+    return render_template(
+        "spaces/join-space.html"
+    )
