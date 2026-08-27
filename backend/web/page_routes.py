@@ -92,3 +92,11 @@ def space_settings():
     return render_template(
         "settings/space-settings.html"
     )
+
+
+@page_bp.route("/space-details/<space_id>")
+def space_details(space_id):
+    return render_template(
+        "spaces/space-details.html",
+        space_id=space_id
+    )
