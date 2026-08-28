@@ -1,5 +1,4 @@
 from flask import Blueprint
-
 from controllers.space_controller import (
     create_new_space,
     get_spaces,
@@ -8,8 +7,16 @@ from controllers.space_controller import (
     delete_space,
     upload_cover_image
 )
-
 from middleware.jwt_required import jwt_required
+from controllers.space_controller import (
+    create_new_space,
+    get_spaces,
+    get_space,
+    update_space,
+    delete_space,
+    upload_cover_image,
+    get_members
+)
 
 space_bp = Blueprint("space", __name__)
 
