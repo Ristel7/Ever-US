@@ -8,9 +8,15 @@ from services.space_service import (
     delete_space_by_id
 )
 from utils.response import success, error
-from services.membership_service import add_member
+from services.membership_service import (
+    add_member,
+    get_space_members
+)
 from services.space_service import update_space_cover
-
+from services.membership_service import (
+    add_member,
+    get_space_members
+)
 
 def create_new_space():
     data = request.get_json()
@@ -25,7 +31,6 @@ def create_new_space():
         space_type,
         owner_id
     )
-
 
     add_member(
         result["space_id"],
@@ -146,5 +151,33 @@ def upload_cover_image(space_id):
         "Cover image updated successfully",
         {
             "cover_image": result["url"]
+        }
+    )
+
+
+def get_members(space_id):
+
+    owner_id = g.user["_id"]
+
+    # Make sure the logged-in user belongs to this space
+    space = get_space_by_id(
+        space_id,
+        owner_id
+    )
+
+    if not space:
+        return error(
+            "Space not found",
+            404
+        )
+
+    members = get_space_members(
+        space_id
+    )
+
+    return success(
+        "Members fetched successfully",
+        {
+            "members": members
         }
     )
