@@ -65,3 +65,15 @@ def delete_space_route(space_id):
 @jwt_required
 def update_cover(space_id):
     return upload_cover_image(space_id)
+
+
+@space_bp.route(
+    "/<space_id>/members",
+    methods=["GET"]
+)
+@jwt_required
+def get_members_route(space_id):
+
+    return get_members(
+        space_id
+    )
