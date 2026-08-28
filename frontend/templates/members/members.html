@@ -7,11 +7,19 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Manage your everUS space members and invitations.">
+    <meta name="description" content="Manage your everUS space members, invitations and privacy.">
+
+    <meta name="theme-color" content="#6630e9">
 
     <title>People | everUS</title>
 
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
@@ -19,22 +27,30 @@
 
 </head>
 
+
 <body>
+
+    <!-- =====================================================
+         PAGE
+    ====================================================== -->
 
     <div class="members-page">
 
 
-        <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
 
-        <aside class="members-sidebar" id="membersSidebar">
+        <aside class="members-sidebar" id="membersSidebar" aria-label="Main navigation">
+
+
+            <!-- BRAND -->
 
             <div class="sidebar-brand">
 
                 <a href="{{ url_for('pages.dashboard') }}" class="brand">
 
-                    <span class="brand-mark">
+                    <span class="brand-mark" aria-hidden="true">
                         ∞
                     </span>
 
@@ -47,7 +63,10 @@
             </div>
 
 
+            <!-- NAVIGATION -->
+
             <nav class="sidebar-nav">
+
 
                 <span class="nav-label">
                     MAIN
@@ -55,16 +74,23 @@
 
 
                 <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
+
                     <i class="fa-solid fa-grip"></i>
-                    <span>Dashboard</span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
                 </a>
 
 
-                <a href="#" class="nav-item">
+                <a href="{{ url_for('pages.dashboard') }}" class="nav-item">
 
                     <i class="fa-regular fa-folder"></i>
 
-                    <span>Spaces</span>
+                    <span>
+                        Spaces
+                    </span>
 
                 </a>
 
@@ -73,7 +99,9 @@
 
                     <i class="fa-regular fa-images"></i>
 
-                    <span>Memories</span>
+                    <span>
+                        Memories
+                    </span>
 
                 </a>
 
@@ -82,7 +110,9 @@
 
                     <i class="fa-regular fa-comments"></i>
 
-                    <span>Messages</span>
+                    <span>
+                        Messages
+                    </span>
 
                 </a>
 
@@ -91,7 +121,9 @@
 
                     <i class="fa-solid fa-timeline"></i>
 
-                    <span>Timeline</span>
+                    <span>
+                        Timeline
+                    </span>
 
                 </a>
 
@@ -100,7 +132,9 @@
 
                     <i class="fa-solid fa-book-open"></i>
 
-                    <span>Journal</span>
+                    <span>
+                        Journal
+                    </span>
 
                 </a>
 
@@ -113,25 +147,31 @@
                 </span>
 
 
-                <a href="{{ url_for('pages.members') }}" class="nav-item active">
+                <a href="#" class="nav-item active" aria-current="page">
 
                     <i class="fa-solid fa-user-group"></i>
 
-                    <span>People</span>
+                    <span>
+                        People
+                    </span>
 
                 </a>
 
 
-                <a href="#" class="nav-item">
+                <a href="{{ url_for('pages.space_settings') }}" class="nav-item">
 
                     <i class="fa-solid fa-gear"></i>
 
-                    <span>Settings</span>
+                    <span>
+                        Settings
+                    </span>
 
                 </a>
 
             </nav>
 
+
+            <!-- SIDEBAR FOOTER -->
 
             <div class="sidebar-bottom">
 
@@ -139,7 +179,9 @@
 
                     <i class="fa-solid fa-arrow-left"></i>
 
-                    Back to Dashboard
+                    <span>
+                        Back to Dashboard
+                    </span>
 
                 </a>
 
@@ -148,34 +190,43 @@
         </aside>
 
 
-
-        <!-- =====================================================
-         MAIN
-    ====================================================== -->
+        <!-- =================================================
+             MAIN
+        ================================================== -->
 
         <main class="members-main">
 
 
-            <!-- TOPBAR -->
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
 
             <header class="members-topbar">
 
+
                 <div class="mobile-brand">
 
-                    <button type="button" class="mobile-menu" id="mobileMenu">
+                    <button type="button" class="mobile-menu" id="mobileMenu" aria-label="Open menu"
+                        aria-expanded="false">
 
                         <i class="fa-solid fa-bars"></i>
 
                     </button>
 
-                    <span>everUS</span>
+
+                    <a href="{{ url_for('pages.dashboard') }}" class="mobile-brand-name">
+
+                        everUS
+
+                    </a>
 
                 </div>
 
 
                 <div class="topbar-right">
 
-                    <button type="button" class="topbar-icon">
+
+                    <button type="button" class="topbar-icon" aria-label="Notifications">
 
                         <i class="fa-regular fa-bell"></i>
 
@@ -186,8 +237,10 @@
                     </button>
 
 
-                    <div class="user-avatar">
+                    <div class="user-avatar" id="userAvatar" aria-label="Your profile">
+
                         U
+
                     </div>
 
                 </div>
@@ -195,12 +248,12 @@
             </header>
 
 
-
-            <!-- =====================================================
-             PAGE HEADER
-        ====================================================== -->
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
 
             <section class="members-header">
+
 
                 <div class="header-copy">
 
@@ -208,9 +261,11 @@
                         YOUR SPACE
                     </span>
 
+
                     <h1>
                         People
                     </h1>
+
 
                     <p>
                         Invite the people who make your
@@ -231,20 +286,27 @@
             </section>
 
 
-
-            <!-- =====================================================
-             SPACE CARD
-        ====================================================== -->
+            <!-- =================================================
+                 CONTENT
+            ================================================== -->
 
             <section class="members-content">
 
 
+                <!-- =================================================
+                     SPACE BANNER
+                ================================================== -->
+
                 <div class="space-banner">
+
 
                     <div class="space-info">
 
-                        <div class="space-avatar">
+
+                        <div class="space-avatar" id="spaceAvatar">
+
                             <i class="fa-solid fa-heart"></i>
+
                         </div>
 
 
@@ -254,12 +316,14 @@
                                 CURRENT SPACE
                             </span>
 
-                            <h2>
-                                Priyanshu ❤️ Tanu
+
+                            <h2 id="spaceName">
+                                Loading space...
                             </h2>
 
-                            <p>
-                                Couple Space
+
+                            <p id="spaceType">
+                                Loading...
                             </p>
 
                         </div>
@@ -271,25 +335,30 @@
 
                         <span class="status-dot"></span>
 
-                        Private Space
+                        <span id="spacePrivacy">
+                            Private Space
+                        </span>
 
                     </div>
 
                 </div>
 
 
-
                 <!-- =================================================
-                 STATS
-            ================================================== -->
+                     STATS
+                ================================================== -->
 
                 <div class="member-stats">
+
 
                     <div class="member-stat">
 
                         <div class="stat-icon purple">
+
                             <i class="fa-solid fa-users"></i>
+
                         </div>
+
 
                         <div>
 
@@ -297,8 +366,9 @@
                                 Members
                             </span>
 
+
                             <strong id="memberCount">
-                                2
+                                0
                             </strong>
 
                         </div>
@@ -309,8 +379,11 @@
                     <div class="member-stat">
 
                         <div class="stat-icon pink">
+
                             <i class="fa-solid fa-user-plus"></i>
+
                         </div>
+
 
                         <div>
 
@@ -318,7 +391,8 @@
                                 Invitations
                             </span>
 
-                            <strong>
+
+                            <strong id="invitationCount">
                                 0
                             </strong>
 
@@ -330,8 +404,11 @@
                     <div class="member-stat">
 
                         <div class="stat-icon green">
+
                             <i class="fa-solid fa-shield-halved"></i>
+
                         </div>
+
 
                         <div>
 
@@ -339,7 +416,8 @@
                                 Privacy
                             </span>
 
-                            <strong>
+
+                            <strong id="privacyValue">
                                 Private
                             </strong>
 
@@ -350,14 +428,15 @@
                 </div>
 
 
-
                 <!-- =================================================
-                 INVITE CARD
-            ================================================== -->
+                     INVITE CARD
+                ================================================== -->
 
                 <section class="invite-card">
 
+
                     <div class="invite-copy">
+
 
                         <div class="invite-icon">
 
@@ -372,9 +451,11 @@
                                 INVITE TO YOUR SPACE
                             </span>
 
+
                             <h2>
                                 Bring someone into your story.
                             </h2>
+
 
                             <p>
                                 Share your invite code with someone
@@ -395,12 +476,14 @@
 
                         <div class="invite-code-row">
 
+
                             <strong id="inviteCode">
-                                EVUS-7K29X
+                                Loading...
                             </strong>
 
 
-                            <button type="button" id="copyInvite" class="copy-button" title="Copy invite code">
+                            <button type="button" id="copyInvite" class="copy-button" title="Copy invite code"
+                                aria-label="Copy invite code">
 
                                 <i class="fa-regular fa-copy"></i>
 
@@ -422,18 +505,19 @@
                 </section>
 
 
-
                 <!-- =================================================
-                 MEMBERS HEADER
-            ================================================== -->
+                     MEMBERS HEADER
+                ================================================== -->
 
                 <div class="section-heading">
+
 
                     <div>
 
                         <span>
                             SPACE MEMBERS
                         </span>
+
 
                         <h2>
                             Everyone here
@@ -446,158 +530,47 @@
 
                         <i class="fa-solid fa-magnifying-glass"></i>
 
-                        <input type="search" id="memberSearch" placeholder="Search members...">
+
+                        <input type="search" id="memberSearch" placeholder="Search members..." autocomplete="off">
 
                     </div>
 
                 </div>
 
 
-
                 <!-- =================================================
-                 MEMBERS LIST
-            ================================================== -->
+                     MEMBERS LIST
+                ================================================== -->
 
-                <section class="members-list" id="membersList">
+                <section class="members-list" id="membersList" aria-live="polite">
 
 
-                    <!-- MEMBER -->
+                    <!-- LOADING -->
 
-                    <article class="member-card" data-name="Priyanshu Kumar">
+                    <div class="members-loading" id="membersLoading">
 
-                        <div class="member-left">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
 
-                            <div class="member-avatar purple-avatar">
-                                P
-                            </div>
+                        <span>
+                            Loading members...
+                        </span>
 
+                    </div>
 
-                            <div class="member-details">
 
-                                <div class="member-name-row">
+                    <!-- EMPTY / SEARCH RESULT -->
 
-                                    <h3>
-                                        Priyanshu Kumar
-                                    </h3>
-
-                                    <span class="owner-badge">
-                                        Owner
-                                    </span>
-
-                                </div>
-
-
-                                <p>
-                                    priyanshu@example.com
-                                </p>
-
-
-                                <span class="member-active">
-
-                                    <span></span>
-
-                                    Active now
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="member-actions">
-
-                            <span class="joined-date">
-                                Joined today
-                            </span>
-
-
-                            <button type="button" class="member-menu" data-member="Priyanshu Kumar">
-
-                                <i class="fa-solid fa-ellipsis"></i>
-
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- MEMBER -->
-
-                    <article class="member-card" data-name="Tanu">
-
-                        <div class="member-left">
-
-                            <div class="member-avatar pink-avatar">
-                                T
-                            </div>
-
-
-                            <div class="member-details">
-
-                                <div class="member-name-row">
-
-                                    <h3>
-                                        Tanu
-                                    </h3>
-
-                                    <span class="member-badge">
-                                        Member
-                                    </span>
-
-                                </div>
-
-
-                                <p>
-                                    tanu@example.com
-                                </p>
-
-
-                                <span class="member-offline">
-
-                                    <span></span>
-
-                                    Offline
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="member-actions">
-
-                            <span class="joined-date">
-                                Joined today
-                            </span>
-
-
-                            <button type="button" class="member-menu" data-member="Tanu">
-
-                                <i class="fa-solid fa-ellipsis"></i>
-
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- EMPTY SEARCH -->
-
-                    <div class="member-search-empty" id="memberSearchEmpty">
+                    <div class="member-search-empty" id="memberSearchEmpty" style="display: none;">
 
                         <i class="fa-solid fa-user-slash"></i>
 
-                        <h3>
-                            No member found
+
+                        <h3 id="emptyTitle">
+                            No members found
                         </h3>
 
-                        <p>
+
+                        <p id="emptyDescription">
                             Try searching with a different name.
                         </p>
 
@@ -606,12 +579,12 @@
                 </section>
 
 
-
                 <!-- =================================================
-                 PRIVACY NOTE
-            ================================================== -->
+                     PRIVACY NOTE
+                ================================================== -->
 
                 <div class="privacy-note">
+
 
                     <div class="privacy-note-icon">
 
@@ -625,6 +598,7 @@
                         <strong>
                             Your space is private.
                         </strong>
+
 
                         <p>
                             Only members you invite can access
@@ -643,17 +617,25 @@
     </div>
 
 
+    <!-- =========================================================
+         MOBILE OVERLAY
+    ========================================================== -->
+
+    <div class="sidebar-overlay" id="sidebarOverlay">
+    </div>
+
 
     <!-- =========================================================
-     INVITE MODAL
-========================================================= -->
+         INVITE MODAL
+    ========================================================== -->
 
-    <div class="invite-modal" id="inviteModal">
+    <div class="invite-modal" id="inviteModal" role="dialog" aria-modal="true" aria-labelledby="inviteModalTitle">
+
 
         <div class="invite-modal-card">
 
 
-            <button type="button" class="modal-close" id="closeInviteModal">
+            <button type="button" class="modal-close" id="closeInviteModal" aria-label="Close invitation dialog">
 
                 <i class="fa-solid fa-xmark"></i>
 
@@ -672,19 +654,18 @@
             </span>
 
 
-            <h2>
+            <h2 id="inviteModalTitle">
                 Invite them to your space.
             </h2>
 
 
             <p>
-                Share the invite code or send an
-                invitation directly.
+                Share the invite code or copy the
+                invite link with someone you trust.
             </p>
 
 
-
-            <!-- CODE -->
+            <!-- INVITE CODE -->
 
             <div class="modal-code-box">
 
@@ -695,12 +676,12 @@
 
                 <div>
 
-                    <strong>
-                        EVUS-7K29X
+                    <strong id="modalInviteCode">
+                        Loading...
                     </strong>
 
 
-                    <button type="button" id="modalCopyCode">
+                    <button type="button" id="modalCopyCode" title="Copy invite code" aria-label="Copy invite code">
 
                         <i class="fa-regular fa-copy"></i>
 
@@ -711,10 +692,10 @@
             </div>
 
 
-
-            <!-- EMAIL -->
+            <!-- EMAIL INVITATION -->
 
             <form id="inviteForm">
+
 
                 <label for="inviteEmail">
                     Email address
@@ -725,12 +706,17 @@
 
                     <i class="fa-regular fa-envelope"></i>
 
-                    <input type="email" id="inviteEmail" placeholder="friend@example.com">
+
+                    <input type="email" id="inviteEmail" placeholder="friend@example.com" autocomplete="email">
 
                 </div>
 
 
-                <button type="submit" class="send-invite">
+                <div class="invite-message" id="inviteMessage" role="status">
+                </div>
+
+
+                <button type="submit" class="send-invite" id="sendInviteButton">
 
                     <i class="fa-solid fa-paper-plane"></i>
 
@@ -763,12 +749,12 @@
     </div>
 
 
-
     <!-- =========================================================
-     MEMBER MENU
-========================================================= -->
+         MEMBER ACTION MENU
+    ========================================================== -->
 
     <div class="member-action-menu" id="memberActionMenu">
+
 
         <button type="button" id="viewMember">
 
@@ -799,6 +785,9 @@
     </div>
 
 
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
 
     <script src="{{ url_for('static', filename='js/members.js') }}"></script>
 

@@ -80,10 +80,12 @@ def journal():
     )
 
 
-@page_bp.route("/members")
-def members():
+@page_bp.route("/members/<space_id>")
+def members(space_id):
+
     return render_template(
-        "members/members.html"
+        "members/members.html",
+        space_id=space_id
     )
 
 
