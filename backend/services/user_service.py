@@ -19,3 +19,36 @@ def update_profile_image(user_id, image_url):
     )
 
     return result.modified_count > 0
+
+
+def get_user_by_id(user_id):
+
+    try:
+
+        user = users_collection.find_one(
+            {
+                "_id": ObjectId(user_id)
+            }
+        )
+
+        if not user:
+            return None
+
+        return {
+            "id": str(user["_id"]),
+            "name": user.get("name", ""),
+            "email": user.get("email", ""),
+            "profile_image": user.get(
+                "profile_image",
+                ""
+            )
+        }
+
+    except Exception as error:
+
+        print(
+            "Error fetching user:",
+            error
+        )
+
+        return None

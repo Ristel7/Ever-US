@@ -3,7 +3,32 @@ from datetime import datetime
 from models.membership import memberships_collection
 
 
-def add_member(space_id, user_id, role="member"):
+def serialize(members):
+
+    result = []
+
+    for member in members:
+
+        result.append({
+            "id": str(member["_id"]),
+            "space_id": str(member["space_id"]),
+            "user_id": str(member["user_id"]),
+            "role": member.get("role", "member"),
+            "joined_at": (
+                member["joined_at"].isoformat()
+                if member.get("joined_at")
+                else None
+            )
+        })
+
+    return result
+
+
+def add_member(
+    space_id,
+    user_id,
+    role="member"
+):
 
     member = {
         "space_id": space_id,
@@ -12,12 +37,19 @@ def add_member(space_id, user_id, role="member"):
         "joined_at": datetime.utcnow()
     }
 
-    result = memberships_collection.insert_one(member)
+    result = memberships_collection.insert_one(
+        member
+    )
 
-    return str(result.inserted_id)
+    return str(
+        result.inserted_id
+    )
 
 
-def is_member(space_id, user_id):
+def is_member(
+    space_id,
+    user_id
+):
 
     print("=" * 50)
     print("Checking Membership")
@@ -29,13 +61,19 @@ def is_member(space_id, user_id):
         "user_id": user_id
     })
 
-    print("Membership:", member)
+    print(
+        "Membership:",
+        member
+    )
+
     print("=" * 50)
 
     return member is not None
 
 
-def get_space_members(space_id):
+def get_space_members(
+    space_id
+):
 
     members = list(
         memberships_collection.find({
@@ -43,4 +81,6 @@ def get_space_members(space_id):
         })
     )
 
-    return serialize(members)
+    return serialize(
+        members
+    )
