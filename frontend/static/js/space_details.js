@@ -686,13 +686,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // UPDATE MEMBERS UI
     // =====================================================
 
-    function updateMembersUI(
-        members
-    ) {
+    function updateMembersUI(members) {
 
-        // =============================================
+        // =====================================================
         // MEMBER COUNT
-        // =============================================
+        // =====================================================
 
         if (memberCountElement) {
 
@@ -705,99 +703,146 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // =============================================
-        // FIND MEMBER CONTAINER
-        // =============================================
+        // =====================================================
+        // MEMBER CONTAINER
+        // =====================================================
 
         const memberContainer =
             document.querySelector(
-                ".member-stack"
+                ".members-list"
             );
 
 
-        if (
-            !memberContainer ||
-            !members.length
-        ) {
+        if (!memberContainer) {
+
+            console.warn(
+                "Members list container not found."
+            );
 
             return;
 
         }
 
 
-        // =============================================
-        // CLEAR OLD AVATARS
-        // =============================================
+        // =====================================================
+        // EMPTY STATE
+        // =====================================================
+
+        if (!members.length) {
+
+            memberContainer.innerHTML = `
+            <div class="members-empty">
+                <i class="fa-solid fa-user-plus"></i>
+
+                <span>
+                    Invite people to share
+                    this space.
+                </span>
+            </div>
+        `;
+
+            return;
+
+        }
+
+
+        // =====================================================
+        // RENDER MEMBERS
+        // =====================================================
 
         memberContainer.innerHTML = "";
 
 
-        // =============================================
-        // CREATE MEMBER AVATARS
-        // =============================================
+        members.forEach(member => {
 
-        members
-            .slice(0, 5)
-            .forEach(
-                (member) => {
+            const name =
+                member.name ||
+                "Unknown User";
 
-                    const avatar =
-                        document.createElement(
-                            "div"
-                        );
+            const email =
+                member.email ||
+                "";
 
+            const role =
+                member.role ||
+                "member";
 
-                    avatar.className =
-                        "member-avatar";
-
-
-                    const name =
-                        member.name ||
-                        member.user_name ||
-                        member.email ||
-                        "User";
+            const profileImage =
+                member.profile_image ||
+                "";
 
 
-                    const profileImage =
-                        member.profile_image ||
-                        "";
+            const initial =
+                name
+                    .charAt(0)
+                    .toUpperCase();
 
 
-                    if (profileImage) {
-
-                        avatar.style.backgroundImage =
-                            `url("${profileImage}")`;
-
-                        avatar.style.backgroundSize =
-                            "cover";
-
-                        avatar.style.backgroundPosition =
-                            "center";
-
-                        avatar.textContent = "";
-
-                    }
-
-                    else {
-
-                        avatar.textContent =
-                            name
-                                .charAt(0)
-                                .toUpperCase();
-
-                    }
+            const memberCard =
+                document.createElement(
+                    "div"
+                );
 
 
-                    avatar.title =
-                        name;
+            memberCard.className =
+                "member-card";
 
 
-                    memberContainer.appendChild(
-                        avatar
-                    );
+            memberCard.innerHTML = `
 
+            <div class="member-avatar">
+
+                ${profileImage
+                    ? `
+                            <img
+                                src="${escapeHtml(profileImage)}"
+                                alt="${escapeHtml(name)}"
+                            >
+                          `
+                    : `
+                            <span>
+                                ${escapeHtml(initial)}
+                            </span>
+                          `
                 }
+
+            </div>
+
+
+            <div class="member-info">
+
+                <h3>
+                    ${escapeHtml(name)}
+                </h3>
+
+                <p>
+                    ${escapeHtml(email)}
+                </p>
+
+            </div>
+
+
+            <div class="member-role">
+
+                <span class="role-badge ${escapeHtml(role)}">
+
+                    ${role === "owner"
+                    ? "Owner"
+                    : "Member"
+                }
+
+                </span>
+
+            </div>
+
+        `;
+
+
+            memberContainer.appendChild(
+                memberCard
             );
+
+        });
 
     }
 
