@@ -1,5 +1,4 @@
 import bcrypt
-
 from models.user import users_collection
 from utils.jwt_handler import generate_token
 

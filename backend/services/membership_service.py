@@ -1,4 +1,5 @@
 from datetime import datetime
+from bson import ObjectId
 
 from models.membership import memberships_collection
 from models.user import users_collection
@@ -14,29 +15,65 @@ def serialize(members):
 
     for member in members:
 
-        user = users_collection.find_one({
-            "_id": member["user_id"]
-        })
+        user_id = member.get("user_id")
+
+        user = None
+
+        # Convert string user_id to ObjectId
+        # when looking up the user.
+        try:
+
+            if isinstance(user_id, ObjectId):
+
+                user = users_collection.find_one({
+                    "_id": user_id
+                })
+
+            else:
+
+                user = users_collection.find_one({
+                    "_id": ObjectId(
+                        str(user_id)
+                    )
+                })
+
+        except Exception as error:
+
+            print(
+                "User lookup failed:",
+                error
+            )
 
         member_data = {
             "id": str(member["_id"]),
-            "space_id": str(member["space_id"]),
-            "user_id": str(member["user_id"]),
+
+            "space_id": str(
+                member["space_id"]
+            ),
+
+            "user_id": str(
+                user_id
+            ),
+
             "role": member.get(
                 "role",
                 "member"
             ),
+
             "joined_at": (
                 member["joined_at"].isoformat()
                 if member.get("joined_at")
                 else None
-            )
+            ),
+
+            "name": "Unknown User",
+
+            "email": "",
+
+            "profile_image": ""
         }
 
-        # =================================================
-        # USER INFORMATION
-        # =================================================
-
+        # Add actual user information
         if user:
 
             member_data["name"] = user.get(
@@ -53,14 +90,6 @@ def serialize(members):
                 "profile_image",
                 ""
             )
-
-        else:
-
-            member_data["name"] = "Unknown User"
-
-            member_data["email"] = ""
-
-            member_data["profile_image"] = ""
 
         result.append(
             member_data
