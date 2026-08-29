@@ -1,7 +1,12 @@
 from datetime import datetime
 
 from models.membership import memberships_collection
+from models.user import users_collection
 
+
+# =========================================================
+# SERIALIZE MEMBERS
+# =========================================================
 
 def serialize(members):
 
@@ -9,20 +14,64 @@ def serialize(members):
 
     for member in members:
 
-        result.append({
+        user = users_collection.find_one({
+            "_id": member["user_id"]
+        })
+
+        member_data = {
             "id": str(member["_id"]),
             "space_id": str(member["space_id"]),
             "user_id": str(member["user_id"]),
-            "role": member.get("role", "member"),
+            "role": member.get(
+                "role",
+                "member"
+            ),
             "joined_at": (
                 member["joined_at"].isoformat()
                 if member.get("joined_at")
                 else None
             )
-        })
+        }
+
+        # =================================================
+        # USER INFORMATION
+        # =================================================
+
+        if user:
+
+            member_data["name"] = user.get(
+                "name",
+                "Unknown User"
+            )
+
+            member_data["email"] = user.get(
+                "email",
+                ""
+            )
+
+            member_data["profile_image"] = user.get(
+                "profile_image",
+                ""
+            )
+
+        else:
+
+            member_data["name"] = "Unknown User"
+
+            member_data["email"] = ""
+
+            member_data["profile_image"] = ""
+
+        result.append(
+            member_data
+        )
 
     return result
 
+
+# =========================================================
+# ADD MEMBER
+# =========================================================
 
 def add_member(
     space_id,
@@ -31,13 +80,19 @@ def add_member(
 ):
 
     member = {
+
         "space_id": space_id,
+
         "user_id": user_id,
+
         "role": role,
+
         "joined_at": datetime.utcnow()
+
     }
 
-    result = memberships_collection.insert_one(
+    result =
+    memberships_collection.insert_one(
         member
     )
 
@@ -46,19 +101,38 @@ def add_member(
     )
 
 
+# =========================================================
+# CHECK MEMBERSHIP
+# =========================================================
+
 def is_member(
     space_id,
     user_id
 ):
 
     print("=" * 50)
-    print("Checking Membership")
-    print("Space ID:", space_id)
-    print("User ID:", user_id)
 
-    member = memberships_collection.find_one({
+    print(
+        "Checking Membership"
+    )
+
+    print(
+        "Space ID:",
+        space_id
+    )
+
+    print(
+        "User ID:",
+        user_id
+    )
+
+    member =
+    memberships_collection.find_one({
+
         "space_id": space_id,
+
         "user_id": user_id
+
     })
 
     print(
@@ -70,6 +144,10 @@ def is_member(
 
     return member is not None
 
+
+# =========================================================
+# GET SPACE MEMBERS
+# =========================================================
 
 def get_space_members(
     space_id
