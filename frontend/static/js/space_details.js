@@ -704,19 +704,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         // =====================================================
-        // MEMBER CONTAINER
+        // MEMBERS CARD
         // =====================================================
 
-        const memberContainer =
+        const membersCard =
             document.querySelector(
-                ".members-list"
+                ".members-card"
             );
 
 
-        if (!memberContainer) {
+        if (!membersCard) {
 
             console.warn(
-                "Members list container not found."
+                "Members card not found."
             );
 
             return;
@@ -730,15 +730,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!members.length) {
 
-            memberContainer.innerHTML = `
+            membersCard.innerHTML = `
+
             <div class="members-empty">
+
                 <i class="fa-solid fa-user-plus"></i>
 
                 <span>
                     Invite people to share
                     this space.
                 </span>
+
             </div>
+
         `;
 
             return;
@@ -747,102 +751,197 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         // =====================================================
+        // CLEAR EXISTING MEMBERS
+        // =====================================================
+
+        membersCard.innerHTML = "";
+
+
+        // =====================================================
         // RENDER MEMBERS
         // =====================================================
 
-        memberContainer.innerHTML = "";
+        members.forEach(
+            (member) => {
+
+                const name =
+                    member.name ||
+                    "Unknown User";
 
 
-        members.forEach(member => {
-
-            const name =
-                member.name ||
-                "Unknown User";
-
-            const email =
-                member.email ||
-                "";
-
-            const role =
-                member.role ||
-                "member";
-
-            const profileImage =
-                member.profile_image ||
-                "";
+                const email =
+                    member.email ||
+                    "";
 
 
-            const initial =
-                name
-                    .charAt(0)
-                    .toUpperCase();
+                const role =
+                    member.role ||
+                    "member";
 
 
-            const memberCard =
-                document.createElement(
-                    "div"
+                const profileImage =
+                    member.profile_image ||
+                    "";
+
+
+                const initial =
+                    name
+                        .charAt(0)
+                        .toUpperCase();
+
+
+                // ---------------------------------------------
+                // MEMBER ROW
+                // ---------------------------------------------
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "member-row";
+
+
+                // ---------------------------------------------
+                // AVATAR
+                // ---------------------------------------------
+
+                const avatar =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                avatar.className =
+                    "member-avatar large avatar-purple";
+
+
+                if (profileImage) {
+
+                    avatar.innerHTML = `
+
+                    <img
+                        src="${escapeHtml(profileImage)}"
+                        alt="${escapeHtml(name)}"
+                    >
+
+                `;
+
+                }
+
+                else {
+
+                    avatar.textContent =
+                        initial;
+
+                }
+
+
+                // ---------------------------------------------
+                // MEMBER DETAILS
+                // ---------------------------------------------
+
+                const details =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                details.className =
+                    "member-details";
+
+
+                const memberName =
+                    document.createElement(
+                        "strong"
+                    );
+
+
+                memberName.textContent =
+                    name;
+
+
+                const memberEmail =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                memberEmail.textContent =
+                    email;
+
+
+                details.appendChild(
+                    memberName
                 );
 
 
-            memberCard.className =
-                "member-card";
+                details.appendChild(
+                    memberEmail
+                );
 
 
-            memberCard.innerHTML = `
+                // ---------------------------------------------
+                // ROLE BADGE
+                // ---------------------------------------------
 
-            <div class="member-avatar">
+                const roleBadge =
+                    document.createElement(
+                        "span"
+                    );
 
-                ${profileImage
-                    ? `
-                            <img
-                                src="${escapeHtml(profileImage)}"
-                                alt="${escapeHtml(name)}"
-                            >
-                          `
-                    : `
-                            <span>
-                                ${escapeHtml(initial)}
-                            </span>
-                          `
+
+                if (
+                    role.toLowerCase() ===
+                    "owner"
+                ) {
+
+                    roleBadge.className =
+                        "owner-badge";
+
+                    roleBadge.textContent =
+                        "OWNER";
+
                 }
 
-            </div>
+                else {
 
+                    roleBadge.className =
+                        "member-badge";
 
-            <div class="member-info">
+                    roleBadge.textContent =
+                        "MEMBER";
 
-                <h3>
-                    ${escapeHtml(name)}
-                </h3>
-
-                <p>
-                    ${escapeHtml(email)}
-                </p>
-
-            </div>
-
-
-            <div class="member-role">
-
-                <span class="role-badge ${escapeHtml(role)}">
-
-                    ${role === "owner"
-                    ? "Owner"
-                    : "Member"
                 }
 
-                </span>
 
-            </div>
+                // ---------------------------------------------
+                // BUILD ROW
+                // ---------------------------------------------
 
-        `;
+                row.appendChild(
+                    avatar
+                );
 
 
-            memberContainer.appendChild(
-                memberCard
-            );
+                row.appendChild(
+                    details
+                );
 
-        });
+
+                row.appendChild(
+                    roleBadge
+                );
+
+
+                membersCard.appendChild(
+                    row
+                );
+
+            }
+        );
 
     }
 
