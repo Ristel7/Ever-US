@@ -91,8 +91,7 @@ def add_member(
 
     }
 
-    result =
-    memberships_collection.insert_one(
+    result = memberships_collection.insert_one(
         member
     )
 
@@ -126,13 +125,9 @@ def is_member(
         user_id
     )
 
-    member =
-    memberships_collection.find_one({
-
+    member = memberships_collection.find_one({
         "space_id": space_id,
-
         "user_id": user_id
-
     })
 
     print(
