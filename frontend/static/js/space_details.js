@@ -1,152 +1,427 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const token = localStorage.getItem("access_token");
+    console.log("everUS Space Details JS loaded");
+
+
+    // =====================================================
+    // AUTHENTICATION
+    // =====================================================
+
+    const token =
+        localStorage.getItem("access_token");
 
     if (!token) {
+
+        console.warn(
+            "No authentication token found."
+        );
+
         window.location.href = "/login";
+
         return;
     }
 
-    const navItems = document.querySelectorAll(".space-nav-item");
-    const contentTabs = document.querySelectorAll(".content-tab");
-    const contentViews = document.querySelectorAll(".content-view");
-    const openTabButtons = document.querySelectorAll("[data-open-tab]");
 
-    const spaceName = document.getElementById("spaceName");
-    const spaceDescription = document.getElementById("spaceDescription");
-    const memberCount = document.getElementById("memberCount");
-    const spaceCover = document.getElementById("spaceCover");
+    // =====================================================
+    // GET SPACE ID FROM URL
+    // =====================================================
 
-    const urlParts = window.location.pathname.split("/").filter(Boolean);
-    const spaceId = urlParts[urlParts.length - 1];
+    const urlParts =
+        window.location.pathname
+            .split("/")
+            .filter(Boolean);
 
-    if (!spaceId || spaceId === "space-details") {
-        console.error("Space ID was not found in the URL.");
+    const spaceId =
+        urlParts[urlParts.length - 1];
+
+
+    if (!spaceId) {
+
+        console.error(
+            "Space ID was not found in URL."
+        );
+
         return;
     }
 
-    async function api(url, options = {}) {
 
-        const response = await fetch(url, {
-            ...options,
-            headers: {
+    console.log(
+        "Current Space ID:",
+        spaceId
+    );
+
+
+    // =====================================================
+    // ELEMENTS
+    // =====================================================
+
+    const navItems =
+        document.querySelectorAll(
+            ".space-nav-item"
+        );
+
+    const contentTabs =
+        document.querySelectorAll(
+            ".content-tab"
+        );
+
+    const contentViews =
+        document.querySelectorAll(
+            ".content-view"
+        );
+
+    const openTabButtons =
+        document.querySelectorAll(
+            "[data-open-tab]"
+        );
+
+
+    // =====================================================
+    // SPACE ELEMENTS
+    // =====================================================
+
+    const spaceNameElement =
+        document.getElementById(
+            "spaceName"
+        );
+
+    const spaceDescriptionElement =
+        document.getElementById(
+            "spaceDescription"
+        );
+
+    const memberCountElement =
+        document.getElementById(
+            "memberCount"
+        );
+
+    const spaceCover =
+        document.getElementById(
+            "spaceCover"
+        );
+
+    const spaceTypeElement =
+        document.querySelector(
+            ".space-type"
+        );
+
+
+    // =====================================================
+    // API HELPER
+    // =====================================================
+
+    async function api(
+        url,
+        options = {}
+    ) {
+
+        try {
+
+            const headers = {
                 ...(options.headers || {}),
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        });
+                "Authorization":
+                    `Bearer ${token}`
+            };
 
-        if (response.status === 401) {
-            localStorage.clear();
-            window.location.href = "/login";
-            return null;
+
+            /*
+             * Only add JSON content type when
+             * the request is not using FormData.
+             */
+
+            if (
+                !(options.body instanceof FormData)
+            ) {
+
+                headers["Content-Type"] =
+                    "application/json";
+
+            }
+
+
+            const response =
+                await fetch(
+                    url,
+                    {
+                        ...options,
+                        headers
+                    }
+                );
+
+
+            // =============================================
+            // TOKEN EXPIRED / UNAUTHORIZED
+            // =============================================
+
+            if (
+                response.status === 401
+            ) {
+
+                console.warn(
+                    "Authentication expired."
+                );
+
+                localStorage.removeItem(
+                    "access_token"
+                );
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+                localStorage.removeItem(
+                    "is_logged_in"
+                );
+
+                window.location.href =
+                    "/login";
+
+                return null;
+            }
+
+
+            return response;
+
         }
 
-        return response;
+        catch (error) {
+
+            console.error(
+                "API request failed:",
+                error
+            );
+
+            throw error;
+
+        }
+
     }
 
+
+    // =====================================================
+    // HTML ESCAPE
+    // =====================================================
+
     function escapeHtml(value) {
+
         return String(value ?? "")
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
     }
+
+
+    // =====================================================
+    // TAB FUNCTION
+    // =====================================================
 
     function openTab(tabName) {
 
-        navItems.forEach(item => {
-            item.classList.toggle(
-                "active",
-                item.dataset.tab === tabName
-            );
-        });
+        // -----------------------------------------------
+        // Sidebar navigation
+        // -----------------------------------------------
 
-        contentTabs.forEach(tab => {
-            tab.classList.toggle(
-                "active",
-                tab.dataset.content === tabName
-            );
-        });
+        navItems.forEach(
+            (item) => {
 
-        contentViews.forEach(view => {
-            view.classList.toggle(
-                "active",
-                view.id === tabName
-            );
-        });
+                item.classList.toggle(
+                    "active",
+                    item.dataset.tab ===
+                    tabName
+                );
+
+            }
+        );
+
+
+        // -----------------------------------------------
+        // Content tabs
+        // -----------------------------------------------
+
+        contentTabs.forEach(
+            (tab) => {
+
+                tab.classList.toggle(
+                    "active",
+                    tab.dataset.content ===
+                    tabName
+                );
+
+            }
+        );
+
+
+        // -----------------------------------------------
+        // Content sections
+        // -----------------------------------------------
+
+        contentViews.forEach(
+            (view) => {
+
+                view.classList.toggle(
+                    "active",
+                    view.id ===
+                    tabName
+                );
+
+            }
+        );
+
+
+        // -----------------------------------------------
+        // URL hash
+        // -----------------------------------------------
 
         history.replaceState(
             null,
             "",
             `#${tabName}`
         );
+
     }
 
-    navItems.forEach(item => {
 
-        item.addEventListener("click", event => {
+    // =====================================================
+    // SIDEBAR NAVIGATION
+    // =====================================================
 
-            event.preventDefault();
+    navItems.forEach(
+        (item) => {
 
-            openTab(item.dataset.tab);
+            item.addEventListener(
+                "click",
+                (event) => {
 
-        });
+                    event.preventDefault();
 
-    });
+                    openTab(
+                        item.dataset.tab
+                    );
 
-    contentTabs.forEach(tab => {
+                }
+            );
 
-        tab.addEventListener("click", () => {
+        }
+    );
 
-            openTab(tab.dataset.content);
 
-        });
+    // =====================================================
+    // CONTENT TABS
+    // =====================================================
 
-    });
+    contentTabs.forEach(
+        (tab) => {
 
-    openTabButtons.forEach(button => {
+            tab.addEventListener(
+                "click",
+                () => {
 
-        button.addEventListener("click", () => {
+                    openTab(
+                        tab.dataset.content
+                    );
 
-            openTab(button.dataset.openTab);
+                }
+            );
 
-        });
+        }
+    );
 
-    });
 
-    const initialHash =
-        window.location.hash.replace("#", "");
+    // =====================================================
+    // OPEN TAB BUTTONS
+    // =====================================================
+
+    openTabButtons.forEach(
+        (button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    openTab(
+                        button.dataset.openTab
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    // =====================================================
+    // OPEN TAB FROM HASH
+    // =====================================================
+
+    const hash =
+        window.location.hash.replace(
+            "#",
+            ""
+        );
+
 
     if (
-        initialHash &&
-        document.getElementById(initialHash)
+        hash &&
+        document.getElementById(hash)
     ) {
-        openTab(initialHash);
+
+        openTab(hash);
+
     }
 
+
+    // =====================================================
+    // LOAD SPACE
+    // =====================================================
 
     async function loadSpace() {
 
         try {
 
-            console.log("Loading space:", spaceId);
+            console.log(
+                "Loading space:",
+                spaceId
+            );
+
 
             const response =
-                await api(`/api/spaces/${spaceId}`);
+                await api(
+                    `/api/spaces/${spaceId}`
+                );
+
 
             if (!response) {
                 return;
             }
 
+
             const result =
                 await response.json();
+
 
             console.log(
                 "Space API response:",
                 result
             );
+
 
             if (
                 !response.ok ||
@@ -160,9 +435,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+
             const space =
                 result.data?.space ||
                 result.data;
+
 
             if (!space) {
 
@@ -172,41 +449,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+
             console.log(
                 "Loaded space:",
                 space
             );
+
+
+            // =============================================
+            // SPACE NAME
+            // =============================================
 
             const name =
                 space.space_name ||
                 space.name ||
                 "Untitled Space";
 
+
+            if (spaceNameElement) {
+
+                spaceNameElement.textContent =
+                    name;
+
+            }
+
+
+            // =============================================
+            // DESCRIPTION
+            // =============================================
+
             const description =
                 space.description ||
                 "A private place for the moments that matter.";
 
-            spaceName.textContent = name;
 
-            spaceDescription.textContent =
-                description;
+            if (spaceDescriptionElement) {
+
+                spaceDescriptionElement.textContent =
+                    description;
+
+            }
 
 
-            const typeElement =
-                document.querySelector(".space-type");
+            // =============================================
+            // SPACE TYPE
+            // =============================================
 
-            if (typeElement) {
+            const type =
+                space.space_type ||
+                space.type ||
+                "private";
 
-                const type =
-                    space.space_type ||
-                    space.type ||
-                    "private";
 
-                typeElement.textContent =
+            if (spaceTypeElement) {
+
+                spaceTypeElement.textContent =
                     `${String(type).toUpperCase()} SPACE`;
 
             }
 
+
+            // =============================================
+            // COVER IMAGE
+            // =============================================
 
             if (
                 space.cover_image &&
@@ -214,30 +519,57 @@ document.addEventListener("DOMContentLoaded", () => {
             ) {
 
                 spaceCover.style.backgroundImage =
-                    `url("${escapeHtml(space.cover_image)}")`;
+                    `url("${space.cover_image}")`;
 
             }
 
 
-            const members =
-                Array.isArray(space.members)
-                    ? space.members
-                    : [];
+            // =============================================
+            // INVITE CODE
+            // =============================================
 
-            const count =
-                space.member_count ??
-                members.length ??
-                1;
+            const inviteCode =
+                space.invite_code ||
+                "Unavailable";
 
-            if (memberCount) {
 
-                memberCount.textContent =
-                    `${count} ${count === 1 ? "member" : "members"}`;
+            const inviteCodeElement =
+                document.querySelector(
+                    ".invite-code strong"
+                );
+
+
+            if (inviteCodeElement) {
+
+                inviteCodeElement.textContent =
+                    inviteCode;
 
             }
 
 
-            updateMemberAvatars(members);
+            // =============================================
+            // MEMBER COUNT FROM SPACE DATA
+            // =============================================
+
+            if (
+                memberCountElement &&
+                typeof space.member_count !==
+                "undefined"
+            ) {
+
+                const count =
+                    Number(
+                        space.member_count
+                    );
+
+
+                memberCountElement.textContent =
+                    `${count} ${count === 1
+                        ? "member"
+                        : "members"
+                    }`;
+
+            }
 
         }
 
@@ -248,17 +580,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
 
-            if (spaceName) {
 
-                spaceName.textContent =
+            if (spaceNameElement) {
+
+                spaceNameElement.textContent =
                     "Unable to load space";
 
             }
 
-            if (spaceDescription) {
 
-                spaceDescription.textContent =
-                    error.message;
+            if (spaceDescriptionElement) {
+
+                spaceDescriptionElement.textContent =
+                    error.message ||
+                    "Something went wrong.";
 
             }
 
@@ -267,35 +602,202 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function updateMemberAvatars(members) {
+    // =====================================================
+    // LOAD MEMBERS
+    // =====================================================
 
-        if (!Array.isArray(members) || !members.length) {
-            return;
-        }
+    async function loadMembers() {
 
-        const avatars =
-            document.querySelectorAll(
-                ".member-stack .member-avatar"
+        try {
+
+            console.log(
+                "Loading members for space:",
+                spaceId
             );
 
+
+            const response =
+                await api(
+                    `/api/spaces/${spaceId}/members`
+                );
+
+
+            if (!response) {
+                return;
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Members API response:",
+                result
+            );
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load members."
+                );
+
+            }
+
+
+            const members =
+                Array.isArray(
+                    result.data?.members
+                )
+                    ? result.data.members
+                    : [];
+
+
+            console.log(
+                "Members:",
+                members
+            );
+
+
+            updateMembersUI(
+                members
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Members loading error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // UPDATE MEMBERS UI
+    // =====================================================
+
+    function updateMembersUI(
         members
-            .slice(0, 3)
-            .forEach((member, index) => {
+    ) {
 
-                if (!avatars[index]) {
-                    return;
+        // =============================================
+        // MEMBER COUNT
+        // =============================================
+
+        if (memberCountElement) {
+
+            memberCountElement.textContent =
+                `${members.length} ${members.length === 1
+                    ? "member"
+                    : "members"
+                }`;
+
+        }
+
+
+        // =============================================
+        // FIND MEMBER CONTAINER
+        // =============================================
+
+        const memberContainer =
+            document.querySelector(
+                ".member-stack"
+            );
+
+
+        if (
+            !memberContainer ||
+            !members.length
+        ) {
+
+            return;
+
+        }
+
+
+        // =============================================
+        // CLEAR OLD AVATARS
+        // =============================================
+
+        memberContainer.innerHTML = "";
+
+
+        // =============================================
+        // CREATE MEMBER AVATARS
+        // =============================================
+
+        members
+            .slice(0, 5)
+            .forEach(
+                (member) => {
+
+                    const avatar =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    avatar.className =
+                        "member-avatar";
+
+
+                    const name =
+                        member.name ||
+                        member.user_name ||
+                        member.email ||
+                        "User";
+
+
+                    const profileImage =
+                        member.profile_image ||
+                        "";
+
+
+                    if (profileImage) {
+
+                        avatar.style.backgroundImage =
+                            `url("${profileImage}")`;
+
+                        avatar.style.backgroundSize =
+                            "cover";
+
+                        avatar.style.backgroundPosition =
+                            "center";
+
+                        avatar.textContent = "";
+
+                    }
+
+                    else {
+
+                        avatar.textContent =
+                            name
+                                .charAt(0)
+                                .toUpperCase();
+
+                    }
+
+
+                    avatar.title =
+                        name;
+
+
+                    memberContainer.appendChild(
+                        avatar
+                    );
+
                 }
-
-                const name =
-                    member.name ||
-                    member.user_name ||
-                    member.email ||
-                    "U";
-
-                avatars[index].textContent =
-                    name.charAt(0).toUpperCase();
-
-            });
+            );
 
     }
 
@@ -305,13 +807,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     const inviteModal =
-        document.getElementById("inviteModal");
+        document.getElementById(
+            "inviteModal"
+        );
+
 
     const inviteButtons = [
-        document.getElementById("inviteButton"),
-        document.getElementById("welcomeInvite"),
-        document.getElementById("membersInvite")
+
+        document.getElementById(
+            "inviteButton"
+        ),
+
+        document.getElementById(
+            "welcomeInvite"
+        ),
+
+        document.getElementById(
+            "membersInvite"
+        )
+
     ];
+
 
     function openInviteModal() {
 
@@ -319,9 +835,13 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        inviteModal.classList.add("open");
+
+        inviteModal.classList.add(
+            "open"
+        );
 
     }
+
 
     function closeInviteModal() {
 
@@ -329,26 +849,36 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        inviteModal.classList.remove("open");
+
+        inviteModal.classList.remove(
+            "open"
+        );
 
     }
 
-    inviteButtons.forEach(button => {
 
-        if (!button) {
-            return;
+    inviteButtons.forEach(
+        (button) => {
+
+            if (!button) {
+                return;
+            }
+
+
+            button.addEventListener(
+                "click",
+                openInviteModal
+            );
+
         }
-
-        button.addEventListener(
-            "click",
-            openInviteModal
-        );
-
-    });
+    );
 
 
     const closeInvite =
-        document.getElementById("closeInvite");
+        document.getElementById(
+            "closeInvite"
+        );
+
 
     if (closeInvite) {
 
@@ -364,7 +894,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         inviteModal.addEventListener(
             "click",
-            event => {
+            (event) => {
 
                 if (
                     event.target ===
@@ -382,11 +912,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // COPY INVITE
+    // COPY INVITE CODE
     // =====================================================
 
     const copyInvite =
-        document.getElementById("copyInvite");
+        document.getElementById(
+            "copyInvite"
+        );
+
 
     if (copyInvite) {
 
@@ -399,12 +932,25 @@ document.addEventListener("DOMContentLoaded", () => {
                         ".invite-code strong"
                     );
 
+
                 if (!codeElement) {
                     return;
                 }
 
+
                 const code =
                     codeElement.textContent.trim();
+
+
+                if (
+                    !code ||
+                    code === "Unavailable"
+                ) {
+
+                    return;
+
+                }
+
 
                 try {
 
@@ -412,15 +958,24 @@ document.addEventListener("DOMContentLoaded", () => {
                         code
                     );
 
+
                     copyInvite.innerHTML =
-                        `<i class="fa-solid fa-check"></i>`;
+                        `
+                        <i class="fa-solid fa-check"></i>
+                        `;
 
-                    setTimeout(() => {
 
-                        copyInvite.innerHTML =
-                            `<i class="fa-regular fa-copy"></i>`;
+                    setTimeout(
+                        () => {
 
-                    }, 1500);
+                            copyInvite.innerHTML =
+                                `
+                                <i class="fa-regular fa-copy"></i>
+                                `;
+
+                        },
+                        1500
+                    );
 
                 }
 
@@ -440,22 +995,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // SHARE
+    // SHARE SPACE
     // =====================================================
 
     const shareButton =
-        document.getElementById("shareButton");
+        document.getElementById(
+            "shareButton"
+        );
 
     const shareInvite =
-        document.getElementById("shareInvite");
+        document.getElementById(
+            "shareInvite"
+        );
+
 
     async function shareSpace() {
 
+        const title =
+            spaceNameElement
+                ? spaceNameElement.textContent
+                : "everUS Space";
+
+
         const shareData = {
 
-            title: spaceName
-                ? spaceName.textContent
-                : "everUS Space",
+            title: title,
 
             text:
                 "Join my private everUS space.",
@@ -465,7 +1029,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         };
 
-        if (navigator.share) {
+
+        if (
+            navigator.share
+        ) {
 
             try {
 
@@ -476,6 +1043,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             catch {
+
+                // User cancelled share
 
             }
 
@@ -488,6 +1057,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 await navigator.clipboard.writeText(
                     window.location.href
                 );
+
 
                 alert(
                     "Space link copied!"
@@ -507,6 +1077,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+
     if (shareButton) {
 
         shareButton.addEventListener(
@@ -515,6 +1086,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
     }
+
 
     if (shareInvite) {
 
@@ -531,12 +1103,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     const mobileMenu =
-        document.getElementById("mobileMenu");
+        document.getElementById(
+            "mobileMenu"
+        );
+
 
     const sidebar =
-        document.querySelector(".space-sidebar");
+        document.querySelector(
+            ".space-sidebar"
+        );
 
-    if (mobileMenu && sidebar) {
+
+    if (
+        mobileMenu &&
+        sidebar
+    ) {
 
         mobileMenu.addEventListener(
             "click",
@@ -557,18 +1138,29 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     const changeCover =
-        document.getElementById("changeCover");
+        document.getElementById(
+            "changeCover"
+        );
 
-    if (changeCover && spaceCover) {
+
+    if (
+        changeCover &&
+        spaceCover
+    ) {
 
         changeCover.addEventListener(
             "click",
             () => {
 
                 const input =
-                    document.createElement("input");
+                    document.createElement(
+                        "input"
+                    );
 
-                input.type = "file";
+
+                input.type =
+                    "file";
+
 
                 input.accept =
                     "image/png,image/jpeg,image/webp";
@@ -581,25 +1173,32 @@ document.addEventListener("DOMContentLoaded", () => {
                         const file =
                             input.files[0];
 
+
                         if (!file) {
                             return;
                         }
 
+
                         const reader =
                             new FileReader();
 
+
                         reader.onload =
-                            event => {
+                            (event) => {
 
                                 spaceCover.style.backgroundImage =
                                     `url("${event.target.result}")`;
 
                             };
 
-                        reader.readAsDataURL(file);
+
+                        reader.readAsDataURL(
+                            file
+                        );
 
                     }
                 );
+
 
                 input.click();
 
@@ -610,9 +1209,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // LOAD SPACE
+    // INITIAL API LOAD
     // =====================================================
 
     loadSpace();
+
+    loadMembers();
 
 });
