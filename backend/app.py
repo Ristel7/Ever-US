@@ -6,6 +6,7 @@ from routes.user_routes import user_bp
 from routes.space_routes import space_bp
 from routes.invite_routes import invite_bp
 from routes.message_routes import message_bp
+from routes.memory_routes import memory_bp
 from socketio_instance import socketio
 from web.page_routes import page_bp
 
@@ -69,6 +70,11 @@ app.register_blueprint(
 app.register_blueprint(
     message_bp,
     url_prefix="/api/messages"
+)
+
+app.register_blueprint(
+    memory_bp,
+    url_prefix="/api/spaces"
 )
 
 
