@@ -211,6 +211,53 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+                let successMessage =
+                    "Space created successfully!";
+
+                const coverFile =
+                    coverInput.files[0];
+
+                if (coverFile) {
+
+                    const coverData =
+                        new FormData();
+
+                    coverData.append(
+                        "image",
+                        coverFile
+                    );
+
+                    const coverResponse =
+                        await fetch(
+                            `/api/spaces/${result.data.space_id}/cover`,
+                            {
+                                method: "PUT",
+
+                                headers: {
+                                    "Authorization":
+                                        `Bearer ${token}`
+                                },
+
+                                body: coverData
+                            }
+                        );
+
+                    const coverResult =
+                        await coverResponse.json();
+
+                    if (
+                        !coverResponse.ok ||
+                        !coverResult.success
+                    ) {
+
+                        successMessage =
+                            "Space created, but the cover image could not be uploaded. You can retry it in space settings.";
+
+                    }
+
+                }
+
+
                 // =================================================
                 // SUCCESS
                 // =================================================
@@ -220,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 message.textContent =
-                    "Space created successfully!";
+                    successMessage;
 
 
                 setTimeout(

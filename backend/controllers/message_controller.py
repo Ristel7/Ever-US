@@ -1,4 +1,5 @@
 from flask import request, g
+from bson import ObjectId
 
 from socketio_instance import socketio
 
@@ -21,7 +22,9 @@ from utils.validator import (
 
 def send_message():
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return error("A JSON object is required", 400)
 
     space_id = data.get("space_id")
     message = data.get("message")
@@ -33,11 +36,17 @@ def send_message():
             400
         )
 
+    if not isinstance(space_id, str) or not ObjectId.is_valid(space_id):
+        return error("Invalid space ID", 400)
+
     if not validate_required(message):
         return error(
             "Message cannot be empty",
             400
         )
+
+    if not isinstance(message, str):
+        return error("Message must be text", 400)
 
     if not validate_length(message, 5000):
         return error(
@@ -98,6 +107,9 @@ def send_image_message():
             400
         )
 
+    if not ObjectId.is_valid(space_id):
+        return error("Invalid space ID", 400)
+
     user_id = g.user["_id"]
 
     if not is_member(space_id, user_id):
@@ -141,6 +153,9 @@ def send_image_message():
 
 def get_space_messages(space_id):
 
+    if not ObjectId.is_valid(space_id):
+        return error("Invalid space ID", 400)
+
     user_id = g.user["_id"]
 
     if not is_member(space_id, user_id):
@@ -161,7 +176,12 @@ def get_space_messages(space_id):
 
 def edit_message(message_id):
 
-    data = request.get_json()
+    if not ObjectId.is_valid(message_id):
+        return error("Invalid message ID", 400)
+
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return error("A JSON object is required", 400)
 
     new_message = data.get("message")
 
@@ -170,6 +190,9 @@ def edit_message(message_id):
             "Message cannot be empty",
             400
         )
+
+    if not isinstance(new_message, str):
+        return error("Message must be text", 400)
 
     if not validate_length(new_message, 5000):
         return error(
@@ -195,6 +218,9 @@ def edit_message(message_id):
 
 
 def remove_message(message_id):
+
+    if not ObjectId.is_valid(message_id):
+        return error("Invalid message ID", 400)
 
     success_delete = delete_message(
         message_id,

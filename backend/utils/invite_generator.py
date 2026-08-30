@@ -1,4 +1,4 @@
-import random
+import secrets
 import string
 
 
@@ -11,7 +11,7 @@ def generate_invite_code(length=8):
     characters = string.ascii_uppercase + string.digits
 
     code = "".join(
-        random.choice(characters)
+        secrets.choice(characters)
         for _ in range(length)
     )
 

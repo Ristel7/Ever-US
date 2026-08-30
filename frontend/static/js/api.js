@@ -1,8 +1,8 @@
-const API_URL = "http://127.0.0.1:5000/api";
+const API_URL = "/api";
 
 async function api(endpoint, method = "GET", data = null) {
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
 
     const options = {
         method,

@@ -12,8 +12,8 @@ async function login(email, password) {
     if (response.success) {
 
         localStorage.setItem(
-            "token",
-            response.data.token
+            "access_token",
+            response.token
         );
 
         window.location.href = "/dashboard";
