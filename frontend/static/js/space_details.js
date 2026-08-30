@@ -1353,11 +1353,787 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
+    // MEMORIES
+    // =====================================================
+
+    const memoryGallery =
+        document.getElementById(
+            "memoryGallery"
+        );
+
+    const memoryGalleryEmpty =
+        document.getElementById(
+            "memoryGalleryEmpty"
+        );
+
+    const memoryNavCount =
+        document.getElementById(
+            "memoryNavCount"
+        );
+
+    const memoryQuickCount =
+        document.getElementById(
+            "memoryQuickCount"
+        );
+
+    const memoryUploadModal =
+        document.getElementById(
+            "memoryUploadModal"
+        );
+
+    const memoryUploadForm =
+        document.getElementById(
+            "memoryUploadForm"
+        );
+
+    const memoryFileInput =
+        document.getElementById(
+            "memoryFileInput"
+        );
+
+    const memoryCaptionInput =
+        document.getElementById(
+            "memoryCaptionInput"
+        );
+
+    const memoryUploadPreview =
+        document.getElementById(
+            "memoryUploadPreview"
+        );
+
+    const memoryUploadMessage =
+        document.getElementById(
+            "memoryUploadMessage"
+        );
+
+    const submitMemoryUpload =
+        document.getElementById(
+            "submitMemoryUpload"
+        );
+
+    const addMemoryButton =
+        document.getElementById(
+            "addMemoryButton"
+        );
+
+    const uploadMemoryButton =
+        document.getElementById(
+            "uploadMemoryButton"
+        );
+
+    const closeMemoryUpload =
+        document.getElementById(
+            "closeMemoryUpload"
+        );
+
+    const cancelMemoryUpload =
+        document.getElementById(
+            "cancelMemoryUpload"
+        );
+
+    const allowedMemoryExtensions = new Set([
+        "jpg", "jpeg", "png", "webp", "mp4", "webm"
+    ]);
+
+    let memoryPreviewUrl = null;
+    let currentMemories = [];
+
+
+    function updateMemoryCounts(count) {
+
+        if (memoryNavCount) {
+
+            memoryNavCount.textContent =
+                String(count);
+
+            memoryNavCount.title =
+                `${count} ${count === 1
+                    ? "memory"
+                    : "memories"
+                }`;
+
+        }
+
+        if (memoryQuickCount) {
+
+            memoryQuickCount.textContent =
+                String(count);
+
+            memoryQuickCount.title =
+                `${count} ${count === 1
+                    ? "memory"
+                    : "memories"
+                }`;
+
+        }
+
+    }
+
+
+    function setGalleryEmptyMessage(title, message) {
+
+        if (!memoryGalleryEmpty) {
+            return;
+        }
+
+        const titleElement =
+            memoryGalleryEmpty.querySelector("h3");
+
+        const messageElement =
+            memoryGalleryEmpty.querySelector("p");
+
+        if (titleElement) {
+
+            titleElement.textContent = title;
+
+        }
+
+        if (messageElement) {
+
+            messageElement.textContent = message;
+
+        }
+
+    }
+
+
+    function safeMediaUrl(value) {
+
+        try {
+
+            const url = new URL(
+                String(value || ""),
+                window.location.origin
+            );
+
+            return ["http:", "https:"].includes(url.protocol)
+                ? url.href
+                : "";
+
+        } catch {
+
+            return "";
+
+        }
+
+    }
+
+
+    function formatMemoryDate(value) {
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+
+            return "Saved moment";
+
+        }
+
+        return date.toLocaleDateString(
+            undefined,
+            {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    function renderMemories(memories) {
+
+        currentMemories = Array.isArray(memories)
+            ? memories
+            : [];
+
+        updateMemoryCounts(currentMemories.length);
+
+        if (!memoryGallery || !memoryGalleryEmpty) {
+            return;
+        }
+
+        memoryGallery.replaceChildren();
+
+        if (currentMemories.length === 0) {
+
+            memoryGallery.classList.add("hidden");
+            memoryGalleryEmpty.classList.remove("hidden");
+            setGalleryEmptyMessage(
+                "No memories yet",
+                "Upload your first photo or video and make this space yours."
+            );
+            return;
+
+        }
+
+        memoryGalleryEmpty.classList.add("hidden");
+        memoryGallery.classList.remove("hidden");
+
+        currentMemories.forEach(
+            (memory) => {
+
+                const card =
+                    document.createElement("article");
+
+                card.className = "memory-card";
+
+                const mediaContainer =
+                    document.createElement("div");
+
+                mediaContainer.className = "memory-card-media";
+
+                const url = safeMediaUrl(memory.url);
+
+                if (url && memory.media_type === "video") {
+
+                    const video =
+                        document.createElement("video");
+
+                    video.src = url;
+                    video.controls = true;
+                    video.preload = "metadata";
+                    mediaContainer.appendChild(video);
+
+                } else if (url && memory.media_type === "image") {
+
+                    const image =
+                        document.createElement("img");
+
+                    image.src = url;
+                    image.alt = memory.caption || "Space memory";
+                    image.loading = "lazy";
+                    mediaContainer.appendChild(image);
+
+                } else {
+
+                    const unavailable =
+                        document.createElement("span");
+
+                    unavailable.textContent =
+                        "Media unavailable";
+
+                    mediaContainer.appendChild(unavailable);
+
+                }
+
+                const content =
+                    document.createElement("div");
+
+                content.className = "memory-card-content";
+
+                if (memory.caption) {
+
+                    const caption =
+                        document.createElement("p");
+
+                    caption.className = "memory-card-caption";
+                    caption.textContent = memory.caption;
+                    content.appendChild(caption);
+
+                }
+
+                const meta =
+                    document.createElement("div");
+
+                meta.className = "memory-card-meta";
+
+                const date =
+                    document.createElement("span");
+
+                date.textContent =
+                    formatMemoryDate(memory.created_at);
+
+                const deleteButton =
+                    document.createElement("button");
+
+                deleteButton.className =
+                    "memory-delete-button";
+
+                deleteButton.type = "button";
+                deleteButton.title = "Delete memory";
+                deleteButton.setAttribute(
+                    "aria-label",
+                    "Delete memory"
+                );
+                deleteButton.innerHTML =
+                    '<i class="fa-solid fa-trash"></i>';
+
+                if (typeof memory._id !== "string") {
+
+                    deleteButton.disabled = true;
+
+                } else {
+
+                    deleteButton.addEventListener(
+                        "click",
+                        () => deleteMemory(
+                            memory._id,
+                            deleteButton
+                        )
+                    );
+
+                }
+
+                meta.appendChild(date);
+                meta.appendChild(deleteButton);
+                content.appendChild(meta);
+                card.appendChild(mediaContainer);
+                card.appendChild(content);
+                memoryGallery.appendChild(card);
+
+            }
+        );
+
+    }
+
+
+    async function loadMemories() {
+
+        if (!memoryGallery || !memoryGalleryEmpty) {
+            return;
+        }
+
+        try {
+
+            const response = await api(
+                `/api/spaces/${spaceId}/memories`
+            );
+
+            if (!response) {
+                return;
+            }
+
+            const result = await response.json().catch(
+                () => ({})
+            );
+
+            if (!response.ok || !result.success) {
+
+                if (response.status === 403) {
+
+                    setGalleryEmptyMessage(
+                        "Access denied",
+                        "You do not have access to this space's memories."
+                    );
+
+                } else if (response.status === 404) {
+
+                    setGalleryEmptyMessage(
+                        "Memories unavailable",
+                        "This space could not be found."
+                    );
+
+                } else {
+
+                    setGalleryEmptyMessage(
+                        "Unable to load memories",
+                        "Please try again in a moment."
+                    );
+
+                }
+
+                memoryGallery.classList.add("hidden");
+                memoryGalleryEmpty.classList.remove("hidden");
+                updateMemoryCounts(0);
+                return;
+
+            }
+
+            renderMemories(result.data?.memories || []);
+
+        } catch {
+
+            memoryGallery.classList.add("hidden");
+            memoryGalleryEmpty.classList.remove("hidden");
+            setGalleryEmptyMessage(
+                "Unable to load memories",
+                "Check your connection and try again."
+            );
+            updateMemoryCounts(0);
+
+        }
+
+    }
+
+
+    function clearMemoryPreview() {
+
+        if (memoryPreviewUrl) {
+
+            URL.revokeObjectURL(memoryPreviewUrl);
+            memoryPreviewUrl = null;
+
+        }
+
+        if (memoryUploadPreview) {
+
+            memoryUploadPreview.replaceChildren();
+            memoryUploadPreview.classList.add("hidden");
+
+        }
+
+    }
+
+
+    function closeMemoryUploadModal() {
+
+        if (!memoryUploadModal) {
+            return;
+        }
+
+        memoryUploadModal.classList.remove("open");
+        memoryUploadModal.setAttribute("aria-hidden", "true");
+        clearMemoryPreview();
+
+        if (memoryUploadForm) {
+
+            memoryUploadForm.reset();
+
+        }
+
+        if (memoryUploadMessage) {
+
+            memoryUploadMessage.textContent = "";
+            memoryUploadMessage.classList.remove("success");
+
+        }
+
+    }
+
+
+    function openMemoryUploadModal() {
+
+        if (!memoryUploadModal) {
+            return;
+        }
+
+        memoryUploadModal.classList.add("open");
+        memoryUploadModal.setAttribute("aria-hidden", "false");
+
+    }
+
+
+    function showMemoryPreview(file) {
+
+        clearMemoryPreview();
+
+        if (!file || !memoryUploadPreview) {
+            return;
+        }
+
+        memoryPreviewUrl = URL.createObjectURL(file);
+
+        const media = document.createElement(
+            file.type.startsWith("video/")
+                ? "video"
+                : "img"
+        );
+
+        media.src = memoryPreviewUrl;
+
+        if (media instanceof HTMLVideoElement) {
+
+            media.controls = true;
+            media.preload = "metadata";
+
+        } else {
+
+            media.alt = "Selected memory preview";
+
+        }
+
+        memoryUploadPreview.appendChild(media);
+        memoryUploadPreview.classList.remove("hidden");
+
+    }
+
+
+    function setUploadMessage(message, isSuccess = false) {
+
+        if (!memoryUploadMessage) {
+            return;
+        }
+
+        memoryUploadMessage.textContent = message;
+        memoryUploadMessage.classList.toggle(
+            "success",
+            isSuccess
+        );
+
+    }
+
+
+    if (memoryFileInput) {
+
+        memoryFileInput.addEventListener(
+            "change",
+            () => {
+
+                const file = memoryFileInput.files[0];
+
+                if (!file) {
+
+                    clearMemoryPreview();
+                    return;
+
+                }
+
+                const extension =
+                    file.name.split(".").pop().toLowerCase();
+
+                if (
+                    !allowedMemoryExtensions.has(extension) ||
+                    file.size > 100 * 1024 * 1024
+                ) {
+
+                    memoryFileInput.value = "";
+                    clearMemoryPreview();
+                    setUploadMessage(
+                        "Choose a supported file up to 100 MB."
+                    );
+                    return;
+
+                }
+
+                setUploadMessage("");
+                showMemoryPreview(file);
+
+            }
+        );
+
+    }
+
+
+    async function uploadMemory(event) {
+
+        event.preventDefault();
+
+        const file = memoryFileInput?.files[0];
+        if (!file) {
+
+            setUploadMessage("Choose a file before uploading.");
+            return;
+
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const caption = memoryCaptionInput?.value.trim();
+        if (caption) {
+
+            formData.append("caption", caption);
+
+        }
+
+        const originalButtonContent =
+            submitMemoryUpload.innerHTML;
+
+        submitMemoryUpload.disabled = true;
+        submitMemoryUpload.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+        setUploadMessage("");
+
+        try {
+
+            // api() detects FormData and sends only the Authorization header;
+            // the browser sets the multipart boundary Content-Type.
+            const response = await api(
+                `/api/spaces/${spaceId}/memories`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            if (!response) {
+                return;
+            }
+
+            const result = await response.json().catch(
+                () => ({})
+            );
+
+            if (!response.ok || !result.success) {
+
+                const messages = {
+                    403: "You are not allowed to upload to this space.",
+                    404: "This space could not be found.",
+                    413: "This file is too large to upload."
+                };
+
+                setUploadMessage(
+                    messages[response.status] ||
+                    result.message ||
+                    "Unable to upload this memory."
+                );
+                return;
+
+            }
+
+            setUploadMessage(
+                "Memory uploaded successfully.",
+                true
+            );
+
+            setTimeout(
+                async () => {
+
+                    closeMemoryUploadModal();
+                    await loadMemories();
+
+                },
+                350
+            );
+
+        } catch {
+
+            setUploadMessage(
+                "Unable to reach the server. Please try again."
+            );
+
+        } finally {
+
+            submitMemoryUpload.disabled = false;
+            submitMemoryUpload.innerHTML =
+                originalButtonContent;
+
+        }
+
+    }
+
+
+    async function deleteMemory(memoryId, button) {
+
+        if (!window.confirm("Delete this memory permanently?")) {
+            return;
+        }
+
+        button.disabled = true;
+
+        try {
+
+            const response = await api(
+                `/api/spaces/${spaceId}/memories/${memoryId}`,
+                {method: "DELETE"}
+            );
+
+            if (!response) {
+                return;
+            }
+
+            const result = await response.json().catch(
+                () => ({})
+            );
+
+            if (!response.ok || !result.success) {
+
+                if (response.status === 403) {
+
+                    alert(
+                        "You are not authorized to delete this memory."
+                    );
+
+                } else {
+
+                    alert(
+                        result.message ||
+                        "Unable to delete this memory."
+                    );
+
+                }
+
+                return;
+
+            }
+
+            renderMemories(
+                currentMemories.filter(
+                    (memory) => memory._id !== memoryId
+                )
+            );
+
+        } catch {
+
+            alert(
+                "Unable to reach the server. Please try again."
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+        }
+
+    }
+
+
+    [addMemoryButton, uploadMemoryButton].forEach(
+        (button) => {
+
+            if (button) {
+
+                button.addEventListener(
+                    "click",
+                    openMemoryUploadModal
+                );
+
+            }
+
+        }
+    );
+
+    if (memoryUploadForm) {
+
+        memoryUploadForm.addEventListener(
+            "submit",
+            uploadMemory
+        );
+
+    }
+
+    [closeMemoryUpload, cancelMemoryUpload].forEach(
+        (button) => {
+
+            if (button) {
+
+                button.addEventListener(
+                    "click",
+                    closeMemoryUploadModal
+                );
+
+            }
+
+        }
+    );
+
+    if (memoryUploadModal) {
+
+        memoryUploadModal.addEventListener(
+            "click",
+            (event) => {
+
+                if (event.target === memoryUploadModal) {
+
+                    closeMemoryUploadModal();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
     // INITIAL API LOAD
     // =====================================================
 
     loadSpace();
 
     loadMembers();
+
+    loadMemories();
 
 });

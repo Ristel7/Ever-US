@@ -910,6 +910,174 @@ a {
     margin-top: 17px;
 }
 
+.gallery-empty.hidden,
+.memory-gallery.hidden,
+.memory-upload-preview.hidden {
+    display: none;
+}
+
+.memory-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.memory-card {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .018);
+}
+
+.memory-card-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #0b0e1d;
+}
+
+.memory-card-media img,
+.memory-card-media video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.memory-card-content {
+    padding: 11px;
+}
+
+.memory-card-caption {
+    margin: 0;
+    color: #d7daea;
+    font-size: 10px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.memory-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+    color: #727991;
+    font-size: 8px;
+}
+
+.memory-delete-button {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(248, 113, 113, .22);
+    border-radius: 8px;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, .08);
+}
+
+.memory-delete-button:disabled {
+    opacity: .55;
+    cursor: wait;
+}
+
+.memory-upload-card {
+    width: min(470px, 100%);
+}
+
+.memory-file-picker {
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    border: 1px dashed rgba(139, 92, 246, .4);
+    border-radius: 13px;
+    color: #c7b6ff;
+    background: rgba(139, 92, 246, .05);
+    text-align: center;
+    cursor: pointer;
+}
+
+.memory-file-picker input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.memory-file-picker i {
+    font-size: 21px;
+}
+
+.memory-file-picker strong {
+    font-size: 11px;
+}
+
+.memory-file-picker small,
+.memory-caption-label span {
+    color: #777f98;
+    font-size: 9px;
+}
+
+.memory-upload-preview {
+    height: 170px;
+    margin-top: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #090c1a;
+}
+
+.memory-upload-preview img,
+.memory-upload-preview video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.memory-caption-label {
+    display: flex;
+    justify-content: space-between;
+    margin: 14px 0 6px;
+    color: #c8ccdc;
+    font-size: 10px;
+}
+
+.memory-upload-card textarea {
+    width: 100%;
+    min-height: 76px;
+    resize: vertical;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: 0;
+    color: #e5e7ef;
+    background: rgba(255, 255, 255, .03);
+    font: inherit;
+    font-size: 10px;
+}
+
+.memory-upload-message {
+    min-height: 15px;
+    margin: 8px 0 0 !important;
+    color: #fca5a5 !important;
+}
+
+.memory-upload-message.success {
+    color: #86efac !important;
+}
+
+.memory-upload-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 14px;
+}
+
 .timeline-empty {
     position: relative;
     min-height: 440px;
@@ -1395,6 +1563,10 @@ a {
         min-height: 350px;
     }
 
+    .memory-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
 }
 
 @media (max-width: 400px) {
@@ -1405,6 +1577,19 @@ a {
 
     .hero-actions {
         flex-direction: column;
+    }
+
+    .memory-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .memory-upload-actions {
+        flex-direction: column-reverse;
+    }
+
+    .memory-upload-actions .primary-button,
+    .memory-upload-actions .secondary-button {
+        width: 100%;
     }
 
 }

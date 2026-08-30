@@ -70,7 +70,7 @@
                         Memories
                     </span>
 
-                    <span class="nav-count">
+                    <span class="nav-count" id="memoryNavCount">
                         0
                     </span>
 
@@ -406,7 +406,7 @@
                                     Memories
                                 </span>
 
-                                <strong>
+                                <strong id="memoryQuickCount">
                                     0
                                 </strong>
 
@@ -675,7 +675,7 @@
                         </div>
 
 
-                        <button class="primary-button">
+                        <button class="primary-button" id="addMemoryButton">
 
                             <i class="fa-solid fa-plus"></i>
 
@@ -686,7 +686,7 @@
                     </div>
 
 
-                    <div class="gallery-empty">
+                    <div class="gallery-empty" id="memoryGalleryEmpty">
 
                         <div class="gallery-empty-icon">
 
@@ -703,7 +703,7 @@
                             and make this space yours.
                         </p>
 
-                        <button class="primary-button">
+                        <button class="primary-button" id="uploadMemoryButton">
 
                             <i class="fa-solid fa-cloud-arrow-up"></i>
 
@@ -712,6 +712,8 @@
                         </button>
 
                     </div>
+
+                    <div class="memory-gallery hidden" id="memoryGallery" aria-live="polite"></div>
 
                 </section>
 
@@ -1162,6 +1164,62 @@
                 Share invite
 
             </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+     MEMORY UPLOAD MODAL
+========================================================= -->
+
+    <div class="modal" id="memoryUploadModal" aria-hidden="true">
+
+        <div class="modal-card memory-upload-card">
+
+            <button class="modal-close" id="closeMemoryUpload" type="button" aria-label="Close upload dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-icon">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+
+            <span>ADD MEMORY</span>
+
+            <h2>Save a moment.</h2>
+
+            <p>Upload a photo or video to this private space.</p>
+
+            <form id="memoryUploadForm">
+
+                <label class="memory-file-picker" for="memoryFileInput">
+                    <input type="file" id="memoryFileInput" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm" required>
+                    <i class="fa-solid fa-images"></i>
+                    <strong>Choose a photo or video</strong>
+                    <small>JPG, JPEG, PNG, WEBP, MP4, or WEBM · up to 100 MB</small>
+                </label>
+
+                <div class="memory-upload-preview hidden" id="memoryUploadPreview"></div>
+
+                <label class="memory-caption-label" for="memoryCaptionInput">
+                    Caption <span>Optional</span>
+                </label>
+
+                <textarea id="memoryCaptionInput" maxlength="1000" placeholder="Add a short note about this moment..."></textarea>
+
+                <p class="memory-upload-message" id="memoryUploadMessage" role="status"></p>
+
+                <div class="memory-upload-actions">
+                    <button class="secondary-button" id="cancelMemoryUpload" type="button">Cancel</button>
+                    <button class="primary-button" id="submitMemoryUpload" type="submit">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        Upload Memory
+                    </button>
+                </div>
+
+            </form>
 
         </div>
 
