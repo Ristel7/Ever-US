@@ -64,6 +64,11 @@ app.register_blueprint(
 )
 
 app.register_blueprint(
+    journal_bp,
+    url_prefix="/api/spaces"
+)
+
+app.register_blueprint(
     invite_bp,
     url_prefix="/api/invite"
 )
