@@ -9,6 +9,7 @@ from routes.message_routes import message_bp
 from routes.memory_routes import memory_bp
 from socketio_instance import socketio
 from web.page_routes import page_bp
+from routes.journal_routes import journal_bp
 
 
 # PATH CONFIGURATION
