@@ -106,3 +106,4 @@ def login_user(email, password):
             "email": user["email"]
         }
     }
+2
