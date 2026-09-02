@@ -845,65 +845,67 @@
                  JOURNAL
             ================================================== -->
 
+                <!-- =================================================
+                     JOURNAL
+                ================================================== -->
+                
                 <section class="content-view" id="journal">
-
+                
                     <div class="section-heading">
-
+                
                         <div>
-
+                
                             <span>
                                 PRIVATE THOUGHTS
                             </span>
-
+                
                             <h2>
                                 Journal
                             </h2>
-
+                
                             <p>
                                 Write down the moments
                                 you want to remember.
                             </p>
-
+                
                         </div>
-
-
-                        <button class="primary-button">
-
+                
+                        <button class="primary-button" id="newJournalEntryButton" type="button">
                             <i class="fa-solid fa-pen"></i>
-
                             New entry
-
                         </button>
-
+                
                     </div>
-
-
-                    <div class="journal-empty">
-
+                
+                
+                    <!-- JOURNAL EMPTY STATE -->
+                
+                    <div class="journal-empty" id="journalEmpty">
+                
                         <div class="journal-icon">
-
                             <i class="fa-solid fa-book-open"></i>
-
                         </div>
-
+                
                         <h3>
                             Your journal is waiting
                         </h3>
-
+                
                         <p>
                             Start writing your first entry.
                         </p>
-
-                        <button class="primary-button">
-
+                
+                        <button class="primary-button" id="writeJournalButton" type="button">
                             <i class="fa-solid fa-pen"></i>
-
                             Write something
-
                         </button>
-
+                
                     </div>
-
+                
+                
+                    <!-- JOURNAL ENTRIES -->
+                
+                    <div class="journal-list hidden" id="journalList" aria-live="polite"></div>
+                
                 </section>
 
 
