@@ -1225,6 +1225,81 @@
 
     </div>
 
+    <!-- =========================================================
+         JOURNAL ENTRY MODAL
+    ========================================================= -->
+    
+    <div class="modal" id="journalModal" aria-hidden="true">
+    
+        <div class="modal-card journal-modal-card">
+    
+            <button class="modal-close" id="closeJournalModal" type="button" aria-label="Close journal dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+    
+    
+            <div class="modal-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+    
+    
+            <span>
+                JOURNAL
+            </span>
+    
+    
+            <h2 id="journalModalTitle">
+                Write something.
+            </h2>
+    
+    
+            <p>
+                Capture a thought, memory or moment
+                worth keeping.
+            </p>
+    
+    
+            <form id="journalForm">
+    
+                <input type="hidden" id="journalEntryId">
+    
+    
+                <label class="journal-field-label" for="journalTitleInput">
+                    Title
+                </label>
+    
+                <input type="text" id="journalTitleInput" maxlength="200" placeholder="Give your entry a title..." required>
+    
+    
+                <label class="journal-field-label" for="journalContentInput">
+                    Your thoughts
+                </label>
+    
+                <textarea id="journalContentInput" maxlength="10000" placeholder="Write whatever is on your mind..."
+                    rows="8" required></textarea>
+    
+    
+                <p class="journal-form-message" id="journalFormMessage" role="status"></p>
+    
+    
+                <div class="journal-form-actions">
+    
+                    <button class="secondary-button" id="cancelJournalButton" type="button">
+                        Cancel
+                    </button>
+    
+                    <button class="primary-button" id="saveJournalButton" type="submit">
+                        <i class="fa-solid fa-check"></i>
+                        Save entry
+                    </button>
+    
+                </div>
+    
+            </form>
+    
+        </div>
+    
+    </div>
 
 
     <script src="{{ url_for('static', filename='js/space_details.js') }}"></script>
