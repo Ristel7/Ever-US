@@ -1,7 +1,5 @@
 from flask import request, g
-
 from bson import ObjectId
-
 from services.timeline_service import (
     create_timeline_event,
     get_space_timeline,
@@ -9,11 +7,8 @@ from services.timeline_service import (
     update_timeline_event,
     delete_timeline_event
 )
-
 from services.membership_service import is_member
-
 from services.space_service import get_space_by_id
-
 from utils.response import success, error
 
 
