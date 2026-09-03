@@ -1624,3 +1624,126 @@ a {
 
     display: block;
 }
+
+
+/* =====================================================
+   JOURNAL
+===================================================== */
+
+.journal-list {
+    display: grid;
+    gap: 18px;
+}
+
+.journal-list.hidden {
+    display: none;
+}
+
+.journal-entry-card {
+    background: #ffffff;
+    border: 1px solid rgba(30, 30, 30, 0.08);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.journal-entry-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.journal-entry-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.journal-entry-date {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.82rem;
+    opacity: 0.6;
+}
+
+.journal-entry-content {
+    margin: 18px 0 0;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.journal-entry-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.journal-entry-action {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(30, 30, 30, 0.08);
+    border-radius: 10px;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.journal-entry-action:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.journal-entry-action.delete:hover {
+    color: #b42318;
+}
+
+.journal-modal-card {
+    max-width: 620px;
+}
+
+.journal-field-label {
+    display: block;
+    margin: 18px 0 7px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.journal-modal-card input[type="text"],
+.journal-modal-card textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(30, 30, 30, 0.12);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font: inherit;
+    outline: none;
+    background: #fff;
+}
+
+.journal-modal-card input[type="text"]:focus,
+.journal-modal-card textarea:focus {
+    border-color: rgba(30, 30, 30, 0.35);
+}
+
+.journal-modal-card textarea {
+    resize: vertical;
+    min-height: 170px;
+}
+
+.journal-form-message {
+    min-height: 20px;
+    margin: 10px 0 0;
+    font-size: 0.88rem;
+}
+
+.journal-form-message.success {
+    color: #167c45;
+}
+
+.journal-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
