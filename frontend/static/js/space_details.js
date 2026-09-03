@@ -2125,6 +2125,730 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+    // =====================================================
+    // JOURNAL
+    // =====================================================
+
+    const journalList =
+        document.getElementById("journalList");
+
+    const journalEmpty =
+        document.getElementById("journalEmpty");
+
+    const newJournalEntryButton =
+        document.getElementById("newJournalEntryButton");
+
+    const writeJournalButton =
+        document.getElementById("writeJournalButton");
+
+    const journalModal =
+        document.getElementById("journalModal");
+
+    const closeJournalModal =
+        document.getElementById("closeJournalModal");
+
+    const cancelJournalButton =
+        document.getElementById("cancelJournalButton");
+
+    const journalForm =
+        document.getElementById("journalForm");
+
+    const journalEntryId =
+        document.getElementById("journalEntryId");
+
+    const journalTitleInput =
+        document.getElementById("journalTitleInput");
+
+    const journalContentInput =
+        document.getElementById("journalContentInput");
+
+    const journalModalTitle =
+        document.getElementById("journalModalTitle");
+
+    const journalFormMessage =
+        document.getElementById("journalFormMessage");
+
+    const saveJournalButton =
+        document.getElementById("saveJournalButton");
+
+    let currentJournalEntries = [];
+
+
+    function formatJournalDate(value) {
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return "Recently";
+        }
+
+        return date.toLocaleDateString(
+            undefined,
+            {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+            }
+        );
+    }
+
+
+    function setJournalMessage(
+        message,
+        isSuccess = false
+    ) {
+
+        if (!journalFormMessage) {
+            return;
+        }
+
+        journalFormMessage.textContent = message;
+
+        journalFormMessage.classList.toggle(
+            "success",
+            isSuccess
+        );
+    }
+
+
+    function openJournalModal(entry = null) {
+
+        if (!journalModal) {
+            return;
+        }
+
+        journalForm?.reset();
+
+        setJournalMessage("");
+
+        if (journalEntryId) {
+            journalEntryId.value =
+                entry?.id || "";
+        }
+
+        if (journalTitleInput) {
+            journalTitleInput.value =
+                entry?.title || "";
+        }
+
+        if (journalContentInput) {
+            journalContentInput.value =
+                entry?.content || "";
+        }
+
+        if (journalModalTitle) {
+
+            journalModalTitle.textContent =
+                entry
+                    ? "Edit your entry."
+                    : "Write something.";
+
+        }
+
+        if (saveJournalButton) {
+
+            saveJournalButton.innerHTML =
+                entry
+                    ? '<i class="fa-solid fa-check"></i> Update entry'
+                    : '<i class="fa-solid fa-check"></i> Save entry';
+
+        }
+
+        journalModal.classList.add("open");
+
+        journalModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        journalTitleInput?.focus();
+    }
+
+
+    function closeJournalEntryModal() {
+
+        if (!journalModal) {
+            return;
+        }
+
+        journalModal.classList.remove("open");
+
+        journalModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        journalForm?.reset();
+
+        setJournalMessage("");
+    }
+
+
+    function renderJournal(entries) {
+
+        currentJournalEntries =
+            Array.isArray(entries)
+                ? entries
+                : [];
+
+        if (!journalList || !journalEmpty) {
+            return;
+        }
+
+        journalList.replaceChildren();
+
+        if (currentJournalEntries.length === 0) {
+
+            journalList.classList.add("hidden");
+
+            journalEmpty.classList.remove(
+                "hidden"
+            );
+
+            return;
+        }
+
+        journalEmpty.classList.add(
+            "hidden"
+        );
+
+        journalList.classList.remove(
+            "hidden"
+        );
+
+
+        currentJournalEntries.forEach(
+            (entry) => {
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+                card.className =
+                    "journal-entry-card";
+
+
+                const header =
+                    document.createElement(
+                        "div"
+                    );
+
+                header.className =
+                    "journal-entry-header";
+
+
+                const titleContainer =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                const title =
+                    document.createElement(
+                        "h3"
+                    );
+
+                title.className =
+                    "journal-entry-title";
+
+                title.textContent =
+                    entry.title ||
+                    "Untitled entry";
+
+
+                const date =
+                    document.createElement(
+                        "span"
+                    );
+
+                date.className =
+                    "journal-entry-date";
+
+                date.textContent =
+                    formatJournalDate(
+                        entry.created_at
+                    );
+
+
+                titleContainer.appendChild(title);
+                titleContainer.appendChild(date);
+
+
+                const actions =
+                    document.createElement(
+                        "div"
+                    );
+
+                actions.className =
+                    "journal-entry-actions";
+
+
+                const editButton =
+                    document.createElement(
+                        "button"
+                    );
+
+                editButton.type = "button";
+
+                editButton.className =
+                    "journal-entry-action";
+
+                editButton.title =
+                    "Edit entry";
+
+                editButton.setAttribute(
+                    "aria-label",
+                    "Edit entry"
+                );
+
+                editButton.innerHTML =
+                    '<i class="fa-solid fa-pen"></i>';
+
+
+                editButton.addEventListener(
+                    "click",
+                    () => {
+
+                        openJournalModal(
+                            entry
+                        );
+
+                    }
+                );
+
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+                deleteButton.type = "button";
+
+                deleteButton.className =
+                    "journal-entry-action delete";
+
+                deleteButton.title =
+                    "Delete entry";
+
+                deleteButton.setAttribute(
+                    "aria-label",
+                    "Delete entry"
+                );
+
+                deleteButton.innerHTML =
+                    '<i class="fa-solid fa-trash"></i>';
+
+
+                deleteButton.addEventListener(
+                    "click",
+                    () => {
+
+                        deleteJournalEntry(
+                            entry.id,
+                            deleteButton
+                        );
+
+                    }
+                );
+
+
+                actions.appendChild(
+                    editButton
+                );
+
+                actions.appendChild(
+                    deleteButton
+                );
+
+
+                header.appendChild(
+                    titleContainer
+                );
+
+                header.appendChild(
+                    actions
+                );
+
+
+                const content =
+                    document.createElement(
+                        "p"
+                    );
+
+                content.className =
+                    "journal-entry-content";
+
+                content.textContent =
+                    entry.content || "";
+
+
+                card.appendChild(header);
+
+                card.appendChild(content);
+
+                journalList.appendChild(card);
+
+            }
+        );
+    }
+
+
+    async function loadJournal() {
+
+        if (!journalList || !journalEmpty) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await api(
+                    `/api/spaces/${spaceId}/journal`
+                );
+
+            if (!response) {
+                return;
+            }
+
+            const result =
+                await response.json().catch(
+                    () => ({})
+                );
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                console.error(
+                    "Journal load failed:",
+                    result.message
+                );
+
+                return;
+            }
+
+
+            renderJournal(
+                result.data?.entries || []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Journal loading error:",
+                error
+            );
+
+        }
+    }
+
+
+    async function saveJournalEntry(event) {
+
+        event.preventDefault();
+
+        const title =
+            journalTitleInput?.value.trim();
+
+        const content =
+            journalContentInput?.value.trim();
+
+        const entryId =
+            journalEntryId?.value.trim();
+
+
+        if (!title) {
+
+            setJournalMessage(
+                "Please enter a title."
+            );
+
+            journalTitleInput?.focus();
+
+            return;
+        }
+
+
+        if (!content) {
+
+            setJournalMessage(
+                "Please write something."
+            );
+
+            journalContentInput?.focus();
+
+            return;
+        }
+
+
+        saveJournalButton.disabled =
+            true;
+
+
+        const originalButtonContent =
+            saveJournalButton.innerHTML;
+
+
+        saveJournalButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+
+        setJournalMessage("");
+
+
+        try {
+
+            const isEditing =
+                Boolean(entryId);
+
+
+            const url =
+                isEditing
+                    ? `/api/spaces/${spaceId}/journal/${entryId}`
+                    : `/api/spaces/${spaceId}/journal`;
+
+
+            const response =
+                await api(
+                    url,
+                    {
+                        method:
+                            isEditing
+                                ? "PUT"
+                                : "POST",
+
+                        body:
+                            JSON.stringify({
+                                title,
+                                content
+                            })
+                    }
+                );
+
+
+            if (!response) {
+                return;
+            }
+
+
+            const result =
+                await response.json().catch(
+                    () => ({})
+                );
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                setJournalMessage(
+                    result.message ||
+                    "Unable to save journal entry."
+                );
+
+                return;
+            }
+
+
+            setJournalMessage(
+                isEditing
+                    ? "Entry updated successfully."
+                    : "Entry saved successfully.",
+                true
+            );
+
+
+            setTimeout(
+                async () => {
+
+                    closeJournalEntryModal();
+
+                    await loadJournal();
+
+                },
+                350
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Journal save error:",
+                error
+            );
+
+            setJournalMessage(
+                "Unable to reach the server. Please try again."
+            );
+
+        } finally {
+
+            saveJournalButton.disabled =
+                false;
+
+            saveJournalButton.innerHTML =
+                originalButtonContent;
+
+        }
+    }
+
+
+    async function deleteJournalEntry(
+        entryId,
+        button
+    ) {
+
+        if (
+            !window.confirm(
+                "Delete this journal entry permanently?"
+            )
+        ) {
+            return;
+        }
+
+
+        button.disabled = true;
+
+
+        try {
+
+            const response =
+                await api(
+                    `/api/spaces/${spaceId}/journal/${entryId}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+
+            if (!response) {
+                return;
+            }
+
+
+            const result =
+                await response.json().catch(
+                    () => ({})
+                );
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                alert(
+                    result.message ||
+                    "Unable to delete journal entry."
+                );
+
+                return;
+            }
+
+
+            currentJournalEntries =
+                currentJournalEntries.filter(
+                    (entry) =>
+                        entry.id !== entryId
+                );
+
+
+            renderJournal(
+                currentJournalEntries
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Journal delete error:",
+                error
+            );
+
+            alert(
+                "Unable to reach the server. Please try again."
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+        }
+    }
+
+
+    [
+        newJournalEntryButton,
+        writeJournalButton
+    ].forEach(
+        (button) => {
+
+            if (button) {
+
+                button.addEventListener(
+                    "click",
+                    () => openJournalModal()
+                );
+
+            }
+
+        }
+    );
+
+
+    if (closeJournalModal) {
+
+        closeJournalModal.addEventListener(
+            "click",
+            closeJournalEntryModal
+        );
+
+    }
+
+
+    if (cancelJournalButton) {
+
+        cancelJournalButton.addEventListener(
+            "click",
+            closeJournalEntryModal
+        );
+
+    }
+
+
+    if (journalModal) {
+
+        journalModal.addEventListener(
+            "click",
+            (event) => {
+
+                if (
+                    event.target ===
+                    journalModal
+                ) {
+
+                    closeJournalEntryModal();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (journalForm) {
+
+        journalForm.addEventListener(
+            "submit",
+            saveJournalEntry
+        );
+
+    }
 
     // =====================================================
     // INITIAL API LOAD
@@ -2135,5 +2859,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMembers();
 
     loadMemories();
-
+    loadJournal();
 });
