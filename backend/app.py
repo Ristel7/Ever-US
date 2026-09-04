@@ -10,6 +10,7 @@ from routes.memory_routes import memory_bp
 from socketio_instance import socketio
 from web.page_routes import page_bp
 from routes.journal_routes import journal_bp
+from routes.timeline_routes import timeline_bp
 
 
 # PATH CONFIGURATION
@@ -65,6 +66,11 @@ app.register_blueprint(
 
 app.register_blueprint(
     journal_bp,
+    url_prefix="/api/spaces"
+)
+
+app.register_blueprint(
+    timeline_bp,
     url_prefix="/api/spaces"
 )
 
