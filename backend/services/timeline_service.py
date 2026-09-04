@@ -1,32 +1,44 @@
 from datetime import datetime
+
 from bson import ObjectId
 
 from models.timeline import timeline_collection
 
 
-def serialize_timeline_event(event):
-    if not event:
-        return None
+def serialize_event(event):
 
     return {
         "id": str(event["_id"]),
-        "space_id": event["space_id"],
-        "author_id": event["author_id"],
+        "space_id": str(event["space_id"]),
+        "author_id": str(event["author_id"]),
         "title": event.get("title", ""),
         "description": event.get("description", ""),
-        "event_date": event.get("event_date"),
-        "created_at": event.get("created_at"),
-        "updated_at": event.get("updated_at"),
+        "event_date": (
+            event["event_date"].isoformat()
+            if event.get("event_date")
+            else None
+        ),
+        "created_at": (
+            event["created_at"].isoformat()
+            if event.get("created_at")
+            else None
+        ),
+        "updated_at": (
+            event["updated_at"].isoformat()
+            if event.get("updated_at")
+            else None
+        )
     }
 
 
-def create_timeline_event(
+def create_event(
     space_id,
     author_id,
     title,
     description,
     event_date
 ):
+
     now = datetime.utcnow()
 
     event = {
@@ -36,56 +48,82 @@ def create_timeline_event(
         "description": description,
         "event_date": event_date,
         "created_at": now,
-        "updated_at": now,
+        "updated_at": now
     }
 
-    result = timeline_collection.insert_one(event)
+    result = timeline_collection.insert_one(
+        event
+    )
 
     event["_id"] = result.inserted_id
 
-    return serialize_timeline_event(event)
+    return serialize_event(event)
 
 
-def get_space_timeline(space_id):
+def get_space_events(space_id):
+
     events = timeline_collection.find(
-        {"space_id": space_id}
-    ).sort("event_date", -1)
+        {
+            "space_id": space_id
+        }
+    ).sort(
+        "event_date",
+        -1
+    )
 
     return [
-        serialize_timeline_event(event)
+        serialize_event(event)
         for event in events
     ]
 
 
-def get_timeline_event(space_id, event_id):
+def get_event(
+    space_id,
+    event_id
+):
+
     try:
-        object_id = ObjectId(event_id)
+
+        event_object_id = ObjectId(
+            event_id
+        )
+
     except Exception:
+
         return None
 
     event = timeline_collection.find_one({
-        "_id": object_id,
+        "_id": event_object_id,
         "space_id": space_id
     })
 
-    return serialize_timeline_event(event)
+    if not event:
+        return None
+
+    return serialize_event(event)
 
 
-def update_timeline_event(
+def update_event(
     space_id,
     event_id,
     title,
     description,
     event_date
 ):
+
     try:
-        object_id = ObjectId(event_id)
+
+        event_object_id = ObjectId(
+            event_id
+        )
+
     except Exception:
+
         return None
 
-    result = timeline_collection.find_one_and_update(
+    result = timeline_collection.update_one(
         {
-            "_id": object_id,
+            "_id": event_object_id,
             "space_id": space_id
         },
         {
@@ -95,21 +133,35 @@ def update_timeline_event(
                 "event_date": event_date,
                 "updated_at": datetime.utcnow()
             }
-        },
-        return_document=True
+        }
     )
 
-    return serialize_timeline_event(result)
+    if result.matched_count == 0:
+        return None
+
+    return get_event(
+        space_id,
+        event_id
+    )
 
 
-def delete_timeline_event(space_id, event_id):
+def delete_event(
+    space_id,
+    event_id
+):
+
     try:
-        object_id = ObjectId(event_id)
+
+        event_object_id = ObjectId(
+            event_id
+        )
+
     except Exception:
-        return False
+
+        return None
 
     result = timeline_collection.delete_one({
-        "_id": object_id,
+        "_id": event_object_id,
         "space_id": space_id
     })
 
