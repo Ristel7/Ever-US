@@ -1,89 +1,170 @@
-from flask import Blueprint
+from datetime import datetime
 
-from middleware.jwt_required import jwt_required
+from bson import ObjectId
 
-from controllers.timeline_controller import (
-    list_timeline_events,
-    create_timeline_event_controller,
-    get_single_timeline_event,
-    update_timeline_event_controller,
-    delete_timeline_event_controller
-)
+from models.timeline import timeline_collection
 
 
-timeline_bp = Blueprint(
-    "timeline",
-    __name__
-)
+def serialize_event(event):
+
+    return {
+        "id": str(event["_id"]),
+        "space_id": str(event["space_id"]),
+        "author_id": str(event["author_id"]),
+        "title": event.get("title", ""),
+        "description": event.get("description", ""),
+        "event_date": (
+            event["event_date"].isoformat()
+            if hasattr(event.get("event_date"), "isoformat")
+            else event.get("event_date")
+        ),
+        "created_at": (
+            event["created_at"].isoformat()
+            if event.get("created_at")
+            else None
+        ),
+        "updated_at": (
+            event["updated_at"].isoformat()
+            if event.get("updated_at")
+            else None
+        )
+    }
 
 
-@timeline_bp.route(
-    "/<space_id>/timeline",
-    methods=["GET"]
-)
-@jwt_required
-def get_timeline(space_id):
+def create_timeline_event(
+    space_id,
+    author_id,
+    title,
+    description,
+    event_date
+):
 
-    return list_timeline_events(
-        space_id
+    now = datetime.utcnow()
+
+    event = {
+        "space_id": space_id,
+        "author_id": author_id,
+        "title": title,
+        "description": description,
+        "event_date": event_date,
+        "created_at": now,
+        "updated_at": now
+    }
+
+    result = timeline_collection.insert_one(
+        event
     )
 
+    event["_id"] = result.inserted_id
 
-@timeline_bp.route(
-    "/<space_id>/timeline",
-    methods=["POST"]
-)
-@jwt_required
-def create_timeline(space_id):
+    return serialize_event(event)
 
-    return create_timeline_event_controller(
-        space_id
+
+def get_space_timeline(space_id):
+
+    events = timeline_collection.find(
+        {
+            "space_id": space_id
+        }
+    ).sort(
+        "event_date",
+        -1
     )
 
+    return [
+        serialize_event(event)
+        for event in events
+    ]
 
-@timeline_bp.route(
-    "/<space_id>/timeline/<event_id>",
-    methods=["GET"]
-)
-@jwt_required
-def get_timeline_event_route(
+
+def get_timeline_event(
     space_id,
     event_id
 ):
 
-    return get_single_timeline_event(
+    try:
+
+        event_object_id = ObjectId(
+            event_id
+        )
+
+    except Exception:
+
+        return None
+
+    event = timeline_collection.find_one({
+        "_id": event_object_id,
+        "space_id": space_id
+    })
+
+    if not event:
+
+        return None
+
+    return serialize_event(event)
+
+
+def update_timeline_event(
+    space_id,
+    event_id,
+    title,
+    description,
+    event_date
+):
+
+    try:
+
+        event_object_id = ObjectId(
+            event_id
+        )
+
+    except Exception:
+
+        return None
+
+    result = timeline_collection.update_one(
+        {
+            "_id": event_object_id,
+            "space_id": space_id
+        },
+        {
+            "$set": {
+                "title": title,
+                "description": description,
+                "event_date": event_date,
+                "updated_at": datetime.utcnow()
+            }
+        }
+    )
+
+    if result.matched_count == 0:
+
+        return None
+
+    return get_timeline_event(
         space_id,
         event_id
     )
 
 
-@timeline_bp.route(
-    "/<space_id>/timeline/<event_id>",
-    methods=["PUT"]
-)
-@jwt_required
-def update_timeline(
+def delete_timeline_event(
     space_id,
     event_id
 ):
 
-    return update_timeline_event_controller(
-        space_id,
-        event_id
-    )
+    try:
 
+        event_object_id = ObjectId(
+            event_id
+        )
 
-@timeline_bp.route(
-    "/<space_id>/timeline/<event_id>",
-    methods=["DELETE"]
-)
-@jwt_required
-def delete_timeline(
-    space_id,
-    event_id
-):
+    except Exception:
 
-    return delete_timeline_event_controller(
-        space_id,
-        event_id
-    )
+        return None
+
+    result = timeline_collection.delete_one({
+        "_id": event_object_id,
+        "space_id": space_id
+    })
+
+    return result.deleted_count > 0
