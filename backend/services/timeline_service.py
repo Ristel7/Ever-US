@@ -15,8 +15,8 @@ def serialize_event(event):
         "description": event.get("description", ""),
         "event_date": (
             event["event_date"].isoformat()
-            if event.get("event_date")
-            else None
+            if hasattr(event.get("event_date"), "isoformat")
+            else event.get("event_date")
         ),
         "created_at": (
             event["created_at"].isoformat()
@@ -31,7 +31,7 @@ def serialize_event(event):
     }
 
 
-def create_event(
+def create_timeline_event(
     space_id,
     author_id,
     title,
@@ -60,7 +60,7 @@ def create_event(
     return serialize_event(event)
 
 
-def get_space_events(space_id):
+def get_space_timeline(space_id):
 
     events = timeline_collection.find(
         {
@@ -77,7 +77,7 @@ def get_space_events(space_id):
     ]
 
 
-def get_event(
+def get_timeline_event(
     space_id,
     event_id
 ):
@@ -98,12 +98,13 @@ def get_event(
     })
 
     if not event:
+
         return None
 
     return serialize_event(event)
 
 
-def update_event(
+def update_timeline_event(
     space_id,
     event_id,
     title,
@@ -137,15 +138,16 @@ def update_event(
     )
 
     if result.matched_count == 0:
+
         return None
 
-    return get_event(
+    return get_timeline_event(
         space_id,
         event_id
     )
 
 
-def delete_event(
+def delete_timeline_event(
     space_id,
     event_id
 ):
