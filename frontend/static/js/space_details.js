@@ -3608,8 +3608,11 @@ if (timelineForm) {
 
     loadSpace();
 
-    loadMembers();
+loadMembers();
 
-    loadMemories();
-    loadJournal();
+loadMemories();
+
+loadTimeline();
+
+loadJournal();
 });
