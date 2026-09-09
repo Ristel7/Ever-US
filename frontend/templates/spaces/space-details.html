@@ -10,7 +10,9 @@
     <title>Space | everUS</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/space_details.css') }}">
 
 </head>
@@ -177,7 +179,7 @@
 
                 <div class="mobile-title">
 
-                    <button class="mobile-menu" id="mobileMenu">
+                    <button class="mobile-menu" id="mobileMenu" type="button">
 
                         <i class="fa-solid fa-bars"></i>
 
@@ -192,7 +194,7 @@
 
                 <div class="topbar-actions">
 
-                    <button class="topbar-icon" aria-label="Notifications">
+                    <button class="topbar-icon" type="button" aria-label="Notifications">
 
                         <i class="fa-regular fa-bell"></i>
 
@@ -224,7 +226,7 @@
                     <div class="cover-overlay"></div>
 
 
-                    <button class="change-cover" id="changeCover">
+                    <button class="change-cover" id="changeCover" type="button">
 
                         <i class="fa-solid fa-camera"></i>
 
@@ -238,7 +240,6 @@
                 <div class="hero-content">
 
                     <div class="hero-main">
-
 
                         <div class="space-avatar">
 
@@ -269,7 +270,7 @@
 
                     <div class="hero-actions">
 
-                        <button class="secondary-button" id="shareButton">
+                        <button class="secondary-button" id="shareButton" type="button">
 
                             <i class="fa-solid fa-share-nodes"></i>
 
@@ -278,7 +279,7 @@
                         </button>
 
 
-                        <button class="primary-button" id="inviteButton">
+                        <button class="primary-button" id="inviteButton" type="button">
 
                             <i class="fa-solid fa-user-plus"></i>
 
@@ -317,11 +318,13 @@
 
 
                     <span class="members-text">
+
                         <strong id="memberCount">
                             1 member
                         </strong>
 
                         in this space
+
                     </span>
 
                 </div>
@@ -341,14 +344,12 @@
 
                 <div class="content-tabs">
 
-                    <button class="content-tab active" data-content="overview">
-
+                    <button class="content-tab active" data-content="overview" type="button">
                         Overview
-
                     </button>
 
 
-                    <button class="content-tab" data-content="memories">
+                    <button class="content-tab" data-content="memories" type="button">
 
                         Memories
 
@@ -359,24 +360,18 @@
                     </button>
 
 
-                    <button class="content-tab" data-content="messages">
-
+                    <button class="content-tab" data-content="messages" type="button">
                         Messages
-
                     </button>
 
 
-                    <button class="content-tab" data-content="timeline">
-
+                    <button class="content-tab" data-content="timeline" type="button">
                         Timeline
-
                     </button>
 
 
-                    <button class="content-tab" data-content="journal">
-
+                    <button class="content-tab" data-content="journal" type="button">
                         Journal
-
                     </button>
 
                 </div>
@@ -397,7 +392,9 @@
                         <article class="quick-stat">
 
                             <div class="quick-stat-icon purple">
+
                                 <i class="fa-regular fa-images"></i>
+
                             </div>
 
                             <div>
@@ -418,7 +415,9 @@
                         <article class="quick-stat">
 
                             <div class="quick-stat-icon pink">
+
                                 <i class="fa-regular fa-comments"></i>
+
                             </div>
 
                             <div>
@@ -439,7 +438,9 @@
                         <article class="quick-stat">
 
                             <div class="quick-stat-icon blue">
+
                                 <i class="fa-solid fa-user-group"></i>
+
                             </div>
 
                             <div>
@@ -460,7 +461,9 @@
                         <article class="quick-stat">
 
                             <div class="quick-stat-icon green">
+
                                 <i class="fa-solid fa-timeline"></i>
+
                             </div>
 
                             <div>
@@ -469,7 +472,7 @@
                                     Timeline
                                 </span>
 
-                                <strong>
+                                <strong id="timelineQuickCount">
                                     0
                                 </strong>
 
@@ -505,7 +508,7 @@
                                 </div>
 
 
-                                <button class="text-button" data-open-tab="memories">
+                                <button class="text-button" data-open-tab="memories" type="button">
 
                                     View all
 
@@ -533,7 +536,7 @@
                                     start building your memory.
                                 </p>
 
-                                <button class="empty-button" data-open-tab="memories">
+                                <button class="empty-button" data-open-tab="memories" type="button">
 
                                     <i class="fa-solid fa-plus"></i>
 
@@ -613,7 +616,7 @@
 
                             <div class="welcome-actions">
 
-                                <button class="welcome-button" data-open-tab="memories">
+                                <button class="welcome-button" data-open-tab="memories" type="button">
 
                                     <i class="fa-regular fa-images"></i>
 
@@ -622,7 +625,7 @@
                                 </button>
 
 
-                                <button class="welcome-button outline" id="welcomeInvite">
+                                <button class="welcome-button outline" id="welcomeInvite" type="button">
 
                                     <i class="fa-solid fa-user-plus"></i>
 
@@ -675,7 +678,7 @@
                         </div>
 
 
-                        <button class="primary-button" id="addMemoryButton">
+                        <button class="primary-button" id="addMemoryButton" type="button">
 
                             <i class="fa-solid fa-plus"></i>
 
@@ -703,7 +706,7 @@
                             and make this space yours.
                         </p>
 
-                        <button class="primary-button" id="uploadMemoryButton">
+                        <button class="primary-button" id="uploadMemoryButton" type="button">
 
                             <i class="fa-solid fa-cloud-arrow-up"></i>
 
@@ -712,6 +715,7 @@
                         </button>
 
                     </div>
+
 
                     <div class="memory-gallery hidden" id="memoryGallery" aria-live="polite"></div>
 
@@ -763,7 +767,7 @@
                             appear here.
                         </p>
 
-                        <button class="primary-button">
+                        <button class="primary-button" type="button">
 
                             <i class="fa-solid fa-message"></i>
 
@@ -803,22 +807,37 @@
                         </div>
 
 
+                        <!-- IMPORTANT:
+                         This ID is required by space_details.js -->
+
                         <button class="primary-button" id="newTimelineEventButton" type="button">
+
                             <i class="fa-solid fa-plus"></i>
+
                             Add event
+
                         </button>
 
                     </div>
 
 
-                    <div class="timeline-empty">
+                    <!-- TIMELINE EVENTS -->
+
+                    <div class="timeline-list hidden" id="timelineList" aria-live="polite"></div>
+
+
+                    <!-- EMPTY STATE -->
+
+                    <div class="timeline-empty" id="timelineEmpty">
 
                         <div class="timeline-line"></div>
 
                         <div class="timeline-empty-content">
 
                             <div class="timeline-dot">
+
                                 <i class="fa-solid fa-star"></i>
+
                             </div>
 
                             <h3>
@@ -842,67 +861,68 @@
                  JOURNAL
             ================================================== -->
 
-                <!-- =================================================
-                     JOURNAL
-                ================================================== -->
-                
                 <section class="content-view" id="journal">
-                
+
                     <div class="section-heading">
-                
+
                         <div>
-                
+
                             <span>
                                 PRIVATE THOUGHTS
                             </span>
-                
+
                             <h2>
                                 Journal
                             </h2>
-                
+
                             <p>
                                 Write down the moments
                                 you want to remember.
                             </p>
-                
+
                         </div>
-                
+
+
                         <button class="primary-button" id="newJournalEntryButton" type="button">
+
                             <i class="fa-solid fa-pen"></i>
+
                             New entry
+
                         </button>
-                
+
                     </div>
-                
-                
-                    <!-- JOURNAL EMPTY STATE -->
-                
+
+
                     <div class="journal-empty" id="journalEmpty">
-                
+
                         <div class="journal-icon">
+
                             <i class="fa-solid fa-book-open"></i>
+
                         </div>
-                
+
                         <h3>
                             Your journal is waiting
                         </h3>
-                
+
                         <p>
                             Start writing your first entry.
                         </p>
-                
+
                         <button class="primary-button" id="writeJournalButton" type="button">
+
                             <i class="fa-solid fa-pen"></i>
+
                             Write something
+
                         </button>
-                
+
                     </div>
-                
-                
-                    <!-- JOURNAL ENTRIES -->
-                
+
+
                     <div class="journal-list hidden" id="journalList" aria-live="polite"></div>
-                
+
                 </section>
 
 
@@ -933,7 +953,7 @@
                         </div>
 
 
-                        <button class="primary-button" id="membersInvite">
+                        <button class="primary-button" id="membersInvite" type="button">
 
                             <i class="fa-solid fa-user-plus"></i>
 
@@ -1023,7 +1043,9 @@
                         <article class="settings-card">
 
                             <div class="settings-icon">
+
                                 <i class="fa-solid fa-pen"></i>
+
                             </div>
 
                             <div>
@@ -1047,7 +1069,9 @@
                         <article class="settings-card">
 
                             <div class="settings-icon">
+
                                 <i class="fa-solid fa-lock"></i>
+
                             </div>
 
                             <div>
@@ -1071,7 +1095,9 @@
                         <article class="settings-card danger">
 
                             <div class="settings-icon">
+
                                 <i class="fa-solid fa-trash"></i>
+
                             </div>
 
                             <div>
@@ -1107,11 +1133,11 @@
      INVITE MODAL
 ========================================================= -->
 
-    <div class="modal" id="inviteModal">
+    <div class="modal" id="inviteModal" aria-hidden="true">
 
         <div class="modal-card">
 
-            <button class="modal-close" id="closeInvite">
+            <button class="modal-close" id="closeInvite" type="button" aria-label="Close invite dialog">
 
                 <i class="fa-solid fa-xmark"></i>
 
@@ -1147,7 +1173,7 @@
                     EVER-US-XXXX
                 </strong>
 
-                <button id="copyInvite">
+                <button id="copyInvite" type="button" aria-label="Copy invite code">
 
                     <i class="fa-regular fa-copy"></i>
 
@@ -1156,7 +1182,7 @@
             </div>
 
 
-            <button class="primary-button full-button" id="shareInvite">
+            <button class="primary-button full-button" id="shareInvite" type="button">
 
                 <i class="fa-solid fa-share-nodes"></i>
 
@@ -1169,6 +1195,7 @@
     </div>
 
 
+
     <!-- =========================================================
      MEMORY UPLOAD MODAL
 ========================================================= -->
@@ -1178,44 +1205,90 @@
         <div class="modal-card memory-upload-card">
 
             <button class="modal-close" id="closeMemoryUpload" type="button" aria-label="Close upload dialog">
+
                 <i class="fa-solid fa-xmark"></i>
+
             </button>
 
+
             <div class="modal-icon">
+
                 <i class="fa-solid fa-cloud-arrow-up"></i>
+
             </div>
 
-            <span>ADD MEMORY</span>
 
-            <h2>Save a moment.</h2>
+            <span>
+                ADD MEMORY
+            </span>
 
-            <p>Upload a photo or video to this private space.</p>
+
+            <h2>
+                Save a moment.
+            </h2>
+
+
+            <p>
+                Upload a photo or video to this private space.
+            </p>
+
 
             <form id="memoryUploadForm">
 
                 <label class="memory-file-picker" for="memoryFileInput">
-                    <input type="file" id="memoryFileInput" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm" required>
+
+                    <input type="file" id="memoryFileInput"
+                        accept="image/jpeg,image/png,image/webp,video/mp4,video/webm" required>
+
                     <i class="fa-solid fa-images"></i>
-                    <strong>Choose a photo or video</strong>
-                    <small>JPG, JPEG, PNG, WEBP, MP4, or WEBM · up to 100 MB</small>
+
+                    <strong>
+                        Choose a photo or video
+                    </strong>
+
+                    <small>
+                        JPG, JPEG, PNG, WEBP, MP4, or WEBM · up to 100 MB
+                    </small>
+
                 </label>
+
 
                 <div class="memory-upload-preview hidden" id="memoryUploadPreview"></div>
 
+
                 <label class="memory-caption-label" for="memoryCaptionInput">
-                    Caption <span>Optional</span>
+
+                    Caption
+
+                    <span>
+                        Optional
+                    </span>
+
                 </label>
 
-                <textarea id="memoryCaptionInput" maxlength="1000" placeholder="Add a short note about this moment..."></textarea>
+
+                <textarea id="memoryCaptionInput" maxlength="1000"
+                    placeholder="Add a short note about this moment..."></textarea>
+
 
                 <p class="memory-upload-message" id="memoryUploadMessage" role="status"></p>
 
+
                 <div class="memory-upload-actions">
-                    <button class="secondary-button" id="cancelMemoryUpload" type="button">Cancel</button>
-                    <button class="primary-button" id="submitMemoryUpload" type="submit">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        Upload Memory
+
+                    <button class="secondary-button" id="cancelMemoryUpload" type="button">
+                        Cancel
                     </button>
+
+
+                    <button class="primary-button" id="submitMemoryUpload" type="submit">
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        Upload Memory
+
+                    </button>
+
                 </div>
 
             </form>
@@ -1224,165 +1297,191 @@
 
     </div>
 
+
+
     <!-- =========================================================
-         JOURNAL ENTRY MODAL
-    ========================================================= -->
-    
-    <div class="modal" id="journalModal" aria-hidden="true">
-    
-        <div class="modal-card journal-modal-card">
-    
-            <button class="modal-close" id="closeJournalModal" type="button" aria-label="Close journal dialog">
+     TIMELINE EVENT MODAL
+========================================================= -->
+
+    <div class="modal" id="timelineModal" aria-hidden="true">
+
+        <div class="modal-card timeline-modal-card">
+
+            <button class="modal-close" id="closeTimelineModal" type="button" aria-label="Close timeline dialog">
+
                 <i class="fa-solid fa-xmark"></i>
+
             </button>
-    
-    
+
+
             <div class="modal-icon">
-                <i class="fa-solid fa-book-open"></i>
+
+                <i class="fa-solid fa-timeline"></i>
+
             </div>
-    
-    
+
+
+            <span>
+                TIMELINE
+            </span>
+
+
+            <h2 id="timelineModalTitle">
+                Add a milestone.
+            </h2>
+
+
+            <p>
+                Add an important moment to your story.
+            </p>
+
+
+            <form id="timelineForm">
+
+                <input type="hidden" id="timelineEventId">
+
+
+                <label class="timeline-field-label" for="timelineTitleInput">
+                    Title
+                </label>
+
+
+                <input type="text" id="timelineTitleInput" maxlength="200" placeholder="What happened?" required>
+
+
+                <label class="timeline-field-label" for="timelineDescriptionInput">
+                    Description
+                </label>
+
+
+                <textarea id="timelineDescriptionInput" maxlength="5000" rows="5"
+                    placeholder="Tell the story behind this moment..."></textarea>
+
+
+                <label class="timeline-field-label" for="timelineDateInput">
+                    Event date
+                </label>
+
+
+                <input type="date" id="timelineDateInput" required>
+
+
+                <p class="timeline-form-message" id="timelineFormMessage" role="status"></p>
+
+
+                <div class="timeline-form-actions">
+
+                    <button class="secondary-button" id="cancelTimelineButton" type="button">
+                        Cancel
+                    </button>
+
+
+                    <button class="primary-button" id="saveTimelineButton" type="submit">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Save event
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+     JOURNAL ENTRY MODAL
+========================================================= -->
+
+    <div class="modal" id="journalModal" aria-hidden="true">
+
+        <div class="modal-card journal-modal-card">
+
+            <button class="modal-close" id="closeJournalModal" type="button" aria-label="Close journal dialog">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="modal-icon">
+
+                <i class="fa-solid fa-book-open"></i>
+
+            </div>
+
+
             <span>
                 JOURNAL
             </span>
-    
-    
+
+
             <h2 id="journalModalTitle">
                 Write something.
             </h2>
-    
-    
+
+
             <p>
                 Capture a thought, memory or moment
                 worth keeping.
             </p>
-    
-    
+
+
             <form id="journalForm">
-    
+
                 <input type="hidden" id="journalEntryId">
-    
-    
+
+
                 <label class="journal-field-label" for="journalTitleInput">
                     Title
                 </label>
-    
-                <input type="text" id="journalTitleInput" maxlength="200" placeholder="Give your entry a title..." required>
-    
-    
+
+
+                <input type="text" id="journalTitleInput" maxlength="200" placeholder="Give your entry a title..."
+                    required>
+
+
                 <label class="journal-field-label" for="journalContentInput">
                     Your thoughts
                 </label>
-    
+
+
                 <textarea id="journalContentInput" maxlength="10000" placeholder="Write whatever is on your mind..."
                     rows="8" required></textarea>
-    
-    
+
+
                 <p class="journal-form-message" id="journalFormMessage" role="status"></p>
-    
-    
+
+
                 <div class="journal-form-actions">
-    
+
                     <button class="secondary-button" id="cancelJournalButton" type="button">
                         Cancel
                     </button>
-    
+
+
                     <button class="primary-button" id="saveJournalButton" type="submit">
+
                         <i class="fa-solid fa-check"></i>
+
                         Save entry
+
                     </button>
-    
+
                 </div>
-    
+
             </form>
-    
+
         </div>
-    
+
     </div>
 
-    <!-- =========================================================
-         TIMELINE EVENT MODAL
-    ========================================================= -->
-    
-    <div class="modal" id="timelineModal" aria-hidden="true">
-    
-        <div class="modal-card timeline-modal-card">
-    
-            <button class="modal-close" id="closeTimelineModal" type="button" aria-label="Close timeline dialog">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-    
-    
-            <div class="modal-icon">
-                <i class="fa-solid fa-timeline"></i>
-            </div>
-    
-    
-            <span>
-                TIMELINE
-            </span>
-    
-    
-            <h2 id="timelineModalTitle">
-                Add a milestone.
-            </h2>
-    
-    
-            <p>
-                Add an important moment to your story.
-            </p>
-    
-    
-            <form id="timelineForm">
-    
-                <input type="hidden" id="timelineEventId">
-    
-    
-                <label class="journal-field-label" for="timelineTitleInput">
-                    Title
-                </label>
-    
-                <input type="text" id="timelineTitleInput" maxlength="200" placeholder="Give this moment a title..."
-                    required>
-    
-    
-                <label class="journal-field-label" for="timelineDescriptionInput">
-                    Description
-                </label>
-    
-                <textarea id="timelineDescriptionInput" maxlength="5000" placeholder="Tell the story behind this moment..."
-                    rows="6"></textarea>
-    
-    
-                <label class="journal-field-label" for="timelineDateInput">
-                    Date
-                </label>
-    
-                <input type="date" id="timelineDateInput" required>
-    
-    
-                <p class="journal-form-message" id="timelineFormMessage" role="status"></p>
-    
-    
-                <div class="journal-form-actions">
-    
-                    <button class="secondary-button" id="cancelTimelineButton" type="button">
-                        Cancel
-                    </button>
-    
-    
-                    <button class="primary-button" id="saveTimelineButton" type="submit">
-                        <i class="fa-solid fa-check"></i>
-                        Save event
-                    </button>
-    
-                </div>
-    
-            </form>
-    
-        </div>
-    
-    </div>
+
 
     <script src="{{ url_for('static', filename='js/space_details.js') }}"></script>
 
