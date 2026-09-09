@@ -1,89 +1,42 @@
 from flask import Blueprint
 
-from middleware.jwt_required import jwt_required
-
-from controllers.timeline_controller import (
-    list_timeline_events,
-    create_timeline_event_controller,
-    get_single_timeline_event,
-    update_timeline_event_controller,
-    delete_timeline_event_controller
+from controllers.user_controller import (
+    get_profile,
+    upload_profile_image
 )
 
+from middleware.jwt_required import jwt_required
 
-timeline_bp = Blueprint(
-    "timeline",
+
+user_bp = Blueprint(
+    "user",
     __name__
 )
 
 
-@timeline_bp.route(
-    "/<space_id>/timeline",
+# =====================================================
+# GET USER PROFILE
+# =====================================================
+
+@user_bp.route(
+    "/profile",
     methods=["GET"]
 )
 @jwt_required
-def get_timeline(space_id):
+def get_user_profile():
 
-    return list_timeline_events(
-        space_id
-    )
+    return get_profile()
 
 
-@timeline_bp.route(
-    "/<space_id>/timeline",
+# =====================================================
+# UPLOAD PROFILE IMAGE
+# =====================================================
+
+@user_bp.route(
+    "/profile/image",
     methods=["POST"]
 )
 @jwt_required
-def create_timeline(space_id):
+def upload_user_profile_image():
 
-    return create_timeline_event_controller(
-        space_id
-    )
-
-
-@timeline_bp.route(
-    "/<space_id>/timeline/<event_id>",
-    methods=["GET"]
-)
-@jwt_required
-def get_timeline_event_route(
-    space_id,
-    event_id
-):
-
-    return get_single_timeline_event(
-        space_id,
-        event_id
-    )
-
-
-@timeline_bp.route(
-    "/<space_id>/timeline/<event_id>",
-    methods=["PUT"]
-)
-@jwt_required
-def update_timeline(
-    space_id,
-    event_id
-):
-
-    return update_timeline_event_controller(
-        space_id,
-        event_id
-    )
-
-
-@timeline_bp.route(
-    "/<space_id>/timeline/<event_id>",
-    methods=["DELETE"]
-)
-@jwt_required
-def delete_timeline(
-    space_id,
-    event_id
-):
-
-    return delete_timeline_event_controller(
-        space_id,
-        event_id
-    )
+    return upload_profile_image()
