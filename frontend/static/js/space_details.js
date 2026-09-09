@@ -2851,6 +2851,758 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =====================================================
+// TIMELINE
+// =====================================================
+
+const timelineList =
+    document.getElementById("timelineList");
+
+const timelineEmpty =
+    document.getElementById("timelineEmpty");
+
+const newTimelineEventButton =
+    document.getElementById("newTimelineEventButton");
+
+const timelineModal =
+    document.getElementById("timelineModal");
+
+const closeTimelineModal =
+    document.getElementById("closeTimelineModal");
+
+const cancelTimelineButton =
+    document.getElementById("cancelTimelineButton");
+
+const timelineForm =
+    document.getElementById("timelineForm");
+
+const timelineEventId =
+    document.getElementById("timelineEventId");
+
+const timelineTitleInput =
+    document.getElementById("timelineTitleInput");
+
+const timelineDateInput =
+    document.getElementById("timelineDateInput");
+
+const timelineDescriptionInput =
+    document.getElementById("timelineDescriptionInput");
+
+const timelineModalTitle =
+    document.getElementById("timelineModalTitle");
+
+const timelineFormMessage =
+    document.getElementById("timelineFormMessage");
+
+const saveTimelineButton =
+    document.getElementById("saveTimelineButton");
+
+let currentTimelineEvents = [];
+
+
+function formatTimelineDate(value) {
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Recently";
+    }
+
+    return date.toLocaleDateString(
+        undefined,
+        {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        }
+    );
+}
+
+
+function setTimelineMessage(
+    message,
+    isSuccess = false
+) {
+
+    if (!timelineFormMessage) {
+        return;
+    }
+
+    timelineFormMessage.textContent =
+        message;
+
+    timelineFormMessage.classList.toggle(
+        "success",
+        isSuccess
+    );
+}
+
+
+function openTimelineModal(event = null) {
+
+    if (!timelineModal) {
+        return;
+    }
+
+    timelineForm?.reset();
+
+    setTimelineMessage("");
+
+    if (timelineEventId) {
+
+        timelineEventId.value =
+            event?.id || "";
+
+    }
+
+    if (timelineTitleInput) {
+
+        timelineTitleInput.value =
+            event?.title || "";
+
+    }
+
+    if (timelineDateInput) {
+
+        timelineDateInput.value =
+            event?.event_date || "";
+
+    }
+
+    if (timelineDescriptionInput) {
+
+        timelineDescriptionInput.value =
+            event?.description || "";
+
+    }
+
+    if (timelineModalTitle) {
+
+        timelineModalTitle.textContent =
+            event
+                ? "Edit your event."
+                : "Add an event.";
+
+    }
+
+    if (saveTimelineButton) {
+
+        saveTimelineButton.innerHTML =
+            event
+                ? '<i class="fa-solid fa-check"></i> Update event'
+                : '<i class="fa-solid fa-check"></i> Save event';
+
+    }
+
+    timelineModal.classList.add("open");
+
+    timelineModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    timelineTitleInput?.focus();
+}
+
+
+function closeTimelineEventModal() {
+
+    if (!timelineModal) {
+        return;
+    }
+
+    timelineModal.classList.remove("open");
+
+    timelineModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    timelineForm?.reset();
+
+    setTimelineMessage("");
+}
+
+
+function renderTimeline(events) {
+
+    currentTimelineEvents =
+        Array.isArray(events)
+            ? events
+            : [];
+
+    if (!timelineList || !timelineEmpty) {
+        return;
+    }
+
+    timelineList.replaceChildren();
+
+
+    if (currentTimelineEvents.length === 0) {
+
+        timelineList.classList.add("hidden");
+
+        timelineEmpty.classList.remove(
+            "hidden"
+        );
+
+        return;
+    }
+
+
+    timelineEmpty.classList.add(
+        "hidden"
+    );
+
+    timelineList.classList.remove(
+        "hidden"
+    );
+
+
+    currentTimelineEvents.forEach(
+        (event) => {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+            card.className =
+                "timeline-event-card";
+
+
+            const header =
+                document.createElement(
+                    "div"
+                );
+
+            header.className =
+                "timeline-event-header";
+
+
+            const titleContainer =
+                document.createElement(
+                    "div"
+                );
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+            title.className =
+                "timeline-event-title";
+
+            title.textContent =
+                event.title ||
+                "Untitled event";
+
+
+            const date =
+                document.createElement(
+                    "span"
+                );
+
+            date.className =
+                "timeline-event-date";
+
+            date.textContent =
+                formatTimelineDate(
+                    event.event_date
+                );
+
+
+            titleContainer.appendChild(
+                title
+            );
+
+            titleContainer.appendChild(
+                date
+            );
+
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+            actions.className =
+                "timeline-event-actions";
+
+
+            const editButton =
+                document.createElement(
+                    "button"
+                );
+
+            editButton.type =
+                "button";
+
+            editButton.className =
+                "timeline-event-action";
+
+            editButton.title =
+                "Edit event";
+
+            editButton.setAttribute(
+                "aria-label",
+                "Edit event"
+            );
+
+            editButton.innerHTML =
+                '<i class="fa-solid fa-pen"></i>';
+
+
+            editButton.addEventListener(
+                "click",
+                () => {
+
+                    openTimelineModal(
+                        event
+                    );
+
+                }
+            );
+
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.type =
+                "button";
+
+            deleteButton.className =
+                "timeline-event-action delete";
+
+            deleteButton.title =
+                "Delete event";
+
+            deleteButton.setAttribute(
+                "aria-label",
+                "Delete event"
+            );
+
+            deleteButton.innerHTML =
+                '<i class="fa-solid fa-trash"></i>';
+
+
+            deleteButton.addEventListener(
+                "click",
+                () => {
+
+                    deleteTimelineEvent(
+                        event.id,
+                        deleteButton
+                    );
+
+                }
+            );
+
+
+            actions.appendChild(
+                editButton
+            );
+
+            actions.appendChild(
+                deleteButton
+            );
+
+
+            header.appendChild(
+                titleContainer
+            );
+
+            header.appendChild(
+                actions
+            );
+
+
+            const description =
+                document.createElement(
+                    "p"
+                );
+
+            description.className =
+                "timeline-event-description";
+
+            description.textContent =
+                event.description || "";
+
+
+            card.appendChild(
+                header
+            );
+
+            card.appendChild(
+                description
+            );
+
+
+            timelineList.appendChild(
+                card
+            );
+
+        }
+    );
+}
+
+
+async function loadTimeline() {
+
+    if (!timelineList || !timelineEmpty) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await api(
+                `/api/spaces/${spaceId}/timeline`
+            );
+
+        if (!response) {
+            return;
+        }
+
+        const result =
+            await response.json().catch(
+                () => ({})
+            );
+
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            console.error(
+                "Timeline load failed:",
+                result.message
+            );
+
+            return;
+        }
+
+
+        renderTimeline(
+            result.data?.events || []
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Timeline loading error:",
+            error
+        );
+
+    }
+}
+
+
+async function saveTimelineEvent(event) {
+
+    event.preventDefault();
+
+
+    const title =
+        timelineTitleInput?.value.trim();
+
+    const description =
+        timelineDescriptionInput?.value.trim();
+
+    const eventDate =
+        timelineDateInput?.value.trim();
+
+    const eventId =
+        timelineEventId?.value.trim();
+
+
+    if (!title) {
+
+        setTimelineMessage(
+            "Please enter a title."
+        );
+
+        timelineTitleInput?.focus();
+
+        return;
+    }
+
+
+    if (!eventDate) {
+
+        setTimelineMessage(
+            "Please select an event date."
+        );
+
+        timelineDateInput?.focus();
+
+        return;
+    }
+
+
+    saveTimelineButton.disabled =
+        true;
+
+
+    const originalButtonContent =
+        saveTimelineButton.innerHTML;
+
+
+    saveTimelineButton.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+
+    setTimelineMessage("");
+
+
+    try {
+
+        const isEditing =
+            Boolean(eventId);
+
+
+        const url =
+            isEditing
+                ? `/api/spaces/${spaceId}/timeline/${eventId}`
+                : `/api/spaces/${spaceId}/timeline`;
+
+
+        const response =
+            await api(
+                url,
+                {
+                    method:
+                        isEditing
+                            ? "PUT"
+                            : "POST",
+
+                    body:
+                        JSON.stringify({
+                            title,
+                            description,
+                            event_date: eventDate
+                        })
+                }
+            );
+
+
+        if (!response) {
+            return;
+        }
+
+
+        const result =
+            await response.json().catch(
+                () => ({})
+            );
+
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            setTimelineMessage(
+                result.message ||
+                "Unable to save timeline event."
+            );
+
+            return;
+        }
+
+
+        setTimelineMessage(
+            isEditing
+                ? "Event updated successfully."
+                : "Event saved successfully.",
+            true
+        );
+
+
+        setTimeout(
+            async () => {
+
+                closeTimelineEventModal();
+
+                await loadTimeline();
+
+            },
+            350
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Timeline save error:",
+            error
+        );
+
+        setTimelineMessage(
+            "Unable to reach the server. Please try again."
+        );
+
+    } finally {
+
+        saveTimelineButton.disabled =
+            false;
+
+        saveTimelineButton.innerHTML =
+            originalButtonContent;
+
+    }
+
+}
+
+
+async function deleteTimelineEvent(
+    eventId,
+    button
+) {
+
+    if (
+        !window.confirm(
+            "Delete this timeline event permanently?"
+        )
+    ) {
+        return;
+    }
+
+
+    button.disabled = true;
+
+
+    try {
+
+        const response =
+            await api(
+                `/api/spaces/${spaceId}/timeline/${eventId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (!response) {
+            return;
+        }
+
+
+        const result =
+            await response.json().catch(
+                () => ({})
+            );
+
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            alert(
+                result.message ||
+                "Unable to delete timeline event."
+            );
+
+            return;
+        }
+
+
+        currentTimelineEvents =
+            currentTimelineEvents.filter(
+                (event) =>
+                    event.id !== eventId
+            );
+
+
+        renderTimeline(
+            currentTimelineEvents
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Timeline delete error:",
+            error
+        );
+
+        alert(
+            "Unable to reach the server. Please try again."
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+    }
+
+}
+
+
+if (newTimelineEventButton) {
+
+    newTimelineEventButton.addEventListener(
+        "click",
+        () => openTimelineModal()
+    );
+
+}
+
+
+if (closeTimelineModal) {
+
+    closeTimelineModal.addEventListener(
+        "click",
+        closeTimelineEventModal
+    );
+
+}
+
+
+if (cancelTimelineButton) {
+
+    cancelTimelineButton.addEventListener(
+        "click",
+        closeTimelineEventModal
+    );
+
+}
+
+
+if (timelineModal) {
+
+    timelineModal.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                event.target ===
+                timelineModal
+            ) {
+
+                closeTimelineEventModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+if (timelineForm) {
+
+    timelineForm.addEventListener(
+        "submit",
+        saveTimelineEvent
+    );
+
+}
+    // =====================================================
     // INITIAL API LOAD
     // =====================================================
 
