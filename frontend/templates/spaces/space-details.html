@@ -1300,6 +1300,89 @@
     
     </div>
 
+    <!-- =========================================================
+         TIMELINE EVENT MODAL
+    ========================================================= -->
+    
+    <div class="modal" id="timelineModal" aria-hidden="true">
+    
+        <div class="modal-card timeline-modal-card">
+    
+            <button class="modal-close" id="closeTimelineModal" type="button" aria-label="Close timeline dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+    
+    
+            <div class="modal-icon">
+                <i class="fa-solid fa-timeline"></i>
+            </div>
+    
+    
+            <span>
+                TIMELINE
+            </span>
+    
+    
+            <h2 id="timelineModalTitle">
+                Add a milestone.
+            </h2>
+    
+    
+            <p>
+                Add an important moment to your story.
+            </p>
+    
+    
+            <form id="timelineForm">
+    
+                <input type="hidden" id="timelineEventId">
+    
+    
+                <label class="journal-field-label" for="timelineTitleInput">
+                    Title
+                </label>
+    
+                <input type="text" id="timelineTitleInput" maxlength="200" placeholder="Give this moment a title..."
+                    required>
+    
+    
+                <label class="journal-field-label" for="timelineDescriptionInput">
+                    Description
+                </label>
+    
+                <textarea id="timelineDescriptionInput" maxlength="5000" placeholder="Tell the story behind this moment..."
+                    rows="6"></textarea>
+    
+    
+                <label class="journal-field-label" for="timelineDateInput">
+                    Date
+                </label>
+    
+                <input type="date" id="timelineDateInput" required>
+    
+    
+                <p class="journal-form-message" id="timelineFormMessage" role="status"></p>
+    
+    
+                <div class="journal-form-actions">
+    
+                    <button class="secondary-button" id="cancelTimelineButton" type="button">
+                        Cancel
+                    </button>
+    
+    
+                    <button class="primary-button" id="saveTimelineButton" type="submit">
+                        <i class="fa-solid fa-check"></i>
+                        Save event
+                    </button>
+    
+                </div>
+    
+            </form>
+    
+        </div>
+    
+    </div>
 
     <script src="{{ url_for('static', filename='js/space_details.js') }}"></script>
 
