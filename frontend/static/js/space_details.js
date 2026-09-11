@@ -2493,6 +2493,147 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    // =========================================================
+    // MEMBERS
+    // =========================================================
+
+    async function loadMembers() {
+        const membersList = document.getElementById("membersList");
+        const membersEmpty = document.getElementById("membersEmpty");
+        const memberCount = document.getElementById("memberCount");
+
+        if (!membersList || !membersEmpty) {
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `/api/spaces/${spaceId}/members`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to load members."
+                );
+            }
+
+            const members =
+                result.data?.members ||
+                result.members ||
+                [];
+
+            membersList.innerHTML = "";
+
+            if (members.length === 0) {
+                membersList.classList.add("hidden");
+                membersEmpty.classList.remove("hidden");
+
+                if (memberCount) {
+                    memberCount.textContent = "0 members";
+                }
+
+                return;
+            }
+
+            membersList.classList.remove("hidden");
+            membersEmpty.classList.add("hidden");
+
+            if (memberCount) {
+                memberCount.textContent =
+                    `${members.length} ${members.length === 1
+                        ? "member"
+                        : "members"
+                    }`;
+            }
+
+            members.forEach((member) => {
+                const row = document.createElement("div");
+                row.className = "member-row";
+
+                // Avatar
+                const avatar = document.createElement("div");
+                avatar.className =
+                    "member-avatar large avatar-purple";
+
+                if (member.profile_image) {
+                    const image = document.createElement("img");
+
+                    image.src = member.profile_image;
+                    image.alt = member.name || "Member";
+                    image.loading = "lazy";
+
+                    avatar.textContent = "";
+                    avatar.appendChild(image);
+                } else {
+                    const name =
+                        member.name ||
+                        member.email ||
+                        "U";
+
+                    avatar.textContent =
+                        name.charAt(0).toUpperCase();
+                }
+
+                // Details
+                const details = document.createElement("div");
+                details.className = "member-details";
+
+                const name = document.createElement("strong");
+                name.textContent =
+                    member.name ||
+                    member.email ||
+                    "Unknown User";
+
+                const role = document.createElement("span");
+                role.textContent =
+                    member.role === "owner"
+                        ? "Owner"
+                        : "Member";
+
+                details.appendChild(name);
+                details.appendChild(role);
+
+                row.appendChild(avatar);
+                row.appendChild(details);
+
+                // Owner badge
+                if (member.role === "owner") {
+                    const ownerBadge =
+                        document.createElement("span");
+
+                    ownerBadge.className = "owner-badge";
+                    ownerBadge.textContent = "OWNER";
+
+                    row.appendChild(ownerBadge);
+                }
+
+                membersList.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error(
+                "Failed to load members:",
+                error
+            );
+
+            membersList.innerHTML = "";
+
+            membersList.classList.add("hidden");
+            membersEmpty.classList.remove("hidden");
+
+            if (memberCount) {
+                memberCount.textContent = "Members";
+            }
+        }
+    }
 
     async function loadJournal() {
 
