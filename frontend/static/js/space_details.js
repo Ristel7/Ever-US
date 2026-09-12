@@ -1264,13 +1264,80 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? spaceNameElement.textContent
                 : "everUS Space";
 
+        const inviteCodeElement =
+            document.getElementById("inviteCodeDisplay") ||
+            document.querySelector(".invite-code strong");
+
+        let inviteCode =
+            inviteCodeElement?.textContent.trim() || "";
+
+        /*
+         * If the invite code has not loaded yet, fetch it directly
+         * so the Share button always shares the real code.
+         */
+        if (
+            !inviteCode ||
+            inviteCode === "Loading..." ||
+            inviteCode === "Unavailable" ||
+            inviteCode === "Unable to load"
+        ) {
+
+            try {
+
+                const response = await api(
+                    `/api/spaces/${spaceId}/invite-code`
+                );
+
+                if (response) {
+
+                    const result =
+                        await response.json().catch(
+                            () => ({})
+                        );
+
+                    if (
+                        response.ok &&
+                        result.success &&
+                        result.data?.invite_code
+                    ) {
+
+                        inviteCode =
+                            result.data.invite_code;
+
+                        if (inviteCodeElement) {
+
+                            inviteCodeElement.textContent =
+                                inviteCode;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Invite code fetch for sharing failed:",
+                    error
+                );
+
+            }
+
+        }
+
+        const shareText =
+            inviteCode
+                ? `Join my private everUS space.\\n\\nInvite code: ${inviteCode}`
+                : "Join my private everUS space.";
 
         const shareData = {
 
             title: title,
 
-            text:
-                "Join my private everUS space.",
+            text: shareText,
 
             url:
                 window.location.href
@@ -1302,13 +1369,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
 
+                const fallbackText =
+                    inviteCode
+                        ? `${shareText}\\n\\nSpace: ${window.location.href}`
+                        : window.location.href;
+
                 await navigator.clipboard.writeText(
-                    window.location.href
+                    fallbackText
                 );
 
 
                 alert(
-                    "Space link copied!"
+                    inviteCode
+                        ? "Invite details copied!"
+                        : "Space link copied!"
                 );
 
             }
@@ -1316,7 +1390,7 @@ document.addEventListener("DOMContentLoaded", () => {
             catch {
 
                 alert(
-                    "Unable to copy space link."
+                    "Unable to copy invite details."
                 );
 
             }
