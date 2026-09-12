@@ -244,3 +244,37 @@ def get_members(space_id):
             "members": members
         }
     )
+
+
+def get_invite_code(space_id):
+    if not _valid_space_id(space_id):
+        return error("Invalid space ID", 400)
+
+    user_id = g.user["_id"]
+
+    # Make sure the logged-in user belongs to this space
+    space = get_space_by_id(
+        space_id,
+        user_id
+    )
+
+    if not space:
+        return error(
+            "Space not found",
+            404
+        )
+
+    invite_code = space.get("invite_code")
+
+    if not invite_code:
+        return error(
+            "Invite code not found",
+            404
+        )
+
+    return success(
+        "Invite code fetched successfully",
+        {
+            "invite_code": invite_code
+        }
+    )

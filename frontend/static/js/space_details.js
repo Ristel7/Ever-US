@@ -3216,12 +3216,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     loadSpace();
-
     loadMembers();
-
     loadMemories();
-
     loadTimeline();
-
     loadJournal();
 });
