@@ -3211,6 +3211,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     timelineForm?.addEventListener("submit", saveTimelineEvent);
 
+    // =========================================================
+    // INVITE CODE
+    // =========================================================
+
+    async function loadInviteCode() {
+        const inviteCodeDisplay =
+            document.getElementById("inviteCodeDisplay");
+
+        if (!inviteCodeDisplay) {
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `/api/spaces/${spaceId}/invite-code`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to load invite code."
+                );
+            }
+
+            inviteCodeDisplay.textContent =
+                result.data.invite_code;
+
+        } catch (error) {
+            console.error(
+                "Failed to load invite code:",
+                error
+            );
+
+            inviteCodeDisplay.textContent =
+                "Unable to load";
+        }
+    }
     // =====================================================
     // INITIAL API LOAD
     // =====================================================
@@ -3220,4 +3264,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMemories();
     loadTimeline();
     loadJournal();
+    loadInviteCode();
 });
