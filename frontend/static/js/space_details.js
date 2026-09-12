@@ -973,6 +973,92 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
 
+    async function loadInviteCode() {
+
+        const inviteCodeElement =
+            document.getElementById(
+                "inviteCodeDisplay"
+            ) ||
+            document.querySelector(
+                ".invite-code strong"
+            );
+
+
+        if (!inviteCodeElement) {
+            return;
+        }
+
+
+        inviteCodeElement.textContent =
+            "Loading...";
+
+
+        try {
+
+            const response =
+                await api(
+                    `/api/spaces/${spaceId}/invite-code`
+                );
+
+
+            if (!response) {
+                return;
+            }
+
+
+            const result =
+                await response.json().catch(
+                    () => ({})
+                );
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load invite code."
+                );
+
+            }
+
+
+            const inviteCode =
+                result.data?.invite_code;
+
+
+            if (!inviteCode) {
+
+                throw new Error(
+                    "Invite code was not returned."
+                );
+
+            }
+
+
+            inviteCodeElement.textContent =
+                inviteCode;
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Invite code loading error:",
+                error
+            );
+
+
+            inviteCodeElement.textContent =
+                "Unavailable";
+
+        }
+
+    }
+
+
     function openInviteModal() {
 
         if (!inviteModal) {
@@ -983,6 +1069,15 @@ document.addEventListener("DOMContentLoaded", () => {
         inviteModal.classList.add(
             "open"
         );
+
+
+        inviteModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        loadInviteCode();
 
     }
 
@@ -996,6 +1091,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         inviteModal.classList.remove(
             "open"
+        );
+
+
+        inviteModal.setAttribute(
+            "aria-hidden",
+            "true"
         );
 
     }
@@ -1072,6 +1173,9 @@ document.addEventListener("DOMContentLoaded", () => {
             async () => {
 
                 const codeElement =
+                    document.getElementById(
+                        "inviteCodeDisplay"
+                    ) ||
                     document.querySelector(
                         ".invite-code strong"
                     );
