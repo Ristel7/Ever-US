@@ -7,7 +7,8 @@ from controllers.space_controller import (
     update_space,
     delete_space,
     upload_cover_image,
-    get_members
+    get_members,
+    get_invite_code
 )
 
 space_bp = Blueprint("space", __name__)
@@ -69,3 +70,12 @@ def get_members_route(space_id):
     return get_members(
         space_id
     )
+
+
+@space_bp.route(
+    "/<space_id>/invite-code",
+    methods=["GET"]
+)
+@jwt_required
+def get_invite_code_route(space_id):
+    return get_invite_code(space_id)
