@@ -59,6 +59,7 @@ def _validate_space_fields(data, creating=False):
 
     return validated, None
 
+
 def create_new_space():
     data = _json_body()
     if data is None:

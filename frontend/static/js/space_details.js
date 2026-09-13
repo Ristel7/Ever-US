@@ -440,6 +440,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 result.data?.space ||
                 result.data;
 
+            syncSettingsForm(space);
+
 
             if (!space) {
 
@@ -3880,6 +3882,128 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
         console.warn("Live message socket unavailable:", error);
     }
+
+    // =====================================================
+    // SPACE SETTINGS
+    // =====================================================
+
+    const generalSettingsCard = document.querySelector('.settings-card[data-setting="general"]');
+    const privacySettingsCard = document.querySelector('.settings-card[data-setting="privacy"]');
+    const deleteSettingsCard = document.querySelector('.settings-card[data-setting="delete"]');
+    const settingsModal = document.getElementById("settingsModal");
+    const closeSettingsModalButton = document.getElementById("closeSettingsModal");
+    const generalSettingsForm = document.getElementById("generalSettingsForm");
+    const settingsNameInput = document.getElementById("settingsNameInput");
+    const settingsTypeInput = document.getElementById("settingsTypeInput");
+    const settingsDescriptionInput = document.getElementById("settingsDescriptionInput");
+    const settingsFormMessage = document.getElementById("settingsFormMessage");
+    const saveSettingsButton = document.getElementById("saveSettingsButton");
+    const cancelSettingsButton = document.getElementById("cancelSettingsButton");
+    let currentSpace = null;
+
+    function setSettingsMessage(message, isSuccess = false) {
+        if (!settingsFormMessage) return;
+        settingsFormMessage.textContent = message || "";
+        settingsFormMessage.classList.toggle("success", Boolean(isSuccess));
+    }
+
+    function syncSettingsForm(space) {
+        if (!space) return;
+        currentSpace = space;
+        if (settingsNameInput) settingsNameInput.value = space.space_name || space.name || "";
+        if (settingsTypeInput) settingsTypeInput.value = space.space_type || space.type || "";
+        if (settingsDescriptionInput) settingsDescriptionInput.value = typeof space.description === "string" ? space.description : "";
+    }
+
+    function openSettingsModal() {
+        if (!settingsModal) return;
+        settingsModal.classList.add("open");
+        settingsModal.setAttribute("aria-hidden", "false");
+        setSettingsMessage("");
+        syncSettingsForm(currentSpace);
+        settingsNameInput?.focus();
+    }
+
+    function closeSettingsModal() {
+        if (!settingsModal) return;
+        settingsModal.classList.remove("open");
+        settingsModal.setAttribute("aria-hidden", "true");
+        setSettingsMessage("");
+    }
+
+    async function saveSpaceSettings(event) {
+        event.preventDefault();
+        const spaceName = settingsNameInput?.value.trim() || "";
+        const spaceType = settingsTypeInput?.value.trim() || "";
+        const description = settingsDescriptionInput?.value.trim() || "";
+
+        if (!spaceName) { setSettingsMessage("Please enter a space name."); settingsNameInput?.focus(); return; }
+        if (!spaceType) { setSettingsMessage("Please enter a space type."); settingsTypeInput?.focus(); return; }
+        if (spaceName.length > 120) { setSettingsMessage("Space name must be 120 characters or fewer."); settingsNameInput?.focus(); return; }
+        if (description.length > 2000) { setSettingsMessage("Description must be 2000 characters or fewer."); settingsDescriptionInput?.focus(); return; }
+        if (!saveSettingsButton) return;
+
+        const original = saveSettingsButton.innerHTML;
+        saveSettingsButton.disabled = true;
+        saveSettingsButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        setSettingsMessage("");
+
+        try {
+            const response = await api(`/api/spaces/${spaceId}`, {
+                method: "PUT",
+                body: JSON.stringify({ space_name: spaceName, space_type: spaceType, description })
+            });
+            if (!response) return;
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok || !result.success) {
+                setSettingsMessage(result.message || "Unable to update space settings.");
+                return;
+            }
+
+            currentSpace = { ...(currentSpace || {}), space_name: spaceName, space_type: spaceType, description };
+            if (spaceNameElement) spaceNameElement.textContent = spaceName;
+            if (spaceDescriptionElement) spaceDescriptionElement.textContent = description || "A private place for the moments that matter.";
+            if (spaceTypeElement) spaceTypeElement.textContent = `${String(spaceType).toUpperCase()} SPACE`;
+            setSettingsMessage("Space updated successfully.", true);
+            setTimeout(closeSettingsModal, 350);
+        } catch (error) {
+            console.error("Space settings update error:", error);
+            setSettingsMessage("Unable to reach the server. Please try again.");
+        } finally {
+            saveSettingsButton.disabled = false;
+            saveSettingsButton.innerHTML = original;
+        }
+    }
+
+    async function deleteCurrentSpace() {
+        if (!window.confirm("Delete this space permanently? This action cannot be undone.")) return;
+        try {
+            deleteSettingsCard?.classList.add("is-loading");
+            const response = await api(`/api/spaces/${spaceId}`, { method: "DELETE" });
+            if (!response) return;
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok || !result.success) { alert(result.message || "Unable to delete this space."); return; }
+            localStorage.removeItem("current_space_id");
+            window.location.href = "/dashboard";
+        } catch (error) {
+            console.error("Space delete error:", error);
+            alert("Unable to reach the server. Please try again.");
+        } finally {
+            deleteSettingsCard?.classList.remove("is-loading");
+        }
+    }
+
+    function openPrivacySettings() {
+        alert("This space is private and accessible only to its members. Additional privacy controls are not available in the current backend.");
+    }
+
+    generalSettingsCard?.addEventListener("click", openSettingsModal);
+    privacySettingsCard?.addEventListener("click", openPrivacySettings);
+    deleteSettingsCard?.addEventListener("click", deleteCurrentSpace);
+    closeSettingsModalButton?.addEventListener("click", closeSettingsModal);
+    cancelSettingsButton?.addEventListener("click", closeSettingsModal);
+    settingsModal?.addEventListener("click", event => { if (event.target === settingsModal) closeSettingsModal(); });
+    generalSettingsForm?.addEventListener("submit", saveSpaceSettings);
 
     // =====================================================
     // INITIAL API LOAD
