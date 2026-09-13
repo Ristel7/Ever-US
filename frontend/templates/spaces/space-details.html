@@ -727,57 +727,56 @@
                  MESSAGES
             ================================================== -->
 
+                <!-- =================================================
+                 MESSAGES
+                ================================================== -->
                 <section class="content-view" id="messages">
-
+                
                     <div class="section-heading">
-
                         <div>
-
-                            <span>
-                                CONVERSATION
-                            </span>
-
-                            <h2>
-                                Messages
-                            </h2>
-
-                            <p>
-                                Talk, share and stay connected.
-                            </p>
-
+                            <span>CONVERSATION</span>
+                            <h2>Messages</h2>
+                            <p>Talk, share and stay connected.</p>
                         </div>
-
                     </div>
-
-
-                    <div class="messages-placeholder">
-
-                        <div class="messages-icon">
-
-                            <i class="fa-regular fa-comments"></i>
-
+                
+                    <div class="messages-shell">
+                
+                        <div class="messages-list" id="messagesList" aria-live="polite"></div>
+                
+                        <div class="messages-empty" id="messagesEmpty">
+                            <div class="messages-icon">
+                                <i class="fa-regular fa-comments"></i>
+                            </div>
+                            <h3>Start a conversation</h3>
+                            <p>Messages from this space will appear here.</p>
                         </div>
-
-                        <h3>
-                            Start a conversation
-                        </h3>
-
-                        <p>
-                            Messages from this space will
-                            appear here.
-                        </p>
-
-                        <button class="primary-button" type="button">
-
-                            <i class="fa-solid fa-message"></i>
-
-                            Send a message
-
-                        </button>
-
+                
+                        <form class="message-composer" id="messageForm">
+                            <div class="message-image-preview hidden" id="messageImagePreview"></div>
+                
+                            <input type="file" id="messageImageInput" accept="image/jpeg,image/png,image/webp" hidden>
+                
+                            <button type="button" class="message-attach-button" id="attachMessageImage" aria-label="Attach image"
+                                title="Attach image">
+                                <i class="fa-regular fa-image"></i>
+                            </button>
+                
+                            <input type="text" id="messageInput" maxlength="5000" autocomplete="off" placeholder="Write a message..."
+                                aria-label="Message">
+                
+                            <button type="submit" class="primary-button message-send-button" id="sendMessageButton"
+                                aria-label="Send message" title="Send message">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                
+                            <p class="message-form-message" id="messageFormMessage" role="status" aria-live="polite"></p>
+                        </form>
+                
                     </div>
-
+                
                 </section>
+
 
 
 
