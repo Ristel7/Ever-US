@@ -3433,12 +3433,462 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Unable to load";
         }
     }
+
+    // =====================================================
+    // MESSAGES
+    // =====================================================
+
+    const messagesList = document.getElementById("messagesList");
+    const messagesEmpty = document.getElementById("messagesEmpty");
+    const messageForm = document.getElementById("messageForm");
+    const messageInput = document.getElementById("messageInput");
+    const sendMessageButton = document.getElementById("sendMessageButton");
+    const messageImageInput = document.getElementById("messageImageInput");
+    const attachMessageImage = document.getElementById("attachMessageImage");
+    const messageImagePreview = document.getElementById("messageImagePreview");
+    const messageFormMessage = document.getElementById("messageFormMessage");
+    const messagesQuickCount = document.getElementById("messagesQuickCount");
+    const messagesNavCount = document.getElementById("messagesNavCount");
+
+    let currentMessages = [];
+    let messageMembers = [];
+    let editingMessageId = null;
+
+    function setMessageFormMessage(message, isSuccess = false) {
+        if (!messageFormMessage) return;
+        messageFormMessage.textContent = message;
+        messageFormMessage.classList.toggle("success", isSuccess);
+    }
+
+    function getCurrentUserId() {
+        try {
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            return String(user?._id || user?.id || "");
+        } catch {
+            return "";
+        }
+    }
+
+    function formatMessageDate(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "";
+        return date.toLocaleString(undefined, {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+        });
+    }
+
+    function updateMessageCounts(count) {
+        if (messagesQuickCount) messagesQuickCount.textContent = String(count);
+        if (messagesNavCount) messagesNavCount.textContent = String(count);
+    }
+
+    function getMemberForMessage(message) {
+        const senderId = String(message.sender_id || "");
+        return messageMembers.find(
+            member => String(member.user_id || member.id || "") === senderId
+        );
+    }
+
+    function renderMessages(messages) {
+        currentMessages = Array.isArray(messages) ? messages : [];
+        updateMessageCounts(currentMessages.length);
+
+        if (!messagesList || !messagesEmpty) return;
+
+        messagesList.replaceChildren();
+
+        if (currentMessages.length === 0) {
+            messagesList.classList.add("hidden");
+            messagesEmpty.classList.remove("hidden");
+            return;
+        }
+
+        messagesList.classList.remove("hidden");
+        messagesEmpty.classList.add("hidden");
+
+        const currentUserId = getCurrentUserId();
+
+        currentMessages.forEach(message => {
+            const senderId = String(message.sender_id || "");
+            const mine = senderId === currentUserId;
+            const member = getMemberForMessage(message);
+            const senderName = member?.name || (mine ? "You" : "Member");
+            const profileImage = member?.profile_image || "";
+
+            const row = document.createElement("article");
+            row.className = `message-row ${mine ? "mine" : "theirs"}`;
+            row.dataset.messageId = message._id || message.id || "";
+
+            const avatar = document.createElement("div");
+            avatar.className = "message-avatar";
+
+            if (profileImage) {
+                const img = document.createElement("img");
+                img.src = profileImage;
+                img.alt = senderName;
+                img.loading = "lazy";
+                avatar.appendChild(img);
+            } else {
+                avatar.textContent = senderName.charAt(0).toUpperCase() || "U";
+            }
+
+            const bubbleWrap = document.createElement("div");
+            bubbleWrap.className = "message-bubble-wrap";
+
+            const meta = document.createElement("div");
+            meta.className = "message-meta";
+
+            const sender = document.createElement("strong");
+            sender.textContent = mine ? "You" : senderName;
+
+            const time = document.createElement("span");
+            time.textContent = formatMessageDate(message.created_at);
+
+            meta.append(sender, time);
+
+            const bubble = document.createElement("div");
+            bubble.className = "message-bubble";
+
+            if (message.message_type === "image") {
+                const image = document.createElement("img");
+                image.src = safeMediaUrl(message.message);
+                image.alt = "Shared image";
+                image.loading = "lazy";
+                image.className = "message-image";
+                bubble.appendChild(image);
+            } else {
+                const content = document.createElement("p");
+                content.textContent = message.message || "";
+                bubble.appendChild(content);
+            }
+
+            if (message.is_edited) {
+                const edited = document.createElement("small");
+                edited.className = "message-edited";
+                edited.textContent = "edited";
+                bubble.appendChild(edited);
+            }
+
+            if (mine && message.message_type === "text") {
+                const actions = document.createElement("div");
+                actions.className = "message-actions";
+
+                const editButton = document.createElement("button");
+                editButton.type = "button";
+                editButton.title = "Edit message";
+                editButton.setAttribute("aria-label", "Edit message");
+                editButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+                editButton.addEventListener("click", () => beginEditMessage(message));
+
+                const deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.title = "Delete message";
+                deleteButton.setAttribute("aria-label", "Delete message");
+                deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+                deleteButton.addEventListener(
+                    "click",
+                    () => deleteSpaceMessage(message._id || message.id, deleteButton)
+                );
+
+                actions.append(editButton, deleteButton);
+                bubble.appendChild(actions);
+            }
+
+            bubbleWrap.append(meta, bubble);
+
+            if (mine) {
+                row.append(bubbleWrap, avatar);
+            } else {
+                row.append(avatar, bubbleWrap);
+            }
+
+            messagesList.appendChild(row);
+        });
+
+        messagesList.scrollTop = messagesList.scrollHeight;
+    }
+
+    async function loadMessageMembers() {
+        try {
+            const response = await api(`/api/spaces/${spaceId}/members`);
+            if (!response) return;
+            const result = await response.json().catch(() => ({}));
+            if (response.ok && result.success) {
+                messageMembers = Array.isArray(result.data?.members)
+                    ? result.data.members
+                    : [];
+            }
+        } catch (error) {
+            console.error("Message member loading error:", error);
+        }
+    }
+
+    async function loadMessages() {
+        if (!messagesList || !messagesEmpty) return;
+
+        try {
+            const response = await api(`/api/messages/${spaceId}`);
+            if (!response) return;
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                console.error("Messages load failed:", result.message);
+                return;
+            }
+
+            renderMessages(result.data?.messages || []);
+        } catch (error) {
+            console.error("Messages loading error:", error);
+        }
+    }
+
+    async function sendTextMessage(event) {
+        event.preventDefault();
+
+        if (!messageInput || !sendMessageButton) return;
+
+        const message = messageInput.value.trim();
+
+        if (!message) {
+            setMessageFormMessage("Write a message first.");
+            messageInput.focus();
+            return;
+        }
+
+        if (message.length > 5000) {
+            setMessageFormMessage("Message cannot be longer than 5000 characters.");
+            return;
+        }
+
+        const isEditing = Boolean(editingMessageId);
+        const originalButton = sendMessageButton.innerHTML;
+
+        sendMessageButton.disabled = true;
+        sendMessageButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+        try {
+            const response = await api(
+                isEditing
+                    ? `/api/messages/${editingMessageId}`
+                    : "/api/messages/",
+                {
+                    method: isEditing ? "PUT" : "POST",
+                    body: JSON.stringify(
+                        isEditing
+                            ? { message }
+                            : { space_id: spaceId, message }
+                    )
+                }
+            );
+
+            if (!response) return;
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                setMessageFormMessage(
+                    result.message || "Unable to send message."
+                );
+                return;
+            }
+
+            messageInput.value = "";
+            editingMessageId = null;
+            setMessageFormMessage("");
+            updateMessageComposerState();
+            await loadMessages();
+        } catch (error) {
+            console.error("Message send error:", error);
+            setMessageFormMessage("Unable to reach the server. Please try again.");
+        } finally {
+            sendMessageButton.disabled = false;
+            sendMessageButton.innerHTML = originalButton;
+        }
+    }
+
+    function beginEditMessage(message) {
+        if (!messageInput) return;
+
+        editingMessageId = message._id || message.id || null;
+        messageInput.value = message.message || "";
+        messageInput.focus();
+        updateMessageComposerState();
+    }
+
+    function updateMessageComposerState() {
+        if (!sendMessageButton) return;
+
+        sendMessageButton.innerHTML = editingMessageId
+            ? '<i class="fa-solid fa-check"></i>'
+            : '<i class="fa-solid fa-paper-plane"></i>';
+
+        sendMessageButton.title = editingMessageId
+            ? "Update message"
+            : "Send message";
+    }
+
+    async function deleteSpaceMessage(messageId, button) {
+        if (!messageId) return;
+
+        if (!window.confirm("Delete this message permanently?")) return;
+
+        button.disabled = true;
+
+        try {
+            const response = await api(
+                `/api/messages/${messageId}`,
+                { method: "DELETE" }
+            );
+
+            if (!response) return;
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                alert(result.message || "Unable to delete message.");
+                return;
+            }
+
+            await loadMessages();
+        } catch (error) {
+            console.error("Message delete error:", error);
+            alert("Unable to reach the server. Please try again.");
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    function clearMessageImagePreview() {
+        if (!messageImagePreview) return;
+        messageImagePreview.replaceChildren();
+        messageImagePreview.classList.add("hidden");
+    }
+
+    if (messageImageInput) {
+        messageImageInput.addEventListener("change", () => {
+            const file = messageImageInput.files?.[0];
+
+            if (!file) {
+                clearMessageImagePreview();
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+                messageImageInput.value = "";
+                clearMessageImagePreview();
+                setMessageFormMessage("Choose an image file.");
+                return;
+            }
+
+            const previewUrl = URL.createObjectURL(file);
+            const image = document.createElement("img");
+            image.src = previewUrl;
+            image.alt = "Image preview";
+            image.onload = () => URL.revokeObjectURL(previewUrl);
+
+            messageImagePreview.replaceChildren(image);
+            messageImagePreview.classList.remove("hidden");
+            setMessageFormMessage("");
+        });
+    }
+
+    async function sendImageMessage() {
+        const file = messageImageInput?.files?.[0];
+
+        if (!file) {
+            setMessageFormMessage("Choose an image first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("space_id", spaceId);
+        formData.append("image", file);
+
+        try {
+            if (sendMessageButton) {
+                sendMessageButton.disabled = true;
+                sendMessageButton.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i>';
+            }
+
+            const response = await api(
+                "/api/messages/image",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            if (!response) return;
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                setMessageFormMessage(
+                    result.message || "Unable to send image."
+                );
+                return;
+            }
+
+            messageImageInput.value = "";
+            clearMessageImagePreview();
+            setMessageFormMessage("");
+            await loadMessages();
+        } catch (error) {
+            console.error("Image message error:", error);
+            setMessageFormMessage("Unable to reach the server. Please try again.");
+        } finally {
+            updateMessageComposerState();
+            if (sendMessageButton) sendMessageButton.disabled = false;
+        }
+    }
+
+    if (messageForm) {
+        messageForm.addEventListener("submit", event => {
+            if (messageImageInput?.files?.length) {
+                event.preventDefault();
+                sendImageMessage();
+                return;
+            }
+            sendTextMessage(event);
+        });
+    }
+
+    attachMessageImage?.addEventListener("click", () => {
+        messageImageInput?.click();
+    });
+
+    // Optional Socket.IO live updates. REST remains the source of truth.
+    try {
+        if (typeof io === "function") {
+            const messageSocket = io();
+
+            messageSocket.on("connect", () => {
+                console.log("Messages socket connected.");
+            });
+
+            messageSocket.on("new_message", event => {
+                if (String(event?.space_id) !== String(spaceId)) return;
+                loadMessages();
+            });
+        }
+    } catch (error) {
+        console.warn("Live message socket unavailable:", error);
+    }
+
     // =====================================================
     // INITIAL API LOAD
     // =====================================================
 
     loadSpace();
     loadMembers();
+    loadMessageMembers();
+    loadMessages();
     loadMemories();
     loadTimeline();
     loadJournal();

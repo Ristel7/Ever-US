@@ -1,6 +1,5 @@
 from bson import ObjectId
 from datetime import datetime
-
 from models.message import messages_collection
 from utils.serializer import serialize
 
