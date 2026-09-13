@@ -1756,9 +1756,9 @@ a {
     display: flex;
     flex-direction: column;
     min-height: 520px;
-    border: 1px solid #eee;
+    border: 1px solid #823131;
     border-radius: 20px;
-    background: #fff;
+    background: #370a5c;
     overflow: hidden;
 }
 
@@ -1792,7 +1792,7 @@ a {
     border-radius: 18px;
     display: grid;
     place-items: center;
-    background: #f3efff;
+    background: #92c51d;
     color: var(--primary);
     font-size: 24px;
     margin-bottom: 16px;
@@ -1826,7 +1826,7 @@ a {
     display: grid;
     place-items: center;
     overflow: hidden;
-    background: #eee8ff;
+    background: #d87008;
     color: var(--primary);
     font-weight: 700;
     font-size: 13px;
@@ -1859,14 +1859,14 @@ a {
     position: relative;
     padding: 11px 14px;
     border-radius: 16px;
-    background: #f6f6f8;
+    background: #06a037;
     color: var(--text);
     word-break: break-word;
 }
 
 .message-row.mine .message-bubble {
     background: var(--primary);
-    color: #fff;
+    color: #eef2f6;
     border-bottom-right-radius: 5px;
 }
 
@@ -1920,15 +1920,15 @@ a {
     align-items: center;
     gap: 9px;
     padding: 14px;
-    border-top: 1px solid #eee;
-    background: #fff;
+    border-top: 1px solid #f13939;
+    background: #77a810;
 }
 
 .message-composer input[type="text"] {
     flex: 1;
     min-width: 0;
     height: 46px;
-    border: 1px solid #ddd;
+    border: 1px solid #020101;
     border-radius: 14px;
     padding: 0 14px;
     outline: none;
@@ -1951,8 +1951,8 @@ a {
 }
 
 .message-attach-button {
-    border: 1px solid #ddd;
-    background: #fff;
+    border: 1px solid #eb7777;
+    background: #000000;
     color: var(--primary);
     cursor: pointer;
 }
@@ -1962,9 +1962,9 @@ a {
     left: 14px;
     bottom: 70px;
     padding: 5px;
-    border: 1px solid #eee;
+    border: 1px solid #000000;
     border-radius: 12px;
-    background: #fff;
+    background: #000000;
 }
 
 .message-image-preview img {
