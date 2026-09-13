@@ -2001,3 +2001,96 @@ a {
         max-width: 240px;
     }
 }
+
+/* SPACE SETTINGS */
+.settings-card[data-setting] {
+    cursor: pointer
+}
+
+.settings-card[data-setting]:focus-visible {
+    outline: 2px solid var(--primary-light, #8b5cf6);
+    outline-offset: 3px
+}
+
+.settings-card.is-loading {
+    opacity: .65;
+    pointer-events: none
+}
+
+.settings-modal-card {
+    max-width: 520px
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 9px
+}
+
+.settings-form label {
+    color: #9da3b7;
+    font-size: 10px;
+    font-weight: 700
+}
+
+.settings-form input,
+.settings-form textarea {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 10px;
+    padding: 11px 12px;
+    color: #e8e9ef;
+    background: rgba(255, 255, 255, .035);
+    outline: none;
+    font-size: 11px;
+    resize: vertical
+}
+
+.settings-form input:focus,
+.settings-form textarea:focus {
+    border-color: rgba(139, 92, 246, .55)
+}
+
+.settings-form-message {
+    min-height: 18px;
+    margin-top: 3px;
+    color: #fca5a5;
+    font-size: 10px;
+    line-height: 1.5
+}
+
+.settings-form-message.success {
+    color: #86efac
+}
+
+.settings-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 7px
+}
+
+.secondary-button {
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 9px;
+    padding: 10px 14px;
+    color: #aeb4c5;
+    background: rgba(255, 255, 255, .035);
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 700
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, .06)
+}
+
+@media(max-width:520px) {
+    .settings-form-actions {
+        flex-direction: column-reverse
+    }
+
+    .settings-form-actions button {
+        width: 100%
+    }
+}
