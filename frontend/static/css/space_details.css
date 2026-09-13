@@ -1747,3 +1747,257 @@ a {
     gap: 10px;
     margin-top: 18px;
 }
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+.messages-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.messages-list {
+    flex: 1;
+    min-height: 380px;
+    max-height: 560px;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.messages-list.hidden,
+.messages-empty.hidden,
+.message-image-preview.hidden {
+    display: none;
+}
+
+.messages-empty {
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.messages-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    background: #f3efff;
+    color: var(--primary);
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.messages-empty h3 {
+    margin: 0 0 8px;
+}
+
+.messages-empty p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.message-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.message-row.mine {
+    justify-content: flex-end;
+}
+
+.message-avatar {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #eee8ff;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.message-bubble-wrap {
+    max-width: min(72%, 620px);
+}
+
+.message-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 4px 5px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.message-meta strong {
+    color: var(--text);
+}
+
+.message-bubble {
+    position: relative;
+    padding: 11px 14px;
+    border-radius: 16px;
+    background: #f6f6f8;
+    color: var(--text);
+    word-break: break-word;
+}
+
+.message-row.mine .message-bubble {
+    background: var(--primary);
+    color: #fff;
+    border-bottom-right-radius: 5px;
+}
+
+.message-row.theirs .message-bubble {
+    border-bottom-left-radius: 5px;
+}
+
+.message-bubble p {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.message-image {
+    display: block;
+    max-width: 320px;
+    max-height: 360px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.message-edited {
+    display: block;
+    margin-top: 5px;
+    opacity: .7;
+    font-size: 10px;
+}
+
+.message-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 7px;
+    justify-content: flex-end;
+}
+
+.message-actions button {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    opacity: .7;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.message-actions button:hover {
+    opacity: 1;
+}
+
+.message-composer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 14px;
+    border-top: 1px solid #eee;
+    background: #fff;
+}
+
+.message-composer input[type="text"] {
+    flex: 1;
+    min-width: 0;
+    height: 46px;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    padding: 0 14px;
+    outline: none;
+    font: inherit;
+}
+
+.message-composer input[type="text"]:focus {
+    border-color: var(--primary-light);
+}
+
+.message-attach-button,
+.message-send-button {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+}
+
+.message-attach-button {
+    border: 1px solid #ddd;
+    background: #fff;
+    color: var(--primary);
+    cursor: pointer;
+}
+
+.message-image-preview {
+    position: absolute;
+    left: 14px;
+    bottom: 70px;
+    padding: 5px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.message-image-preview img {
+    width: 80px;
+    height: 80px;
+    display: block;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.message-form-message {
+    position: absolute;
+    left: 16px;
+    bottom: -20px;
+    margin: 0;
+    font-size: 11px;
+}
+
+@media (max-width: 700px) {
+    .messages-shell {
+        min-height: 450px;
+    }
+
+    .messages-list {
+        min-height: 320px;
+        padding: 16px;
+    }
+
+    .message-bubble-wrap {
+        max-width: 82%;
+    }
+
+    .message-image {
+        max-width: 240px;
+    }
+}
