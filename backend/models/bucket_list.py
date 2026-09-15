@@ -1,4 +1,4 @@
-from database import db
+from config.database import db
 
 bucket_list_collection = db["bucket_list"]
 
