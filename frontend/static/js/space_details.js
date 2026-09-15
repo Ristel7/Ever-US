@@ -4005,6 +4005,689 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsModal?.addEventListener("click", event => { if (event.target === settingsModal) closeSettingsModal(); });
     generalSettingsForm?.addEventListener("submit", saveSpaceSettings);
 
+
+    /* =========================================================
+   BUCKET LIST
+========================================================= */
+
+    const bucketList = document.getElementById("bucketList");
+    const bucketEmpty = document.getElementById("bucketEmpty");
+
+    const newBucketItemButton =
+        document.getElementById("newBucketItemButton");
+
+    const emptyBucketAddButton =
+        document.getElementById("emptyBucketAddButton");
+
+    const bucketModal =
+        document.getElementById("bucketModal");
+
+    const closeBucketModal =
+        document.getElementById("closeBucketModal");
+
+    const cancelBucketButton =
+        document.getElementById("cancelBucketButton");
+
+    const bucketForm =
+        document.getElementById("bucketForm");
+
+    const bucketItemId =
+        document.getElementById("bucketItemId");
+
+    const bucketTitleInput =
+        document.getElementById("bucketTitleInput");
+
+    const bucketDescriptionInput =
+        document.getElementById("bucketDescriptionInput");
+
+    const bucketModalTitle =
+        document.getElementById("bucketModalTitle");
+
+    const bucketFormMessage =
+        document.getElementById("bucketFormMessage");
+
+    const saveBucketButton =
+        document.getElementById("saveBucketButton");
+
+    const bucketProgressText =
+        document.getElementById("bucketProgressText");
+
+    const bucketProgressFill =
+        document.getElementById("bucketProgressFill");
+
+
+    let bucketItems = [];
+
+
+    /* ---------------------------------------------------------
+       OPEN MODAL
+    --------------------------------------------------------- */
+
+    function openBucketModal(item = null) {
+
+        if (!bucketModal) return;
+
+        bucketForm.reset();
+
+        bucketItemId.value = "";
+        bucketFormMessage.textContent = "";
+        bucketFormMessage.classList.remove("success");
+
+        if (item) {
+
+            bucketModalTitle.textContent =
+                "Edit bucket item";
+
+            bucketItemId.value =
+                item._id || "";
+
+            bucketTitleInput.value =
+                item.title || "";
+
+            bucketDescriptionInput.value =
+                item.description || "";
+
+            saveBucketButton.textContent =
+                "Save changes";
+
+        } else {
+
+            bucketModalTitle.textContent =
+                "Add something";
+
+            saveBucketButton.textContent =
+                "Save";
+        }
+
+        bucketModal.classList.add("active");
+        bucketModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        setTimeout(() => {
+            bucketTitleInput.focus();
+        }, 50);
+    }
+
+
+    /* ---------------------------------------------------------
+       CLOSE MODAL
+    --------------------------------------------------------- */
+
+    function closeBucketListModal() {
+
+        if (!bucketModal) return;
+
+        bucketModal.classList.remove("active");
+
+        bucketModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        bucketForm.reset();
+
+        bucketItemId.value = "";
+        bucketFormMessage.textContent = "";
+        bucketFormMessage.classList.remove("success");
+    }
+
+
+    /* ---------------------------------------------------------
+       LOAD ITEMS
+    --------------------------------------------------------- */
+
+    async function loadBucketList() {
+
+        if (!spaceId || !bucketList) return;
+
+        try {
+
+            bucketList.innerHTML = "";
+
+            const response = await api(
+                `/api/spaces/${spaceId}/bucket-list`
+            );
+
+            if (!response || !response.success) {
+                throw new Error(
+                    response?.message ||
+                    "Failed to load bucket list"
+                );
+            }
+
+            bucketItems =
+                Array.isArray(response.data?.items)
+                    ? response.data.items
+                    : [];
+
+            renderBucketList();
+
+        } catch (error) {
+
+            console.error(
+                "Bucket list load error:",
+                error
+            );
+
+            bucketList.innerHTML = `
+            <div class="bucket-empty">
+                <div class="bucket-empty-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+                <h3>
+                    Couldn't load your bucket list
+                </h3>
+
+                <p>
+                    ${escapeHtml(
+                error.message ||
+                "Something went wrong."
+            )}
+                </p>
+            </div>
+        `;
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       RENDER
+    --------------------------------------------------------- */
+
+    function renderBucketList() {
+
+        if (!bucketList || !bucketEmpty) return;
+
+        bucketList.innerHTML = "";
+
+        const total =
+            bucketItems.length;
+
+        const completed =
+            bucketItems.filter(
+                item => item.completed
+            ).length;
+
+        updateBucketProgress(
+            total,
+            completed
+        );
+
+        if (total === 0) {
+
+            bucketList.classList.add("hidden");
+            bucketEmpty.classList.remove("hidden");
+
+            return;
+        }
+
+        bucketList.classList.remove("hidden");
+        bucketEmpty.classList.add("hidden");
+
+
+        bucketItems.forEach(item => {
+
+            const element =
+                createBucketItemElement(item);
+
+            bucketList.appendChild(element);
+
+        });
+    }
+
+
+    /* ---------------------------------------------------------
+       PROGRESS
+    --------------------------------------------------------- */
+
+    function updateBucketProgress(
+        total,
+        completed
+    ) {
+
+        if (!bucketProgressText ||
+            !bucketProgressFill) {
+            return;
+        }
+
+        bucketProgressText.textContent =
+            `${completed} / ${total} completed`;
+
+        const percentage =
+            total > 0
+                ? Math.round(
+                    (completed / total) * 100
+                )
+                : 0;
+
+        bucketProgressFill.style.width =
+            `${percentage}%`;
+    }
+
+
+    /* ---------------------------------------------------------
+       CREATE ITEM ELEMENT
+    --------------------------------------------------------- */
+
+    function createBucketItemElement(item) {
+
+        const element =
+            document.createElement("article");
+
+        element.className =
+            `bucket-item ${item.completed
+                ? "completed"
+                : ""
+            }`;
+
+        element.dataset.id =
+            item._id;
+
+
+        const checkButton =
+            document.createElement("button");
+
+        checkButton.type = "button";
+
+        checkButton.className =
+            `bucket-check ${item.completed
+                ? "completed"
+                : ""
+            }`;
+
+        checkButton.setAttribute(
+            "aria-label",
+            item.completed
+                ? "Mark as incomplete"
+                : "Mark as completed"
+        );
+
+        checkButton.innerHTML =
+            item.completed
+                ? `<i class="fa-solid fa-check"></i>`
+                : "";
+
+
+        checkButton.addEventListener(
+            "click",
+            () => toggleBucketItem(item._id)
+        );
+
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "bucket-item-content";
+
+
+        const title =
+            document.createElement("h3");
+
+        title.className =
+            "bucket-item-title";
+
+        title.textContent =
+            item.title || "Untitled";
+
+
+        const description =
+            document.createElement("p");
+
+        description.className =
+            "bucket-item-description";
+
+        description.textContent =
+            item.description || "";
+
+
+        content.appendChild(title);
+
+        if (item.description) {
+            content.appendChild(description);
+        }
+
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "bucket-item-actions";
+
+
+        const editButton =
+            document.createElement("button");
+
+        editButton.type = "button";
+
+        editButton.className =
+            "bucket-action-button";
+
+        editButton.setAttribute(
+            "aria-label",
+            "Edit bucket item"
+        );
+
+        editButton.innerHTML =
+            `<i class="fa-solid fa-pen"></i>`;
+
+        editButton.addEventListener(
+            "click",
+            () => openBucketModal(item)
+        );
+
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.type = "button";
+
+        deleteButton.className =
+            "bucket-action-button delete";
+
+        deleteButton.setAttribute(
+            "aria-label",
+            "Delete bucket item"
+        );
+
+        deleteButton.innerHTML =
+            `<i class="fa-solid fa-trash"></i>`;
+
+        deleteButton.addEventListener(
+            "click",
+            () => deleteBucketItem(item._id)
+        );
+
+
+        actions.appendChild(editButton);
+        actions.appendChild(deleteButton);
+
+
+        element.appendChild(checkButton);
+        element.appendChild(content);
+        element.appendChild(actions);
+
+        return element;
+    }
+
+
+    /* ---------------------------------------------------------
+       CREATE / UPDATE
+    --------------------------------------------------------- */
+
+    async function saveBucketListItem(event) {
+
+        event.preventDefault();
+
+        const title =
+            bucketTitleInput.value.trim();
+
+        const description =
+            bucketDescriptionInput.value.trim();
+
+        if (!title) {
+
+            bucketFormMessage.textContent =
+                "Title is required.";
+
+            return;
+        }
+
+        if (title.length > 200) {
+
+            bucketFormMessage.textContent =
+                "Title must be at most 200 characters.";
+
+            return;
+        }
+
+        if (description.length > 2000) {
+
+            bucketFormMessage.textContent =
+                "Description must be at most 2000 characters.";
+
+            return;
+        }
+
+
+        const editingId =
+            bucketItemId.value.trim();
+
+        const isEditing =
+            Boolean(editingId);
+
+
+        saveBucketButton.disabled = true;
+
+        saveBucketButton.textContent =
+            isEditing
+                ? "Saving..."
+                : "Adding...";
+
+
+        bucketFormMessage.textContent = "";
+
+
+        try {
+
+            let response;
+
+
+            if (isEditing) {
+
+                response = await api(
+                    `/api/spaces/${spaceId}/bucket-list/${editingId}`,
+                    {
+                        method: "PUT",
+                        body: JSON.stringify({
+                            title,
+                            description
+                        })
+                    }
+                );
+
+            } else {
+
+                response = await api(
+                    `/api/spaces/${spaceId}/bucket-list`,
+                    {
+                        method: "POST",
+                        body: JSON.stringify({
+                            title,
+                            description
+                        })
+                    }
+                );
+            }
+
+
+            if (!response || !response.success) {
+                throw new Error(
+                    response?.message ||
+                    "Unable to save bucket item"
+                );
+            }
+
+
+            closeBucketListModal();
+
+            await loadBucketList();
+
+
+        } catch (error) {
+
+            console.error(
+                "Bucket save error:",
+                error
+            );
+
+            bucketFormMessage.textContent =
+                error.message ||
+                "Something went wrong.";
+
+        } finally {
+
+            saveBucketButton.disabled = false;
+
+            saveBucketButton.textContent =
+                isEditing
+                    ? "Save changes"
+                    : "Save";
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       TOGGLE
+    --------------------------------------------------------- */
+
+    async function toggleBucketItem(itemId) {
+
+        try {
+
+            const response = await api(
+                `/api/spaces/${spaceId}/bucket-list/${itemId}/toggle`,
+                {
+                    method: "PUT"
+                }
+            );
+
+            if (!response || !response.success) {
+                throw new Error(
+                    response?.message ||
+                    "Unable to update item"
+                );
+            }
+
+            await loadBucketList();
+
+        } catch (error) {
+
+            console.error(
+                "Bucket toggle error:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Unable to update bucket item."
+            );
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       DELETE
+    --------------------------------------------------------- */
+
+    async function deleteBucketItem(itemId) {
+
+        const confirmed =
+            window.confirm(
+                "Delete this bucket list item?"
+            );
+
+        if (!confirmed) return;
+
+
+        try {
+
+            const response = await api(
+                `/api/spaces/${spaceId}/bucket-list/${itemId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            if (!response || !response.success) {
+                throw new Error(
+                    response?.message ||
+                    "Unable to delete item"
+                );
+            }
+
+            await loadBucketList();
+
+        } catch (error) {
+
+            console.error(
+                "Bucket delete error:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Unable to delete bucket item."
+            );
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       EVENT LISTENERS
+    --------------------------------------------------------- */
+
+    if (newBucketItemButton) {
+
+        newBucketItemButton.addEventListener(
+            "click",
+            () => openBucketModal()
+        );
+    }
+
+
+    if (emptyBucketAddButton) {
+
+        emptyBucketAddButton.addEventListener(
+            "click",
+            () => openBucketModal()
+        );
+    }
+
+
+    if (closeBucketModal) {
+
+        closeBucketModal.addEventListener(
+            "click",
+            closeBucketListModal
+        );
+    }
+
+
+    if (cancelBucketButton) {
+
+        cancelBucketButton.addEventListener(
+            "click",
+            closeBucketListModal
+        );
+    }
+
+
+    if (bucketForm) {
+
+        bucketForm.addEventListener(
+            "submit",
+            saveBucketListItem
+        );
+    }
+
+
+    if (bucketModal) {
+
+        bucketModal.addEventListener(
+            "click",
+            event => {
+
+                if (event.target === bucketModal) {
+                    closeBucketListModal();
+                }
+
+            }
+        );
+    }
     // =====================================================
     // INITIAL API LOAD
     // =====================================================
@@ -4017,4 +4700,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTimeline();
     loadJournal();
     loadInviteCode();
+    escapeHtml()
 });

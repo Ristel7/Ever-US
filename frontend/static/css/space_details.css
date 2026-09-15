@@ -2094,3 +2094,293 @@ a {
         width: 100%
     }
 }
+
+/* =========================================================
+   BUCKET LIST
+========================================================= */
+
+.bucket-progress-card {
+    padding: 18px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .025);
+}
+
+.bucket-progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.bucket-progress-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #8d93a7;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.bucket-progress-header h3 {
+    margin: 0;
+    color: #f0f1f5;
+    font-size: 16px;
+}
+
+.bucket-progress-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    color: #a78bfa;
+    background: rgba(139, 92, 246, .1);
+}
+
+.bucket-progress-track {
+    width: 100%;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .07);
+}
+
+.bucket-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: var(--primary, #8b5cf6);
+    transition: width .3s ease;
+}
+
+
+/* BUCKET ITEMS */
+
+.bucket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bucket-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, .025);
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        transform .2s ease;
+}
+
+.bucket-item:hover {
+    border-color: rgba(139, 92, 246, .25);
+    background: rgba(255, 255, 255, .035);
+}
+
+.bucket-check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 6px;
+    color: white;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease;
+}
+
+.bucket-check:hover {
+    border-color: rgba(139, 92, 246, .7);
+}
+
+.bucket-check.completed {
+    border-color: #8b5cf6;
+    background: #8b5cf6;
+}
+
+.bucket-check i {
+    font-size: 10px;
+}
+
+.bucket-item-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.bucket-item-title {
+    margin: 0 0 5px;
+    color: #eceef4;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.bucket-item-description {
+    margin: 0;
+    color: #9298aa;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.bucket-item.completed .bucket-item-title {
+    color: #858a9b;
+    text-decoration: line-through;
+}
+
+.bucket-item.completed .bucket-item-description {
+    color: #717687;
+}
+
+.bucket-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.bucket-action-button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 8px;
+    color: #9298aa;
+    background: rgba(255, 255, 255, .025);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bucket-action-button:hover {
+    color: #e5e7eb;
+    background: rgba(255, 255, 255, .06);
+}
+
+.bucket-action-button.delete:hover {
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, .25);
+}
+
+
+/* EMPTY */
+
+.bucket-empty {
+    padding: 50px 20px;
+    text-align: center;
+    border: 1px dashed rgba(255, 255, 255, .08);
+    border-radius: 14px;
+}
+
+.bucket-empty-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: #a78bfa;
+    background: rgba(139, 92, 246, .1);
+}
+
+.bucket-empty h3 {
+    margin: 0 0 7px;
+    color: #e5e7eb;
+    font-size: 14px;
+}
+
+.bucket-empty p {
+    max-width: 360px;
+    margin: 0 auto 18px;
+    color: #858b9d;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* MODAL */
+
+.bucket-modal-card {
+    max-width: 520px;
+}
+
+.bucket-form {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.bucket-form label {
+    color: #9da3b7;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.bucket-form input,
+.bucket-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 10px;
+    padding: 11px 12px;
+    color: #e8e9ef;
+    background: rgba(255, 255, 255, .035);
+    outline: none;
+    font-size: 11px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.bucket-form input:focus,
+.bucket-form textarea:focus {
+    border-color: rgba(139, 92, 246, .55);
+}
+
+.bucket-form-message {
+    min-height: 18px;
+    margin: 3px 0 0;
+    color: #fca5a5;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.bucket-form-message.success {
+    color: #86efac;
+}
+
+.bucket-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 7px;
+}
+
+@media (max-width: 520px) {
+
+    .bucket-item {
+        gap: 9px;
+    }
+
+    .bucket-item-actions {
+        flex-direction: column;
+    }
+
+    .bucket-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .bucket-form-actions button {
+        width: 100%;
+    }
+}
