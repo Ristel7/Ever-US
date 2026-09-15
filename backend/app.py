@@ -11,6 +11,7 @@ from socketio_instance import socketio
 from web.page_routes import page_bp
 from routes.journal_routes import journal_bp
 from routes.timeline_routes import timeline_bp
+from routes.bucket_list_routes import bucket_list_bp
 
 
 # PATH CONFIGURATION
@@ -93,6 +94,11 @@ app.register_blueprint(
 # WEB / PAGE ROUTES
 app.register_blueprint(
     page_bp
+)
+
+app.register_blueprint(
+    bucket_list_bp,
+    url_prefix="/api/spaces"
 )
 
 # APPLICATION START
