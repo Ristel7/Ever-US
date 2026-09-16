@@ -478,3 +478,896 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 });
+
+/* =========================================================
+   DASHBOARD POLISH
+========================================================= */
+
+(() => {
+
+    const welcomeName =
+        document.getElementById("welcomeName");
+
+    const totalSpaces =
+        document.getElementById("totalSpaces");
+
+    const totalMemories =
+        document.getElementById("totalMemories");
+
+    const totalPeople =
+        document.getElementById("totalPeople");
+
+    const spacesContainer =
+        document.getElementById("spaces");
+
+    const recentMemoryList =
+        document.getElementById("recentMemoryList");
+
+    const recentMemoriesEmpty =
+        document.getElementById("recentMemoriesEmpty");
+
+    const activityList =
+        document.getElementById("activityList");
+
+    const activityEmpty =
+        document.getElementById("activityEmpty");
+
+    const viewAllSpaces =
+        document.getElementById("viewAllSpaces");
+
+
+    /* ---------------------------------------------------------
+       USER
+    --------------------------------------------------------- */
+
+    function loadDashboardUser() {
+
+        try {
+
+            const storedUser =
+                localStorage.getItem("user");
+
+            if (!storedUser) {
+                return;
+            }
+
+            const user =
+                JSON.parse(storedUser);
+
+            const name =
+                user.name ||
+                user.full_name ||
+                user.username ||
+                user.email?.split("@")[0] ||
+                "there";
+
+            if (welcomeName) {
+                welcomeName.textContent = name;
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard user loading error:",
+                error
+            );
+
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       DATE
+    --------------------------------------------------------- */
+
+    function formatRelativeDate(value) {
+
+        if (!value) {
+            return "";
+        }
+
+        const date =
+            new Date(value);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "";
+        }
+
+        const diff =
+            Date.now() -
+            date.getTime();
+
+        const minutes =
+            Math.floor(
+                diff / 60000
+            );
+
+        if (minutes < 1) {
+            return "Just now";
+        }
+
+        if (minutes < 60) {
+            return `${minutes}m ago`;
+        }
+
+        const hours =
+            Math.floor(
+                minutes / 60
+            );
+
+        if (hours < 24) {
+            return `${hours}h ago`;
+        }
+
+        const days =
+            Math.floor(
+                hours / 24
+            );
+
+        if (days < 7) {
+            return `${days}d ago`;
+        }
+
+        return date.toLocaleDateString(
+            [],
+            {
+                day: "numeric",
+                month: "short"
+            }
+        );
+    }
+
+
+    /* ---------------------------------------------------------
+       ESCAPE HTML
+    --------------------------------------------------------- */
+
+    function escapeDashboardHTML(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value ?? "";
+
+        return div.innerHTML;
+    }
+
+
+    /* ---------------------------------------------------------
+       FETCH SPACES
+    --------------------------------------------------------- */
+
+    async function loadDashboardData() {
+
+        if (!spacesContainer) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await api("/api/spaces/");
+
+            if (!response) {
+                return;
+            }
+
+            const result =
+                await response.json()
+                    .catch(() => ({}));
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load spaces."
+                );
+
+            }
+
+            const spaces =
+                result.data?.spaces ||
+                [];
+
+            updateDashboardStats(
+                spaces
+            );
+
+            renderDashboardSpaces(
+                spaces
+            );
+
+            await loadDashboardContent(
+                spaces
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard loading error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ---------------------------------------------------------
+       STATS
+    --------------------------------------------------------- */
+
+    async function updateDashboardStats(spaces) {
+
+        if (totalSpaces) {
+            totalSpaces.textContent =
+                spaces.length;
+        }
+
+        let memoriesCount = 0;
+        let peopleCount = 0;
+
+        /*
+         * Fetch members and memories for each
+         * accessible space.
+         */
+
+        const results =
+            await Promise.allSettled(
+
+                spaces.map(
+                    async (space) => {
+
+                        const id =
+                            space._id ||
+                            space.id ||
+                            space.space_id;
+
+                        if (!id) {
+                            return {
+                                memories: 0,
+                                people: 0
+                            };
+                        }
+
+                        let memories = 0;
+                        let people = 0;
+
+                        try {
+
+                            const response =
+                                await api(
+                                    `/api/spaces/${id}/memories`
+                                );
+
+                            if (response?.ok) {
+
+                                const result =
+                                    await response
+                                        .json()
+                                        .catch(
+                                            () => ({})
+                                        );
+
+                                memories =
+                                    result.data
+                                        ?.memories
+                                        ?.length || 0;
+                            }
+
+                        } catch (error) {
+
+                            console.error(
+                                "Memory count error:",
+                                error
+                            );
+
+                        }
+
+
+                        try {
+
+                            const response =
+                                await api(
+                                    `/api/spaces/${id}/members`
+                                );
+
+                            if (response?.ok) {
+
+                                const result =
+                                    await response
+                                        .json()
+                                        .catch(
+                                            () => ({})
+                                        );
+
+                                people =
+                                    result.data
+                                        ?.members
+                                        ?.length || 0;
+                            }
+
+                        } catch (error) {
+
+                            console.error(
+                                "Member count error:",
+                                error
+                            );
+
+                        }
+
+                        return {
+                            memories,
+                            people
+                        };
+
+                    }
+                )
+            );
+
+
+        results.forEach(
+            (result) => {
+
+                if (
+                    result.status !==
+                    "fulfilled"
+                ) {
+                    return;
+                }
+
+                memoriesCount +=
+                    result.value.memories;
+
+                peopleCount +=
+                    result.value.people;
+
+            }
+        );
+
+
+        if (totalMemories) {
+            totalMemories.textContent =
+                memoriesCount;
+        }
+
+        if (totalPeople) {
+            totalPeople.textContent =
+                peopleCount;
+        }
+
+    }
+
+
+    /* ---------------------------------------------------------
+       SPACE CARDS
+    --------------------------------------------------------- */
+
+    function renderDashboardSpaces(spaces) {
+
+        if (!spacesContainer) {
+            return;
+        }
+
+        if (!spaces.length) {
+
+            spacesContainer.innerHTML = `
+                <div class="dashboard-space-empty">
+
+                    <div class="dashboard-empty-icon">
+                        <i class="fa-regular fa-folder-open"></i>
+                    </div>
+
+                    <div>
+                        <strong>No spaces yet</strong>
+
+                        <span>
+                            Create your first private
+                            space to get started.
+                        </span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="create-btn"
+                        id="emptyCreateSpace"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Create Space
+                    </button>
+
+                </div>
+            `;
+
+            document
+                .getElementById("emptyCreateSpace")
+                ?.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .getElementById(
+                                "createSpace"
+                            )
+                            ?.click();
+
+                    }
+                );
+
+            return;
+        }
+
+
+        /*
+         * We intentionally don't replace an existing
+         * project-specific space renderer if one is
+         * already present.
+         */
+
+        if (
+            spacesContainer
+                .querySelector(
+                    ".space-card"
+                )
+        ) {
+            return;
+        }
+
+        spacesContainer.innerHTML =
+            spaces.slice(0, 6)
+                .map((space) => {
+
+                    const id =
+                        space._id ||
+                        space.id ||
+                        space.space_id;
+
+                    const name =
+                        space.space_name ||
+                        space.name ||
+                        "Untitled Space";
+
+                    const type =
+                        space.space_type ||
+                        space.type ||
+                        "private";
+
+                    return `
+                        <a
+                            class="dashboard-space-card"
+                            href="/spaces/${escapeDashboardHTML(id)}"
+                        >
+
+                            <div class="dashboard-space-icon">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+
+                            <div class="dashboard-space-info">
+
+                                <strong>
+                                    ${escapeDashboardHTML(name)}
+                                </strong>
+
+                                <span>
+                                    ${escapeDashboardHTML(
+                        String(type)
+                            .replace(
+                                /^./,
+                                letter =>
+                                    letter
+                                        .toUpperCase()
+                            )
+                    )}
+                                    space
+                                </span>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right dashboard-space-arrow"></i>
+
+                        </a>
+                    `;
+
+                })
+                .join("");
+
+    }
+
+
+    /* ---------------------------------------------------------
+       RECENT CONTENT
+    --------------------------------------------------------- */
+
+    async function loadDashboardContent(spaces) {
+
+        const allMemories = [];
+
+        for (
+            const space of spaces
+        ) {
+
+            const id =
+                space._id ||
+                space.id ||
+                space.space_id;
+
+            if (!id) {
+                continue;
+            }
+
+            try {
+
+                const response =
+                    await api(
+                        `/api/spaces/${id}/memories`
+                    );
+
+                if (!response?.ok) {
+                    continue;
+                }
+
+                const result =
+                    await response
+                        .json()
+                        .catch(() => ({}));
+
+                const memories =
+                    result.data?.memories ||
+                    [];
+
+                memories.forEach(
+                    (memory) => {
+
+                        allMemories.push({
+                            ...memory,
+                            space_name:
+                                space.space_name ||
+                                space.name ||
+                                "Space"
+                        });
+
+                    }
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Recent memory error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        allMemories.sort(
+            (a, b) => {
+
+                const dateA =
+                    new Date(
+                        a.created_at ||
+                        a.uploaded_at ||
+                        0
+                    ).getTime();
+
+                const dateB =
+                    new Date(
+                        b.created_at ||
+                        b.uploaded_at ||
+                        0
+                    ).getTime();
+
+                return dateB - dateA;
+
+            }
+        );
+
+
+        renderRecentMemories(
+            allMemories.slice(0, 6)
+        );
+
+
+        renderRecentActivity(
+            spaces,
+            allMemories
+        );
+
+    }
+
+
+    /* ---------------------------------------------------------
+       RECENT MEMORIES
+    --------------------------------------------------------- */
+
+    function renderRecentMemories(memories) {
+
+        if (
+            !recentMemoryList ||
+            !recentMemoriesEmpty
+        ) {
+            return;
+        }
+
+        if (!memories.length) {
+
+            recentMemoryList.innerHTML =
+                "";
+
+            recentMemoriesEmpty.style.display =
+                "flex";
+
+            return;
+        }
+
+
+        recentMemoriesEmpty.style.display =
+            "none";
+
+
+        recentMemoryList.innerHTML =
+            memories
+                .map((memory) => {
+
+                    const url =
+                        memory.media_url ||
+                        memory.url ||
+                        memory.image_url;
+
+                    if (!url) {
+                        return "";
+                    }
+
+                    return `
+                        <div
+                            class="recent-memory-item"
+                            title="${escapeDashboardHTML(
+                        memory.space_name
+                    )}"
+                        >
+
+                            <img
+                                src="${escapeDashboardHTML(url)}"
+                                alt="Memory"
+                                loading="lazy"
+                            >
+
+                            <div
+                                class="recent-memory-overlay"
+                            >
+                                ${escapeDashboardHTML(
+                        memory.space_name
+                    )}
+                            </div>
+
+                        </div>
+                    `;
+
+                })
+                .join("");
+
+    }
+
+
+    /* ---------------------------------------------------------
+       RECENT ACTIVITY
+    --------------------------------------------------------- */
+
+    function renderRecentActivity(
+        spaces,
+        memories
+    ) {
+
+        if (
+            !activityList ||
+            !activityEmpty
+        ) {
+            return;
+        }
+
+
+        const activities = [];
+
+
+        spaces.forEach(
+            (space) => {
+
+                const name =
+                    space.space_name ||
+                    space.name ||
+                    "Untitled Space";
+
+                const created =
+                    space.created_at;
+
+                activities.push({
+                    icon:
+                        "fa-folder-open",
+                    title:
+                        `Space "${name}" is available`,
+                    date:
+                        created
+                });
+
+            }
+        );
+
+
+        memories
+            .slice(0, 5)
+            .forEach(
+                (memory) => {
+
+                    activities.push({
+                        icon:
+                            "fa-image",
+                        title:
+                            `New memory in ${memory.space_name}`,
+                        date:
+                            memory.created_at ||
+                            memory.uploaded_at
+                    });
+
+                }
+            );
+
+
+        activities.sort(
+            (a, b) => {
+
+                const aDate =
+                    new Date(
+                        a.date || 0
+                    ).getTime();
+
+                const bDate =
+                    new Date(
+                        b.date || 0
+                    ).getTime();
+
+                return bDate - aDate;
+
+            }
+        );
+
+
+        const visible =
+            activities.slice(0, 5);
+
+
+        if (!visible.length) {
+
+            activityList.innerHTML =
+                "";
+
+            activityEmpty.style.display =
+                "flex";
+
+            return;
+        }
+
+
+        activityEmpty.style.display =
+            "none";
+
+
+        activityList.innerHTML =
+            visible
+                .map(
+                    (activity) => {
+
+                        return `
+                            <div class="activity-item">
+
+                                <div class="activity-item-icon">
+                                    <i class="fa-regular ${activity.icon}"></i>
+                                </div>
+
+                                <div class="activity-item-text">
+
+                                    <strong>
+                                        ${escapeDashboardHTML(
+                            activity.title
+                        )}
+                                    </strong>
+
+                                    <span>
+                                        ${formatRelativeDate(
+                            activity.date
+                        )}
+                                    </span>
+
+                                </div>
+
+                            </div>
+                        `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    /* ---------------------------------------------------------
+       VIEW ALL
+    --------------------------------------------------------- */
+
+    viewAllSpaces?.addEventListener(
+        "click",
+        () => {
+
+            if (spacesContainer) {
+
+                spacesContainer.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+        }
+    );
+
+
+    /* ---------------------------------------------------------
+       SEARCH
+    --------------------------------------------------------- */
+
+    const searchInput =
+        document.getElementById("search");
+
+
+    searchInput?.addEventListener(
+        "input",
+        () => {
+
+            const query =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            const cards =
+                document.querySelectorAll(
+                    ".dashboard-space-card"
+                );
+
+
+            cards.forEach(
+                (card) => {
+
+                    const text =
+                        card.textContent
+                            .toLowerCase();
+
+                    card.style.display =
+                        !query ||
+                            text.includes(query)
+                            ? ""
+                            : "none";
+
+                }
+            );
+
+        }
+    );
+
+
+    /* ---------------------------------------------------------
+       INITIALIZE
+    --------------------------------------------------------- */
+
+    loadDashboardUser();
+
+    loadDashboardData();
+
+})();
