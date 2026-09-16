@@ -5513,6 +5513,465 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    /* =========================================================
+   TIME CAPSULE
+========================================================= */
+
+    (() => {
+        const timeCapsuleModal = document.getElementById("timeCapsuleModal");
+        const closeTimeCapsuleModalButton =
+            document.getElementById("closeTimeCapsuleModal");
+
+        const cancelTimeCapsuleButton =
+            document.getElementById("cancelTimeCapsuleButton");
+
+        const timeCapsuleForm =
+            document.getElementById("timeCapsuleForm");
+
+        const newTimeCapsuleButton =
+            document.getElementById("newTimeCapsuleButton");
+
+        const emptyTimeCapsuleButton =
+            document.getElementById("emptyTimeCapsuleButton");
+
+        const titleInput =
+            document.getElementById("timeCapsuleTitleInput");
+
+        const contentInput =
+            document.getElementById("timeCapsuleContentInput");
+
+        const unlockInput =
+            document.getElementById("timeCapsuleUnlockInput");
+
+        const formMessage =
+            document.getElementById("timeCapsuleFormMessage");
+
+        const saveButton =
+            document.getElementById("saveTimeCapsuleButton");
+
+        const capsuleList =
+            document.getElementById("timeCapsuleList");
+
+        const capsuleEmpty =
+            document.getElementById("timeCapsuleEmpty");
+
+
+        function formatDate(value) {
+            if (!value) return "";
+
+            const date = new Date(value);
+
+            if (Number.isNaN(date.getTime())) {
+                return "";
+            }
+
+            return date.toLocaleString([], {
+                dateStyle: "medium",
+                timeStyle: "short"
+            });
+        }
+
+
+        function isUnlocked(value) {
+            if (!value) return false;
+
+            const date = new Date(value);
+
+            if (Number.isNaN(date.getTime())) {
+                return false;
+            }
+
+            return Date.now() >= date.getTime();
+        }
+
+
+        function openTimeCapsuleModal() {
+            if (!timeCapsuleModal) return;
+
+            timeCapsuleForm.reset();
+            formMessage.textContent = "";
+
+            const now = new Date();
+
+            now.setMinutes(
+                now.getMinutes() - now.getTimezoneOffset()
+            );
+
+            unlockInput.min = now.toISOString().slice(0, 16);
+
+            timeCapsuleModal.style.display = "flex";
+            timeCapsuleModal.classList.add("open");
+
+            setTimeout(() => {
+                titleInput.focus();
+            }, 50);
+        }
+
+
+        function closeTimeCapsuleModal() {
+            if (!timeCapsuleModal) return;
+
+            timeCapsuleModal.classList.remove("open");
+            timeCapsuleModal.style.display = "none";
+
+            timeCapsuleForm.reset();
+            formMessage.textContent = "";
+        }
+
+
+        function renderTimeCapsules(capsules) {
+            if (!Array.isArray(capsules) || capsules.length === 0) {
+                capsuleList.innerHTML = "";
+                capsuleEmpty.style.display = "flex";
+                return;
+            }
+
+            capsuleEmpty.style.display = "none";
+
+            capsuleList.innerHTML = capsules.map(capsule => {
+                const unlocked = isUnlocked(capsule.unlock_at);
+
+                const capsuleId = escapeHtml(capsule._id || "");
+
+                const title = escapeHtml(
+                    capsule.title || "Untitled capsule"
+                );
+
+                const unlockDate = escapeHtml(
+                    formatDate(capsule.unlock_at)
+                );
+
+                let messageHTML;
+
+                if (unlocked) {
+                    messageHTML = `
+                    <div class="time-capsule-content">
+                        ${escapeHtml(capsule.content || "")}
+                    </div>
+                `;
+                } else {
+                    messageHTML = `
+                    <div class="time-capsule-content">
+                        <i class="fa-solid fa-lock"></i>
+                        This message is sealed until the unlock date.
+                    </div>
+                `;
+                }
+
+                return `
+                <article class="time-capsule-card ${unlocked ? "open" : "locked"}">
+
+                    <div class="time-capsule-card-header">
+
+                        <div>
+                            <h3>${title}</h3>
+
+                            <p>
+                                ${unlocked
+                        ? "This capsule is ready to open."
+                        : "A message waiting for the future."
+                    }
+                            </p>
+                        </div>
+
+                        <span class="time-capsule-status ${unlocked ? "open" : "locked"}">
+                            <i class="fa-solid ${unlocked
+                        ? "fa-lock-open"
+                        : "fa-lock"
+                    }"></i>
+
+                            ${unlocked ? "Open" : "Locked"}
+                        </span>
+
+                    </div>
+
+                    ${messageHTML}
+
+                    <div class="time-capsule-date">
+                        <i class="fa-regular fa-clock"></i>
+
+                        ${unlocked
+                        ? `Unlocked ${unlockDate}`
+                        : `Unlocks ${unlockDate}`
+                    }
+                    </div>
+
+                    <button
+                        type="button"
+                        class="secondary-button time-capsule-delete"
+                        data-capsule-id="${capsuleId}"
+                    >
+                        <i class="fa-solid fa-trash"></i>
+                        Delete
+                    </button>
+
+                </article>
+            `;
+            }).join("");
+        }
+
+
+        async function loadTimeCapsules() {
+            if (!capsuleList || !spaceId) return;
+
+            capsuleList.innerHTML = `
+            <div class="time-capsule-loading">
+                Loading time capsules...
+            </div>
+        `;
+
+            try {
+                const response = await api(
+                    `/api/spaces/${spaceId}/time-capsules`
+                );
+
+                const result =
+                    await response.json().catch(() => ({}));
+
+                if (!response.ok || !result.success) {
+                    throw new Error(
+                        result.message ||
+                        "Failed to load time capsules"
+                    );
+                }
+
+                renderTimeCapsules(
+                    result.data?.capsules || []
+                );
+
+            } catch (error) {
+                console.error(
+                    "Load time capsules error:",
+                    error
+                );
+
+                capsuleList.innerHTML = `
+                <div class="time-capsule-error">
+                    ${escapeHtml(
+                    error.message ||
+                    "Failed to load time capsules."
+                )}
+                </div>
+            `;
+
+                capsuleEmpty.style.display = "none";
+            }
+        }
+
+
+        async function saveTimeCapsule(event) {
+            event.preventDefault();
+
+            const title = titleInput.value.trim();
+            const content = contentInput.value.trim();
+            const unlockValue = unlockInput.value;
+
+            formMessage.textContent = "";
+
+            if (!title) {
+                formMessage.textContent = "Title is required.";
+                return;
+            }
+
+            if (!content) {
+                formMessage.textContent = "Your message is required.";
+                return;
+            }
+
+            if (!unlockValue) {
+                formMessage.textContent = "Choose an unlock date.";
+                return;
+            }
+
+            const unlockDate = new Date(unlockValue);
+
+            if (
+                Number.isNaN(unlockDate.getTime()) ||
+                unlockDate.getTime() <= Date.now()
+            ) {
+                formMessage.textContent =
+                    "Unlock date must be in the future.";
+                return;
+            }
+
+            saveButton.disabled = true;
+
+            saveButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Sealing...
+        `;
+
+            try {
+                const response = await api(
+                    `/api/spaces/${spaceId}/time-capsules`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            title,
+                            content,
+                            unlock_at: unlockDate.toISOString()
+                        })
+                    }
+                );
+
+                const result =
+                    await response.json().catch(() => ({}));
+
+                if (!response.ok || !result.success) {
+                    throw new Error(
+                        result.message ||
+                        "Failed to create time capsule"
+                    );
+                }
+
+                closeTimeCapsuleModal();
+
+                await loadTimeCapsules();
+
+            } catch (error) {
+                console.error(
+                    "Create time capsule error:",
+                    error
+                );
+
+                formMessage.textContent =
+                    error.message ||
+                    "Failed to create time capsule.";
+
+            } finally {
+                saveButton.disabled = false;
+
+                saveButton.innerHTML = `
+                <i class="fa-solid fa-lock"></i>
+                Seal capsule
+            `;
+            }
+        }
+
+
+        async function deleteTimeCapsule(capsuleId) {
+            if (!capsuleId) return;
+
+            const confirmed = confirm(
+                "Are you sure you want to delete this time capsule?"
+            );
+
+            if (!confirmed) return;
+
+            try {
+                const response = await api(
+                    `/api/spaces/${spaceId}/time-capsules/${capsuleId}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+                const result =
+                    await response.json().catch(() => ({}));
+
+                if (!response.ok || !result.success) {
+                    throw new Error(
+                        result.message ||
+                        "Failed to delete time capsule"
+                    );
+                }
+
+                await loadTimeCapsules();
+
+            } catch (error) {
+                console.error(
+                    "Delete time capsule error:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Failed to delete time capsule."
+                );
+            }
+        }
+
+
+        if (newTimeCapsuleButton) {
+            newTimeCapsuleButton.addEventListener(
+                "click",
+                openTimeCapsuleModal
+            );
+        }
+
+
+        if (emptyTimeCapsuleButton) {
+            emptyTimeCapsuleButton.addEventListener(
+                "click",
+                openTimeCapsuleModal
+            );
+        }
+
+
+        if (closeTimeCapsuleModalButton) {
+            closeTimeCapsuleModalButton.addEventListener(
+                "click",
+                closeTimeCapsuleModal
+            );
+        }
+
+
+        if (cancelTimeCapsuleButton) {
+            cancelTimeCapsuleButton.addEventListener(
+                "click",
+                closeTimeCapsuleModal
+            );
+        }
+
+
+        if (timeCapsuleForm) {
+            timeCapsuleForm.addEventListener(
+                "submit",
+                saveTimeCapsule
+            );
+        }
+
+
+        if (capsuleList) {
+            capsuleList.addEventListener("click", event => {
+                const deleteButton =
+                    event.target.closest(
+                        ".time-capsule-delete"
+                    );
+
+                if (!deleteButton) return;
+
+                deleteTimeCapsule(
+                    deleteButton.dataset.capsuleId
+                );
+            });
+        }
+
+
+        document.addEventListener("keydown", event => {
+            if (
+                event.key === "Escape" &&
+                timeCapsuleModal &&
+                timeCapsuleModal.style.display !== "none"
+            ) {
+                closeTimeCapsuleModal();
+            }
+        });
+
+
+        // Reload every minute so a locked capsule automatically
+        // changes to Open when its unlock time arrives.
+        setInterval(loadTimeCapsules, 60 * 1000);
+
+
+        // Initial load
+        loadTimeCapsules();
+
+    })();
+
     // =====================================================
     // INITIAL API LOAD
     // =====================================================
@@ -5527,4 +5986,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadInviteCode();
     loadBucketList();
     loadNotes();
+    loadTimeCapsules();
 });

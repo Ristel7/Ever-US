@@ -15,6 +15,134 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/space_details.css') }}">
 
+
+    <style>
+        .time-capsule-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .time-capsule-card {
+            padding: 22px;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            background: var(--card-background);
+        }
+
+        .time-capsule-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .time-capsule-card-header h3 {
+            margin: 0 0 8px;
+        }
+
+        .time-capsule-card-header p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .time-capsule-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .time-capsule-status.locked {
+            background: rgba(120, 120, 120, .12);
+        }
+
+        .time-capsule-status.open {
+            background: rgba(70, 170, 110, .12);
+        }
+
+        .time-capsule-content {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(128, 128, 128, .08);
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .time-capsule-date {
+            margin-top: 14px;
+            font-size: 13px;
+            opacity: .7;
+        }
+
+        .time-capsule-delete {
+            margin-top: 16px;
+        }
+
+        .time-capsule-empty {
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+        }
+
+        .time-capsule-empty-icon {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .time-capsule-empty h3,
+        .time-capsule-empty p {
+            margin: 0;
+        }
+
+        .time-capsule-loading,
+        .time-capsule-error {
+            padding: 30px;
+            text-align: center;
+            border-radius: 16px;
+        }
+
+        #timeCapsuleModal {
+            align-items: center;
+            justify-content: center;
+        }
+
+        #timeCapsuleModal .modal-card {
+            width: min(620px, calc(100% - 32px));
+        }
+
+        .time-capsule-form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 700px) {
+            .time-capsule-card-header {
+                flex-direction: column;
+            }
+
+            .time-capsule-form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .time-capsule-form-actions button {
+                width: 100%;
+            }
+        }
+    </style>
+
 </head>
 
 
@@ -119,6 +247,11 @@
                 <a href="#notes" class="space-nav-item" data-tab="notes">
                     <i class="fa-solid fa-note-sticky"></i>
                     <span>Notes</span>
+                </a>
+
+                <a href="#time-capsule" class="space-nav-item" data-tab="time-capsule">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <span>Time Capsule</span>
                 </a>
 
 
@@ -394,6 +527,10 @@
 
                     <button class="content-tab" data-content="notes" type="button">
                         Notes
+                    </button>
+
+                    <button class="content-tab" data-content="time-capsule" type="button">
+                        Time Capsule
                     </button>
 
 
@@ -997,6 +1134,43 @@
                                 Create Note
                             </button>
                         </div>
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 TIME CAPSULE
+             ================================================== -->
+
+                <section class="content-view" id="time-capsule">
+
+                    <div class="section-heading">
+                        <div>
+                            <span>FOR THE FUTURE</span>
+                            <h2>Time Capsule</h2>
+                            <p>Leave something behind for your future self or someone special.</p>
+                        </div>
+
+                        <button class="primary-button" id="newTimeCapsuleButton" type="button">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            Create capsule
+                        </button>
+                    </div>
+
+                    <div class="time-capsule-list" id="timeCapsuleList" aria-live="polite"></div>
+
+                    <div class="time-capsule-empty" id="timeCapsuleEmpty">
+                        <div class="time-capsule-empty-icon">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3>Nothing waiting for the future</h3>
+                        <p>Create a message today and choose when it should be opened.</p>
+                        <button class="primary-button" id="emptyTimeCapsuleButton" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                            Create your first capsule
+                        </button>
                     </div>
 
                 </section>
@@ -1734,6 +1908,60 @@
     <!-- =========================================================
      JOURNAL ENTRY MODAL
 ========================================================= -->
+
+
+    <!-- =========================================================
+     TIME CAPSULE MODAL
+========================================================= -->
+
+    <div class="modal" id="timeCapsuleModal" aria-hidden="true">
+
+        <div class="modal-card time-capsule-modal-card">
+
+            <button class="modal-close" id="closeTimeCapsuleModal" type="button" aria-label="Close time capsule dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-icon">
+                <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+
+            <span>TIME CAPSULE</span>
+
+            <h2>Write something for the future.</h2>
+
+            <p>Choose a future date when this message should become available.</p>
+
+            <form id="timeCapsuleForm">
+
+                <label for="timeCapsuleTitleInput">Title</label>
+                <input type="text" id="timeCapsuleTitleInput" maxlength="200" placeholder="Give your capsule a title..."
+                    required>
+
+                <label for="timeCapsuleContentInput">Your message</label>
+                <textarea id="timeCapsuleContentInput" maxlength="10000" rows="8"
+                    placeholder="Write a message for the future..." required></textarea>
+
+                <label for="timeCapsuleUnlockInput">Unlock date</label>
+                <input type="datetime-local" id="timeCapsuleUnlockInput" required>
+
+                <p class="time-capsule-form-message" id="timeCapsuleFormMessage" role="status" aria-live="polite"></p>
+
+                <div class="time-capsule-form-actions">
+                    <button class="secondary-button" id="cancelTimeCapsuleButton" type="button">
+                        Cancel
+                    </button>
+
+                    <button class="primary-button" id="saveTimeCapsuleButton" type="submit">
+                        <i class="fa-solid fa-lock"></i>
+                        Seal capsule
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
 
     <div class="modal" id="journalModal" aria-hidden="true">
 
