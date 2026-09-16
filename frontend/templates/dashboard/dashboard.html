@@ -46,29 +46,100 @@
     </header>
 
     <div class="content">
-        <section class="welcome"><span>YOUR PRIVATE UNIVERSE</span>
-            <h1>Welcome back, <em id="welcomeName">there</em>. <b>👋</b></h1>
-            <p>Everything that matters, all in one private place.</p>
+        <section class="welcome dashboard-welcome">
+        
+            <div class="welcome-copy">
+        
+                <span>YOUR PRIVATE UNIVERSE</span>
+        
+                <h1>
+                    Welcome back,
+                    <em id="welcomeName">there</em>.
+                    <b>👋</b>
+                </h1>
+        
+                <p>
+                    Everything that matters, all in one private place.
+                </p>
+        
+            </div>
+        
+            <div class="welcome-status">
+                <span class="status-dot"></span>
+                <span>Everything is private</span>
+            </div>
+        
         </section>
 
         <section class="stats">
-            <article class="stat">
-                <div class="stat-icon blue"><i class="fa-regular fa-folder-open"></i></div>
-                <div><small>Total Spaces</small><strong id="totalSpaces">0</strong><label>Private spaces</label></div>
+        
+            <!-- TOTAL SPACES -->
+            <article class="stat dashboard-stat-card">
+                <div class="stat-icon blue">
+                    <i class="fa-regular fa-folder-open"></i>
+                </div>
+        
+                <div class="stat-content">
+                    <small>Total Spaces</small>
+                    <strong id="totalSpaces">0</strong>
+                    <label id="spacesStatLabel">
+                        Your private spaces
+                    </label>
+                </div>
             </article>
-            <article class="stat">
-                <div class="stat-icon pink"><i class="fa-regular fa-images"></i></div>
-                <div><small>Total Memories</small><strong>0</strong><label>Ready to grow</label></div>
+        
+        
+            <!-- TOTAL MEMORIES -->
+            <article class="stat dashboard-stat-card">
+                <div class="stat-icon pink">
+                    <i class="fa-regular fa-images"></i>
+                </div>
+        
+                <div class="stat-content">
+                    <small>Total Memories</small>
+                    <strong id="totalMemories">0</strong>
+                    <label>
+                        Photos &amp; videos
+                    </label>
+                </div>
             </article>
-            <article class="stat">
-                <div class="stat-icon purple"><i class="fa-solid fa-user-group"></i></div>
-                <div><small>People Connected</small><strong>0</strong><label>Across your spaces</label></div>
+        
+        
+            <!-- PEOPLE -->
+            <article class="stat dashboard-stat-card">
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-user-group"></i>
+                </div>
+        
+                <div class="stat-content">
+                    <small>People Connected</small>
+                    <strong id="totalPeople">0</strong>
+                    <label>
+                        Across your spaces
+                    </label>
+                </div>
             </article>
-            <article class="stat">
-                <div class="stat-icon violet"><i class="fa-solid fa-database"></i></div>
-                <div><small>Storage Used</small><strong>0 GB</strong><label>of 10 GB</label></div>
-                <div class="ring"><span>0%</span></div>
+        
+        
+            <!-- STORAGE -->
+            <article class="stat dashboard-stat-card">
+                <div class="stat-icon violet">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+        
+                <div class="stat-content">
+                    <small>Storage</small>
+                    <strong id="storageValue">Cloud</strong>
+                    <label>
+                        Media stored securely
+                    </label>
+                </div>
+        
+                <div class="ring dashboard-storage-ring">
+                    <span>∞</span>
+                </div>
             </article>
+        
         </section>
 
         <section class="layout-grid">
@@ -77,7 +148,10 @@
                     <header class="panel-head">
                         <div><small>YOUR COLLECTION</small>
                             <h2>Your Spaces</h2>
-                        </div><button>View all <i class="fa-solid fa-arrow-right"></i></button>
+                        </div><button type="button" class="panel-action" id="viewAllSpaces">
+                            View all
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
                     </header>
                     <div class="spaces" id="spaces">
                         <div class="loading"><i class="fa-solid fa-spinner"></i>Loading your spaces...</div>
@@ -115,8 +189,22 @@
                                 <h2>Recent Memories</h2>
                             </div><button>View all</button>
                         </header>
-                        <div class="empty"><i class="fa-regular fa-images"></i><span>Your recent memories will appear
-                                here.</span>
+                        <div class="empty dashboard-empty" id="recentMemoriesEmpty">
+                            <div class="dashboard-empty-icon">
+                                <i class="fa-regular fa-images"></i>
+                            </div>
+                        
+                            <div>
+                                <strong>No memories yet</strong>
+                        
+                                <span>
+                                    Your recent photos and videos
+                                    will appear here.
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-memory-list" id="recentMemoryList">
                         </div>
                     </section>
                 </div>
@@ -133,7 +221,23 @@
                     <header class="panel-head">
                         <h2>Recent Activity</h2><button>View all</button>
                     </header>
-                    <div class="empty"><i class="fa-regular fa-clock"></i><span>No recent activity yet.</span></div>
+                    <div class="empty dashboard-empty" id="activityEmpty">
+                        <div class="dashboard-empty-icon">
+                            <i class="fa-regular fa-clock"></i>
+                        </div>
+                    
+                        <div>
+                            <strong>Your activity will appear here</strong>
+                    
+                            <span>
+                                Create memories, spaces and moments
+                                to see your activity.
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-list" id="activityList">
+                    </div>
                 </section>
                 <section class="invite"><small>SHARE THE MOMENTS</small>
                     <h3>Invite Your People</h3>
