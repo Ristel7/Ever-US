@@ -4007,7 +4007,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-    BUCKET LIST
+   BUCKET LIST
 ========================================================= */
 
     const bucketList = document.getElementById("bucketList");
@@ -4055,206 +4055,317 @@ document.addEventListener("DOMContentLoaded", () => {
     const bucketProgressFill =
         document.getElementById("bucketProgressFill");
 
-
     let bucketItems = [];
 
 
-    /* ---------------------------------------------------------
-        OPEN MODAL
-    --------------------------------------------------------- */
+    /* =========================================================
+       MODAL OPEN
+    ========================================================= */
 
     function openBucketModal(item = null) {
 
-        if (!bucketModal) return;
+        if (!bucketModal) {
+            console.error("Bucket modal not found.");
+            return;
+        }
 
-        bucketForm.reset();
+        if (bucketForm) {
+            bucketForm.reset();
+        }
 
-        bucketItemId.value = "";
-        bucketFormMessage.textContent = "";
-        bucketFormMessage.classList.remove("success");
+        if (bucketItemId) {
+            bucketItemId.value = "";
+        }
+
+        if (bucketFormMessage) {
+            bucketFormMessage.textContent = "";
+            bucketFormMessage.classList.remove("success");
+        }
+
+
+        /* EDIT MODE */
 
         if (item) {
 
-            bucketModalTitle.textContent =
-                "Edit bucket item";
+            if (bucketModalTitle) {
+                bucketModalTitle.textContent =
+                    "Edit bucket item";
+            }
 
-            bucketItemId.value =
-                item._id || "";
+            if (bucketItemId) {
+                bucketItemId.value =
+                    item._id || item.id || "";
+            }
 
-            bucketTitleInput.value =
-                item.title || "";
+            if (bucketTitleInput) {
+                bucketTitleInput.value =
+                    item.title || "";
+            }
 
-            bucketDescriptionInput.value =
-                item.description || "";
+            if (bucketDescriptionInput) {
+                bucketDescriptionInput.value =
+                    item.description || "";
+            }
 
-            saveBucketButton.textContent =
-                "Save changes";
+            if (saveBucketButton) {
+                saveBucketButton.innerHTML =
+                    '<i class="fa-solid fa-check"></i> Save changes';
+            }
 
-        } else {
-
-            bucketModalTitle.textContent =
-                "Add something";
-
-            saveBucketButton.textContent =
-                "Save";
         }
 
-        bucketModal.classList.add("active");
+        /* CREATE MODE */
+
+        else {
+
+            if (bucketModalTitle) {
+                bucketModalTitle.textContent =
+                    "Add something";
+            }
+
+            if (saveBucketButton) {
+                saveBucketButton.innerHTML =
+                    '<i class="fa-solid fa-plus"></i> Add to bucket list';
+            }
+        }
+
+
+        /*
+         * IMPORTANT:
+         * Use "open", not "active".
+         */
+
+        bucketModal.classList.add("open");
+
         bucketModal.setAttribute(
             "aria-hidden",
             "false"
         );
 
+        /*
+         * Fallback so the modal opens even if
+         * the CSS open rule is missing.
+         */
+
+        bucketModal.style.display = "flex";
+
+
         setTimeout(() => {
-            bucketTitleInput.focus();
+
+            if (bucketTitleInput) {
+                bucketTitleInput.focus();
+            }
+
         }, 50);
     }
 
 
-    /* ---------------------------------------------------------
-        CLOSE MODAL
-    --------------------------------------------------------- */
+    /* =========================================================
+       MODAL CLOSE
+    ========================================================= */
 
     function closeBucketListModal() {
 
-        if (!bucketModal) return;
+        if (!bucketModal) {
+            return;
+        }
 
-        bucketModal.classList.remove("active");
+        bucketModal.classList.remove("open");
 
         bucketModal.setAttribute(
             "aria-hidden",
             "true"
         );
 
-        bucketForm.reset();
+        bucketModal.style.display = "none";
 
-        bucketItemId.value = "";
-        bucketFormMessage.textContent = "";
-        bucketFormMessage.classList.remove("success");
+
+        if (bucketForm) {
+            bucketForm.reset();
+        }
+
+        if (bucketItemId) {
+            bucketItemId.value = "";
+        }
+
+        if (bucketFormMessage) {
+            bucketFormMessage.textContent = "";
+            bucketFormMessage.classList.remove("success");
+        }
     }
 
 
-    /* ---------------------------------------------------------
-        LOAD ITEMS
-    --------------------------------------------------------- */
+    /* =========================================================
+       LOAD BUCKET LIST
+    ========================================================= */
 
     async function loadBucketList() {
 
-        if (!spaceId || !bucketList) return;
+        if (!spaceId || !bucketList) {
+            return;
+        }
 
         try {
 
-            bucketList.innerHTML = "";
+            const response =
+                await api(
+                    `/api/spaces/${spaceId}/bucket-list`
+                );
 
-            const response = await api(
-                `/api/spaces/${spaceId}/bucket-list`
-            );
 
-            if (!response || !response.success) {
+            if (!response) {
+                return;
+            }
+
+
+            /*
+             * api() returns a fetch Response.
+             * We must parse JSON first.
+             */
+
+            const result =
+                await response.json().catch(() => ({}));
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
                 throw new Error(
-                    response?.message ||
-                    "Failed to load bucket list"
+                    result.message ||
+                    "Failed to load bucket list."
                 );
             }
 
+
             bucketItems =
-                Array.isArray(response.data?.items)
-                    ? response.data.items
+                Array.isArray(
+                    result.data?.items
+                )
+                    ? result.data.items
                     : [];
+
 
             renderBucketList();
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(
                 "Bucket list load error:",
                 error
             );
 
-            bucketList.innerHTML = `
-            <div class="bucket-empty">
-                <div class="bucket-empty-icon">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+            if (bucketList) {
+
+                bucketList.innerHTML = `
+                <div class="bucket-empty">
+                    <div class="bucket-empty-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <h3>
+                        Couldn't load your bucket list
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(
+                    error.message ||
+                    "Something went wrong."
+                )}
+                    </p>
                 </div>
-
-                <h3>
-                    Couldn't load your bucket list
-                </h3>
-
-                <p>
-                    ${escapeHtml(
-                error.message ||
-                "Something went wrong."
-            )}
-                </p>
-            </div>
-        `;
+            `;
+            }
         }
     }
 
 
-    /* ---------------------------------------------------------
-        RENDER
-    --------------------------------------------------------- */
+    /* =========================================================
+       RENDER BUCKET LIST
+    ========================================================= */
 
     function renderBucketList() {
 
-        if (!bucketList || !bucketEmpty) return;
+        if (!bucketList || !bucketEmpty) {
+            return;
+        }
 
-        bucketList.innerHTML = "";
+
+        bucketList.replaceChildren();
+
 
         const total =
             bucketItems.length;
 
+
         const completed =
             bucketItems.filter(
-                item => item.completed
+                item => Boolean(item.completed)
             ).length;
+
 
         updateBucketProgress(
             total,
             completed
         );
 
+
+        /* EMPTY */
+
         if (total === 0) {
 
             bucketList.classList.add("hidden");
+
             bucketEmpty.classList.remove("hidden");
 
             return;
         }
 
+
+        /* HAS ITEMS */
+
         bucketList.classList.remove("hidden");
+
         bucketEmpty.classList.add("hidden");
 
 
-        bucketItems.forEach(item => {
+        bucketItems.forEach(
+            item => {
 
-            const element =
-                createBucketItemElement(item);
+                const element =
+                    createBucketItemElement(item);
 
-            bucketList.appendChild(element);
+                bucketList.appendChild(element);
 
-        });
+            }
+        );
     }
 
 
-    /* ---------------------------------------------------------
-        PROGRESS
-    --------------------------------------------------------- */
+    /* =========================================================
+       PROGRESS
+    ========================================================= */
 
     function updateBucketProgress(
         total,
         completed
     ) {
 
-        if (!bucketProgressText ||
-            !bucketProgressFill) {
+        if (
+            !bucketProgressText ||
+            !bucketProgressFill
+        ) {
             return;
         }
 
+
         bucketProgressText.textContent =
             `${completed} / ${total} completed`;
+
 
         const percentage =
             total > 0
@@ -4263,62 +4374,79 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
                 : 0;
 
+
         bucketProgressFill.style.width =
             `${percentage}%`;
     }
 
 
-    /* ---------------------------------------------------------
-        CREATE ITEM ELEMENT
-    --------------------------------------------------------- */
+    /* =========================================================
+       CREATE BUCKET ITEM ELEMENT
+    ========================================================= */
 
     function createBucketItemElement(item) {
+
+        const itemId =
+            item._id ||
+            item.id ||
+            "";
+
+
+        const completed =
+            Boolean(item.completed);
+
 
         const element =
             document.createElement("article");
 
+
         element.className =
-            `bucket-item ${item.completed
-                ? "completed"
-                : ""
-            }`;
+            `bucket-item ${completed ? "completed" : ""}`;
+
 
         element.dataset.id =
-            item._id;
+            itemId;
 
+
+        /* CHECK BUTTON */
 
         const checkButton =
             document.createElement("button");
 
-        checkButton.type = "button";
+
+        checkButton.type =
+            "button";
+
 
         checkButton.className =
-            `bucket-check ${item.completed
-                ? "completed"
-                : ""
-            }`;
+            `bucket-check ${completed ? "completed" : ""}`;
+
 
         checkButton.setAttribute(
             "aria-label",
-            item.completed
+            completed
                 ? "Mark as incomplete"
                 : "Mark as completed"
         );
 
+
         checkButton.innerHTML =
-            item.completed
-                ? `<i class="fa-solid fa-check"></i>`
+            completed
+                ? '<i class="fa-solid fa-check"></i>'
                 : "";
 
 
         checkButton.addEventListener(
             "click",
-            () => toggleBucketItem(item._id)
+            () => toggleBucketItem(itemId)
         );
 
 
+        /* CONTENT */
+
         const content =
             document.createElement("div");
+
 
         content.className =
             "bucket-item-content";
@@ -4327,52 +4455,76 @@ document.addEventListener("DOMContentLoaded", () => {
         const title =
             document.createElement("h3");
 
+
         title.className =
             "bucket-item-title";
 
+
         title.textContent =
-            item.title || "Untitled";
-
-
-        const description =
-            document.createElement("p");
-
-        description.className =
-            "bucket-item-description";
-
-        description.textContent =
-            item.description || "";
+            item.title ||
+            "Untitled";
 
 
         content.appendChild(title);
 
+
         if (item.description) {
-            content.appendChild(description);
+
+            const description =
+                document.createElement("p");
+
+
+            description.className =
+                "bucket-item-description";
+
+
+            description.textContent =
+                item.description;
+
+
+            content.appendChild(
+                description
+            );
         }
 
 
+        /* ACTIONS */
+
         const actions =
             document.createElement("div");
+
 
         actions.className =
             "bucket-item-actions";
 
 
+        /* EDIT */
+
         const editButton =
             document.createElement("button");
 
-        editButton.type = "button";
+
+        editButton.type =
+            "button";
+
 
         editButton.className =
             "bucket-action-button";
+
 
         editButton.setAttribute(
             "aria-label",
             "Edit bucket item"
         );
 
+
+        editButton.title =
+            "Edit";
+
+
         editButton.innerHTML =
-            `<i class="fa-solid fa-pen"></i>`;
+            '<i class="fa-solid fa-pen"></i>';
+
 
         editButton.addEventListener(
             "click",
@@ -4380,95 +4532,146 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+        /* DELETE */
+
         const deleteButton =
             document.createElement("button");
 
-        deleteButton.type = "button";
+
+        deleteButton.type =
+            "button";
+
 
         deleteButton.className =
             "bucket-action-button delete";
+
 
         deleteButton.setAttribute(
             "aria-label",
             "Delete bucket item"
         );
 
+
+        deleteButton.title =
+            "Delete";
+
+
         deleteButton.innerHTML =
-            `<i class="fa-solid fa-trash"></i>`;
+            '<i class="fa-solid fa-trash"></i>';
+
 
         deleteButton.addEventListener(
             "click",
-            () => deleteBucketItem(item._id)
+            () => deleteBucketItem(itemId)
         );
 
 
-        actions.appendChild(editButton);
-        actions.appendChild(deleteButton);
+        actions.appendChild(
+            editButton
+        );
+
+        actions.appendChild(
+            deleteButton
+        );
 
 
-        element.appendChild(checkButton);
-        element.appendChild(content);
-        element.appendChild(actions);
+        /* BUILD */
+
+        element.appendChild(
+            checkButton
+        );
+
+        element.appendChild(
+            content
+        );
+
+        element.appendChild(
+            actions
+        );
+
 
         return element;
     }
 
 
-    /* ---------------------------------------------------------
-        CREATE / UPDATE
-    --------------------------------------------------------- */
+    /* =========================================================
+       CREATE / UPDATE
+    ========================================================= */
 
     async function saveBucketListItem(event) {
 
         event.preventDefault();
 
+
         const title =
-            bucketTitleInput.value.trim();
+            bucketTitleInput?.value.trim() ||
+            "";
+
 
         const description =
-            bucketDescriptionInput.value.trim();
+            bucketDescriptionInput?.value.trim() ||
+            "";
+
+
+        /* VALIDATION */
 
         if (!title) {
 
-            bucketFormMessage.textContent =
-                "Title is required.";
+            if (bucketFormMessage) {
+                bucketFormMessage.textContent =
+                    "Please enter a title.";
+            }
+
+            bucketTitleInput?.focus();
 
             return;
         }
+
 
         if (title.length > 200) {
 
-            bucketFormMessage.textContent =
-                "Title must be at most 200 characters.";
+            if (bucketFormMessage) {
+                bucketFormMessage.textContent =
+                    "Title must be 200 characters or fewer.";
+            }
 
             return;
         }
 
+
         if (description.length > 2000) {
 
-            bucketFormMessage.textContent =
-                "Description must be at most 2000 characters.";
+            if (bucketFormMessage) {
+                bucketFormMessage.textContent =
+                    "Description must be 2000 characters or fewer.";
+            }
 
             return;
         }
 
 
         const editingId =
-            bucketItemId.value.trim();
+            bucketItemId?.value.trim() ||
+            "";
+
 
         const isEditing =
             Boolean(editingId);
 
 
-        saveBucketButton.disabled = true;
+        if (saveBucketButton) {
 
-        saveBucketButton.textContent =
-            isEditing
-                ? "Saving..."
-                : "Adding...";
+            saveBucketButton.disabled =
+                true;
+
+            saveBucketButton.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        }
 
 
-        bucketFormMessage.textContent = "";
+        if (bucketFormMessage) {
+            bucketFormMessage.textContent = "";
+        }
 
 
         try {
@@ -4476,100 +4679,166 @@ document.addEventListener("DOMContentLoaded", () => {
             let response;
 
 
+            /* UPDATE */
+
             if (isEditing) {
 
-                response = await api(
-                    `/api/spaces/${spaceId}/bucket-list/${editingId}`,
-                    {
-                        method: "PUT",
-                        body: JSON.stringify({
-                            title,
-                            description
-                        })
-                    }
-                );
+                response =
+                    await api(
+                        `/api/spaces/${spaceId}/bucket-list/${editingId}`,
+                        {
+                            method: "PUT",
 
-            } else {
-
-                response = await api(
-                    `/api/spaces/${spaceId}/bucket-list`,
-                    {
-                        method: "POST",
-                        body: JSON.stringify({
-                            title,
-                            description
-                        })
-                    }
-                );
+                            body: JSON.stringify({
+                                title,
+                                description
+                            })
+                        }
+                    );
             }
 
 
-            if (!response || !response.success) {
+            /* CREATE */
+
+            else {
+
+                response =
+                    await api(
+                        `/api/spaces/${spaceId}/bucket-list`,
+                        {
+                            method: "POST",
+
+                            body: JSON.stringify({
+                                title,
+                                description
+                            })
+                        }
+                    );
+            }
+
+
+            if (!response) {
+                return;
+            }
+
+
+            /*
+             * Parse Response JSON
+             */
+
+            const result =
+                await response.json().catch(() => ({}));
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
                 throw new Error(
-                    response?.message ||
-                    "Unable to save bucket item"
+                    result.message ||
+                    "Unable to save bucket item."
                 );
             }
 
+
+            /* CLOSE MODAL */
 
             closeBucketListModal();
 
+
+            /* REFRESH LIST */
+
             await loadBucketList();
 
+        }
 
-        } catch (error) {
+        catch (error) {
 
             console.error(
                 "Bucket save error:",
                 error
             );
 
-            bucketFormMessage.textContent =
-                error.message ||
-                "Something went wrong.";
 
-        } finally {
+            if (bucketFormMessage) {
 
-            saveBucketButton.disabled = false;
+                bucketFormMessage.textContent =
+                    error.message ||
+                    "Something went wrong.";
+            }
+        }
 
-            saveBucketButton.textContent =
-                isEditing
-                    ? "Save changes"
-                    : "Save";
+        finally {
+
+            if (saveBucketButton) {
+
+                saveBucketButton.disabled =
+                    false;
+
+                saveBucketButton.innerHTML =
+                    isEditing
+                        ? '<i class="fa-solid fa-check"></i> Save changes'
+                        : '<i class="fa-solid fa-plus"></i> Add to bucket list';
+            }
         }
     }
 
 
-    /* ---------------------------------------------------------
-        TOGGLE
-    --------------------------------------------------------- */
+    /* =========================================================
+       TOGGLE COMPLETED
+    ========================================================= */
 
     async function toggleBucketItem(itemId) {
 
+        if (!itemId) {
+            return;
+        }
+
+
         try {
 
-            const response = await api(
-                `/api/spaces/${spaceId}/bucket-list/${itemId}/toggle`,
-                {
-                    method: "PUT"
-                }
-            );
+            const response =
+                await api(
+                    `/api/spaces/${spaceId}/bucket-list/${itemId}/toggle`,
+                    {
+                        method: "PUT"
+                    }
+                );
 
-            if (!response || !response.success) {
+
+            if (!response) {
+                return;
+            }
+
+
+            const result =
+                await response.json().catch(() => ({}));
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
                 throw new Error(
-                    response?.message ||
-                    "Unable to update item"
+                    result.message ||
+                    "Unable to update bucket item."
                 );
             }
 
+
             await loadBucketList();
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(
                 "Bucket toggle error:",
                 error
             );
+
 
             alert(
                 error.message ||
@@ -4579,44 +4848,71 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* ---------------------------------------------------------
-        DELETE
-    --------------------------------------------------------- */
+    /* =========================================================
+       DELETE
+    ========================================================= */
 
     async function deleteBucketItem(itemId) {
+
+        if (!itemId) {
+            return;
+        }
+
 
         const confirmed =
             window.confirm(
                 "Delete this bucket list item?"
             );
 
-        if (!confirmed) return;
+
+        if (!confirmed) {
+            return;
+        }
 
 
         try {
 
-            const response = await api(
-                `/api/spaces/${spaceId}/bucket-list/${itemId}`,
-                {
-                    method: "DELETE"
-                }
-            );
+            const response =
+                await api(
+                    `/api/spaces/${spaceId}/bucket-list/${itemId}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
 
-            if (!response || !response.success) {
+
+            if (!response) {
+                return;
+            }
+
+
+            const result =
+                await response.json().catch(() => ({}));
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
                 throw new Error(
-                    response?.message ||
-                    "Unable to delete item"
+                    result.message ||
+                    "Unable to delete bucket item."
                 );
             }
 
+
             await loadBucketList();
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(
                 "Bucket delete error:",
                 error
             );
+
 
             alert(
                 error.message ||
@@ -4626,15 +4922,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* ---------------------------------------------------------
-        EVENT LISTENERS
-    --------------------------------------------------------- */
+    /* =========================================================
+       BUTTON EVENTS
+    ========================================================= */
 
     if (newBucketItemButton) {
 
         newBucketItemButton.addEventListener(
             "click",
-            () => openBucketModal()
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                console.log(
+                    "Add Something clicked"
+                );
+
+                openBucketModal();
+            }
         );
     }
 
@@ -4643,16 +4949,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
         emptyBucketAddButton.addEventListener(
             "click",
-            () => openBucketModal()
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                console.log(
+                    "Add first dream clicked"
+                );
+
+                openBucketModal();
+            }
         );
     }
 
+
+    /* =========================================================
+       CLOSE BUTTON
+    ========================================================= */
 
     if (closeBucketModal) {
 
         closeBucketModal.addEventListener(
             "click",
-            closeBucketListModal
+            function (event) {
+
+                event.preventDefault();
+
+                closeBucketListModal();
+            }
         );
     }
 
@@ -4661,10 +4986,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         cancelBucketButton.addEventListener(
             "click",
-            closeBucketListModal
+            function (event) {
+
+                event.preventDefault();
+
+                closeBucketListModal();
+            }
         );
     }
 
+
+    /* =========================================================
+       FORM SUBMIT
+    ========================================================= */
 
     if (bucketForm) {
 
@@ -4675,19 +5009,49 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =========================================================
+       CLOSE WHEN CLICKING OUTSIDE MODAL
+    ========================================================= */
+
     if (bucketModal) {
 
         bucketModal.addEventListener(
             "click",
-            event => {
+            function (event) {
 
-                if (event.target === bucketModal) {
+                if (
+                    event.target === bucketModal
+                ) {
+
                     closeBucketListModal();
                 }
-
             }
         );
     }
+
+
+    /* =========================================================
+       ESC KEY CLOSE
+    ========================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                bucketModal?.classList.contains("open")
+            ) {
+
+                closeBucketListModal();
+            }
+        }
+    );
+
+    // =====================================================
+    // INITIAL API LOAD
+    // =====================================================
+
     // =====================================================
     // INITIAL API LOAD
     // =====================================================
@@ -4700,4 +5064,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTimeline();
     loadJournal();
     loadInviteCode();
+    loadBucketList();
 });
