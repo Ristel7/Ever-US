@@ -1,6 +1,7 @@
 import socket_events
 import os
 from flask import Flask
+from routes.time_capsule_routes import time_capsule_bp
 from routes.note_routes import note_bp
 from routes.auth_routes import auth_bp
 from routes.user_routes import user_bp
@@ -105,6 +106,11 @@ app.register_blueprint(
 
 app.register_blueprint(
     note_bp,
+    url_prefix="/api/spaces"
+)
+
+app.register_blueprint(
+    time_capsule_bp,
     url_prefix="/api/spaces"
 )
 
