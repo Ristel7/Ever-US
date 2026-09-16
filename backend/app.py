@@ -1,6 +1,7 @@
 import socket_events
 import os
 from flask import Flask
+from routes.note_routes import note_bp
 from routes.auth_routes import auth_bp
 from routes.user_routes import user_bp
 from routes.space_routes import space_bp
@@ -98,6 +99,12 @@ app.register_blueprint(
 
 app.register_blueprint(
     bucket_list_bp,
+    url_prefix="/api/spaces"
+)
+
+
+app.register_blueprint(
+    note_bp,
     url_prefix="/api/spaces"
 )
 
