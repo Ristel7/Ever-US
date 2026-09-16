@@ -943,7 +943,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     return `
                         <a
                             class="dashboard-space-card"
-                            href="/spaces/${escapeDashboardHTML(id)}"
+                            href="/spaces/${encodeURIComponent(id)}"
                         >
 
                             <div class="dashboard-space-icon">
