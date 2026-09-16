@@ -1332,7 +1332,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const shareText =
             inviteCode
-                ? `Join my private everUS space.\\n\\nInvite code: ${inviteCode}`
+                ? `Join my private everUS space.\n\nInvite code: ${inviteCode}`
                 : "Join my private everUS space.";
 
         const shareData = {
@@ -1373,7 +1373,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const fallbackText =
                     inviteCode
-                        ? `${shareText}\\n\\nSpace: ${window.location.href}`
+                        ? `${shareText}\n\nSpace: ${window.location.href}`
                         : window.location.href;
 
                 await navigator.clipboard.writeText(
@@ -4007,7 +4007,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-   BUCKET LIST
+    BUCKET LIST
 ========================================================= */
 
     const bucketList = document.getElementById("bucketList");
@@ -4060,7 +4060,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       OPEN MODAL
+        OPEN MODAL
     --------------------------------------------------------- */
 
     function openBucketModal(item = null) {
@@ -4112,7 +4112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       CLOSE MODAL
+        CLOSE MODAL
     --------------------------------------------------------- */
 
     function closeBucketListModal() {
@@ -4135,7 +4135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       LOAD ITEMS
+        LOAD ITEMS
     --------------------------------------------------------- */
 
     async function loadBucketList() {
@@ -4194,7 +4194,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       RENDER
+        RENDER
     --------------------------------------------------------- */
 
     function renderBucketList() {
@@ -4240,7 +4240,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       PROGRESS
+        PROGRESS
     --------------------------------------------------------- */
 
     function updateBucketProgress(
@@ -4269,7 +4269,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       CREATE ITEM ELEMENT
+        CREATE ITEM ELEMENT
     --------------------------------------------------------- */
 
     function createBucketItemElement(item) {
@@ -4415,7 +4415,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       CREATE / UPDATE
+        CREATE / UPDATE
     --------------------------------------------------------- */
 
     async function saveBucketListItem(event) {
@@ -4541,7 +4541,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       TOGGLE
+        TOGGLE
     --------------------------------------------------------- */
 
     async function toggleBucketItem(itemId) {
@@ -4580,7 +4580,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       DELETE
+        DELETE
     --------------------------------------------------------- */
 
     async function deleteBucketItem(itemId) {
@@ -4627,7 +4627,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------------------------------------------------
-       EVENT LISTENERS
+        EVENT LISTENERS
     --------------------------------------------------------- */
 
     if (newBucketItemButton) {
@@ -4700,5 +4700,4 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTimeline();
     loadJournal();
     loadInviteCode();
-    escapeHtml()
 });

@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/space_details.css') }}">
 
 </head>
-
+     
 
 <body>
 
@@ -100,6 +100,17 @@
 
                     <span>
                         Timeline
+                    </span>
+
+                </a>
+
+
+                <a href="#bucket-list" class="space-nav-item" data-tab="bucket-list">
+
+                    <i class="fa-solid fa-list-check"></i>
+
+                    <span>
+                        Bucket List
                     </span>
 
                 </a>
@@ -367,6 +378,11 @@
 
                     <button class="content-tab" data-content="timeline" type="button">
                         Timeline
+                    </button>
+
+
+                    <button class="content-tab" data-content="bucket-list" type="button">
+                        Bucket List
                     </button>
 
 
@@ -858,6 +874,82 @@
 
 
                 <!-- =================================================
+                 BUCKET LIST
+             ================================================== -->
+
+                <section class="content-view" id="bucket-list">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span>
+                                DREAM TOGETHER
+                            </span>
+
+                            <h2>
+                                Bucket List
+                            </h2>
+
+                            <p>
+                                Things you want to experience together.
+                            </p>
+                        </div>
+
+                        <button class="primary-button" id="newBucketItemButton" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                            Add Something
+                        </button>
+
+                    </div>
+
+                    <div class="bucket-progress-card">
+
+                        <div class="bucket-progress-header">
+                            <div>
+                                <span class="bucket-progress-label">
+                                    YOUR ADVENTURES
+                                </span>
+                                <h3 id="bucketProgressText">
+                                    0 / 0 completed
+                                </h3>
+                            </div>
+
+                            <div class="bucket-progress-icon">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                        </div>
+
+                        <div class="bucket-progress-track">
+                            <div class="bucket-progress-fill" id="bucketProgressFill" style="width: 0%;"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="bucket-list" id="bucketList" aria-live="polite"></div>
+
+                    <div class="bucket-empty" id="bucketEmpty">
+                        <div class="bucket-empty-icon">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+
+                        <h3>
+                            Your bucket list is empty
+                        </h3>
+
+                        <p>
+                            Add something you've always wanted to experience together.
+                        </p>
+
+                        <button class="primary-button" id="emptyBucketAddButton" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                            Add your first dream
+                        </button>
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
                  JOURNAL
             ================================================== -->
 
@@ -1195,6 +1287,72 @@
 
     </div>
 
+
+
+    <!-- =========================================================
+     BUCKET LIST MODAL
+========================================================= -->
+
+    <div class="modal" id="bucketModal" aria-hidden="true">
+
+        <div class="modal-card bucket-modal-card">
+
+            <button class="modal-close" id="closeBucketModal" type="button" aria-label="Close bucket list dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-icon">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+
+            <span>
+                BUCKET LIST
+            </span>
+
+            <h2 id="bucketModalTitle">
+                Add something
+            </h2>
+
+            <p>
+                Add something you want to experience together.
+            </p>
+
+            <form id="bucketForm" class="bucket-form">
+
+                <input type="hidden" id="bucketItemId">
+
+                <label for="bucketTitleInput">
+                    Title
+                </label>
+
+                <input type="text" id="bucketTitleInput" maxlength="200" placeholder="e.g. Visit Paris together"
+                    autocomplete="off" required>
+
+                <label for="bucketDescriptionInput">
+                    Description
+                </label>
+
+                <textarea id="bucketDescriptionInput" maxlength="2000" rows="5"
+                    placeholder="Add a little more about this dream..."></textarea>
+
+                <p class="bucket-form-message" id="bucketFormMessage" role="status" aria-live="polite"></p>
+
+                <div class="bucket-form-actions">
+                    <button class="secondary-button" id="cancelBucketButton" type="button">
+                        Cancel
+                    </button>
+
+                    <button class="primary-button" id="saveBucketButton" type="submit">
+                        <i class="fa-solid fa-check"></i>
+                        Save
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 
     <!-- =========================================================
