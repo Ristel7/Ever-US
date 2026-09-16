@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/space_details.css') }}">
 
 </head>
-     
+
 
 <body>
 
@@ -113,6 +113,12 @@
                         Bucket List
                     </span>
 
+                </a>
+
+
+                <a href="#notes" class="space-nav-item" data-tab="notes">
+                    <i class="fa-solid fa-note-sticky"></i>
+                    <span>Notes</span>
                 </a>
 
 
@@ -383,6 +389,11 @@
 
                     <button class="content-tab" data-content="bucket-list" type="button">
                         Bucket List
+                    </button>
+
+
+                    <button class="content-tab" data-content="notes" type="button">
+                        Notes
                     </button>
 
 
@@ -953,6 +964,44 @@
                  JOURNAL
             ================================================== -->
 
+                <!-- =================================================
+                 NOTES
+             ================================================== -->
+
+                <section class="content-view" id="notes">
+
+                    <div class="section-heading">
+                        <div>
+                            <span>QUICK THOUGHTS</span>
+                            <h2>Notes</h2>
+                            <p>Keep important thoughts, ideas and reminders together.</p>
+                        </div>
+
+                        <button class="primary-button" id="newNoteButton" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                            New Note
+                        </button>
+                    </div>
+
+                    <div class="notes-card">
+                        <div class="notes-list" id="notesList" aria-live="polite"></div>
+
+                        <div class="notes-empty" id="notesEmpty">
+                            <div class="notes-empty-icon">
+                                <i class="fa-solid fa-note-sticky"></i>
+                            </div>
+                            <h3>No notes yet</h3>
+                            <p>Create your first note for this space.</p>
+                            <button class="primary-button" id="emptyNotesAddButton" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                                Create Note
+                            </button>
+                        </div>
+                    </div>
+
+                </section>
+
+
                 <section class="content-view" id="journal">
 
                     <div class="section-heading">
@@ -1358,6 +1407,68 @@
     <!-- =========================================================
      INVITE MODAL
 ========================================================= -->
+
+    <!-- =========================================================
+     NOTES MODAL
+ ========================================================= -->
+
+    <div class="modal" id="notesModal" aria-hidden="true">
+
+        <div class="modal-card notes-modal-card">
+
+            <button class="modal-close" id="closeNotesModal" type="button" aria-label="Close notes dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-icon">
+                <i class="fa-solid fa-note-sticky"></i>
+            </div>
+
+            <span>SPACE NOTE</span>
+
+            <h2 id="notesModalTitle">New Note</h2>
+
+            <p>
+                Keep a thought, idea or reminder for this space.
+            </p>
+
+            <form id="notesForm">
+
+                <input type="hidden" id="noteId">
+
+                <label class="notes-field-label" for="noteTitleInput">
+                    Title
+                </label>
+
+                <input type="text" id="noteTitleInput" maxlength="200" placeholder="Give your note a title..."
+                    autocomplete="off" required>
+
+                <label class="notes-field-label" for="noteContentInput">
+                    Note
+                </label>
+
+                <textarea id="noteContentInput" maxlength="10000" rows="8" placeholder="Write your note..."
+                    required></textarea>
+
+                <p class="notes-form-message" id="notesFormMessage" role="status" aria-live="polite"></p>
+
+                <div class="notes-form-actions">
+                    <button class="secondary-button" id="cancelNoteButton" type="button">
+                        Cancel
+                    </button>
+
+                    <button class="primary-button" id="saveNoteButton" type="submit">
+                        <i class="fa-solid fa-check"></i>
+                        Save Note
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 
     <div class="modal" id="inviteModal" aria-hidden="true">
 

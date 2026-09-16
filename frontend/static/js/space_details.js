@@ -5048,9 +5048,470 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-    // =====================================================
-    // INITIAL API LOAD
-    // =====================================================
+
+    /* =========================================================
+   NOTES
+========================================================= */
+
+    const notesModal = document.getElementById("notesModal");
+    const notesModalOverlay = document.getElementById("notesModalOverlay");
+    const closeNotesModalButton = document.getElementById("closeNotesModal");
+    const notesForm = document.getElementById("notesForm");
+
+    const newNoteButton = document.getElementById("newNoteButton");
+    const emptyNotesAddButton = document.getElementById("emptyNotesAddButton");
+
+    const noteIdInput = document.getElementById("noteId");
+    const noteTitleInput = document.getElementById("noteTitleInput");
+    const noteContentInput = document.getElementById("noteContentInput");
+
+    const notesModalTitle = document.getElementById("notesModalTitle");
+    const notesFormMessage = document.getElementById("notesFormMessage");
+    const saveNoteButton = document.getElementById("saveNoteButton");
+
+    const notesList = document.getElementById("notesList");
+    const notesEmpty = document.getElementById("notesEmpty");
+
+
+    async function loadNotes() {
+        if (!notesList || !notesEmpty || !spaceId) {
+            return;
+        }
+
+        try {
+            notesList.innerHTML = `
+            <div class="loading-state">
+                Loading notes...
+            </div>
+        `;
+
+            const response = await api(
+                `/api/spaces/${spaceId}/notes`
+            );
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to load notes"
+                );
+            }
+
+            const notes = result.data?.notes || [];
+
+            renderNotes(notes);
+
+        } catch (error) {
+
+            console.error("Load notes error:", error);
+
+            notesList.innerHTML = `
+            <div class="error-state">
+                ${escapeHtml(error.message || "Failed to load notes")}
+            </div>
+        `;
+
+            notesEmpty.style.display = "none";
+        }
+    }
+
+
+    function renderNotes(notes) {
+
+        if (!notes || notes.length === 0) {
+
+            notesList.innerHTML = "";
+            notesEmpty.style.display = "flex";
+
+            return;
+        }
+
+        notesEmpty.style.display = "none";
+
+        notesList.innerHTML = notes.map(note => {
+
+            const createdAt = note.created_at
+                ? new Date(note.created_at).toLocaleString()
+                : "";
+
+            return `
+            <article class="note-item">
+
+                <div class="note-item-content">
+
+                    <h3>
+                        ${escapeHtml(note.title || "Untitled Note")}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(note.content || "")}
+                    </p>
+
+                    <span class="note-date">
+                        ${escapeHtml(createdAt)}
+                    </span>
+
+                </div>
+
+                <div class="note-item-actions">
+
+                    <button
+                        type="button"
+                        class="icon-button edit-note-button"
+                        data-note-id="${escapeHtml(note._id)}"
+                        aria-label="Edit note"
+                        title="Edit note"
+                    >
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="icon-button delete-note-button"
+                        data-note-id="${escapeHtml(note._id)}"
+                        aria-label="Delete note"
+                        title="Delete note"
+                    >
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                </div>
+
+            </article>
+        `;
+
+        }).join("");
+    }
+
+
+    function openNoteModal(note = null) {
+
+        if (!notesModal) {
+            return;
+        }
+
+        notesFormMessage.textContent = "";
+
+        if (note) {
+
+            notesModalTitle.textContent = "Edit Note";
+
+            noteIdInput.value = note._id || "";
+            noteTitleInput.value = note.title || "";
+            noteContentInput.value = note.content || "";
+
+            saveNoteButton.innerHTML = `
+            <i class="fa-solid fa-check"></i>
+            Update Note
+        `;
+
+        } else {
+
+            notesModalTitle.textContent = "New Note";
+
+            noteIdInput.value = "";
+            noteTitleInput.value = "";
+            noteContentInput.value = "";
+
+            saveNoteButton.innerHTML = `
+            <i class="fa-solid fa-check"></i>
+            Save Note
+        `;
+        }
+
+        notesModal.style.display = "flex";
+
+        requestAnimationFrame(() => {
+            notesModal.classList.add("open");
+        });
+
+        setTimeout(() => {
+            noteTitleInput.focus();
+        }, 50);
+    }
+
+
+    function closeNoteModal() {
+
+        if (!notesModal) {
+            return;
+        }
+
+        notesModal.classList.remove("open");
+        notesModal.style.display = "none";
+
+        notesForm.reset();
+        noteIdInput.value = "";
+        notesFormMessage.textContent = "";
+    }
+
+
+    async function saveNote(event) {
+
+        event.preventDefault();
+
+        const title = noteTitleInput.value.trim();
+        const content = noteContentInput.value.trim();
+        const noteId = noteIdInput.value.trim();
+
+        if (!title) {
+
+            notesFormMessage.textContent =
+                "Title is required.";
+
+            return;
+        }
+
+        if (!content) {
+
+            notesFormMessage.textContent =
+                "Note content is required.";
+
+            return;
+        }
+
+        const isEditing = Boolean(noteId);
+
+        saveNoteButton.disabled = true;
+
+        saveNoteButton.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        ${isEditing ? "Updating..." : "Saving..."}
+    `;
+
+        try {
+
+            const url = isEditing
+                ? `/api/spaces/${spaceId}/notes/${noteId}`
+                : `/api/spaces/${spaceId}/notes`;
+
+            const method = isEditing
+                ? "PUT"
+                : "POST";
+
+            const response = await api(url, {
+                method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title,
+                    content
+                })
+            });
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message ||
+                    `Failed to ${isEditing ? "update" : "create"} note`
+                );
+            }
+
+            closeNoteModal();
+
+            await loadNotes();
+
+        } catch (error) {
+
+            console.error("Save note error:", error);
+
+            notesFormMessage.textContent =
+                error.message || "Something went wrong.";
+
+        } finally {
+
+            saveNoteButton.disabled = false;
+
+            saveNoteButton.innerHTML = `
+            <i class="fa-solid fa-check"></i>
+            ${isEditing ? "Update Note" : "Save Note"}
+        `;
+        }
+    }
+
+
+    async function editNote(noteId) {
+
+        try {
+
+            const response = await api(
+                `/api/spaces/${spaceId}/notes/${noteId}`
+            );
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to load note"
+                );
+            }
+
+            const note = result.data?.note;
+
+            if (!note) {
+                throw new Error("Note not found");
+            }
+
+            openNoteModal(note);
+
+        } catch (error) {
+
+            console.error("Edit note error:", error);
+
+            alert(
+                error.message || "Failed to open note."
+            );
+        }
+    }
+
+
+    async function deleteNote(noteId) {
+
+        const confirmed = confirm(
+            "Are you sure you want to delete this note?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            const response = await api(
+                `/api/spaces/${spaceId}/notes/${noteId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to delete note"
+                );
+            }
+
+            await loadNotes();
+
+        } catch (error) {
+
+            console.error("Delete note error:", error);
+
+            alert(
+                error.message || "Failed to delete note."
+            );
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       NOTES EVENTS
+    --------------------------------------------------------- */
+
+    if (newNoteButton) {
+
+        newNoteButton.addEventListener(
+            "click",
+            () => openNoteModal()
+        );
+    }
+
+
+    if (emptyNotesAddButton) {
+
+        emptyNotesAddButton.addEventListener(
+            "click",
+            () => openNoteModal()
+        );
+    }
+
+
+    if (closeNotesModalButton) {
+
+        closeNotesModalButton.addEventListener(
+            "click",
+            closeNoteModal
+        );
+    }
+
+
+    if (notesModalOverlay) {
+
+        notesModalOverlay.addEventListener(
+            "click",
+            closeNoteModal
+        );
+    }
+
+
+    if (cancelNoteButton) {
+
+        cancelNoteButton.addEventListener(
+            "click",
+            closeNoteModal
+        );
+    }
+
+
+    if (notesForm) {
+
+        notesForm.addEventListener(
+            "submit",
+            saveNote
+        );
+    }
+
+
+    if (notesList) {
+
+        notesList.addEventListener("click", event => {
+
+            const editButton =
+                event.target.closest(".edit-note-button");
+
+            if (editButton) {
+
+                const noteId =
+                    editButton.dataset.noteId;
+
+                if (noteId) {
+                    editNote(noteId);
+                }
+
+                return;
+            }
+
+            const deleteButton =
+                event.target.closest(".delete-note-button");
+
+            if (deleteButton) {
+
+                const noteId =
+                    deleteButton.dataset.noteId;
+
+                if (noteId) {
+                    deleteNote(noteId);
+                }
+            }
+
+        });
+    }
+
+
+    document.addEventListener("keydown", event => {
+
+        if (
+            event.key === "Escape" &&
+            notesModal &&
+            notesModal.style.display !== "none"
+        ) {
+            closeNoteModal();
+        }
+
+    });
 
     // =====================================================
     // INITIAL API LOAD
@@ -5065,4 +5526,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadJournal();
     loadInviteCode();
     loadBucketList();
+    loadNotes();
 });
