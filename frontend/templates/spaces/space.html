@@ -1,40 +1,382 @@
-{% extends "layouts/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-Spaces
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+    <title>Spaces | everUS</title>
 
-<h1>My Spaces</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
-<br>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
 
-<a href="/spaces/create">
-    <button>Create Space</button>
-</a>
+<body>
 
-<a href="/spaces/join">
-    <button>Join Space</button>
-</a>
+    <div class="dashboard-layout">
 
-<br><br>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
 
-<div id="spacesContainer"></div>
+            <div class="brand">
+                <span>∞</span> everUS
+            </div>
 
-{% endblock %}
+            <div class="sidebar-section">
+                <small>WORKSPACE</small>
 
-{% block js %}
+                <a class="nav" href="{{ url_for('pages.dashboard') }}">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
 
-<script src="{{ url_for('static', filename='js/api.js') }}"></script>
-<script src="{{ url_for('static', filename='js/auth_guard.js') }}"></script>
-<script src="{{ url_for('static', filename='js/spaces.js') }}"></script>
+                <a class="nav active" href="{{ url_for('pages.spaces') }}">
+                    <i class="fa-solid fa-folder"></i>
+                    Spaces
+                </a>
 
-<script>
+                <a class="nav" href="#" id="memoriesNav">
+                    <i class="fa-regular fa-images"></i>
+                    Memories
+                </a>
 
-    verifyUser();
-    loadSpaces();
+                <a class="nav" href="#" id="peopleNav">
+                    <i class="fa-solid fa-user-group"></i>
+                    People
+                </a>
 
-</script>
+                <a class="nav" href="#" id="timelineNav">
+                    <i class="fa-solid fa-timeline"></i>
+                    Timeline
+                </a>
 
-{% endblock %}
+                <a class="nav" href="#">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    AI Assistant
+                    <span class="new-badge">New</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section account-section">
+                <small>ACCOUNT</small>
+
+                <a class="nav" href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+        <main class="dashboard-main">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="text" id="spaceSearch" placeholder="Search spaces...">
+                </div>
+
+                <button class="create-btn" id="createSpace">
+                    <i class="fa-solid fa-plus"></i>
+                    Create Space
+                </button>
+
+            </header>
+
+
+            <!-- CONTENT -->
+            <section class="page-content">
+
+                <div class="page-heading">
+
+                    <div>
+                        <span class="eyebrow">
+                            YOUR COLLECTION
+                        </span>
+
+                        <h1>All Spaces</h1>
+
+                        <p>
+                            All your private spaces in one place.
+                        </p>
+                    </div>
+
+                    <div class="space-count">
+                        <strong id="spaceCount">0</strong>
+                        <span>Spaces</span>
+                    </div>
+
+                </div>
+
+
+                <!-- SPACES GRID -->
+                <div class="spaces-grid" id="spacesGrid">
+
+                    <div class="loading" id="spacesLoading">
+                        <i class="fa-solid fa-spinner"></i>
+                        Loading your spaces...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            const token =
+                localStorage.getItem("access_token");
+
+            if (!token) {
+                location.href = "/login";
+                return;
+            }
+
+
+            const grid =
+                document.getElementById("spacesGrid");
+
+            const count =
+                document.getElementById("spaceCount");
+
+            const search =
+                document.getElementById("spaceSearch");
+
+
+            function escapeHTML(value) {
+
+                const div =
+                    document.createElement("div");
+
+                div.textContent =
+                    value ?? "";
+
+                return div.innerHTML;
+            }
+
+
+            function formatType(value) {
+
+                if (!value) {
+                    return "Private";
+                }
+
+                return value.charAt(0).toUpperCase()
+                    + value.slice(1);
+            }
+
+
+            function renderSpaces(spaces) {
+
+                count.textContent =
+                    spaces.length;
+
+
+                if (!spaces.length) {
+
+                    grid.innerHTML = `
+                <div class="loading">
+                    <i class="fa-solid fa-folder-open"></i>
+
+                    <span>
+                        No spaces found.
+                    </span>
+                </div>
+            `;
+
+                    return;
+                }
+
+
+                grid.innerHTML =
+                    spaces.map(space => {
+
+                        const id =
+                            space._id ||
+                            space.id ||
+                            space.space_id;
+
+                        const name =
+                            space.space_name ||
+                            space.name ||
+                            "Untitled Space";
+
+                        const type =
+                            space.space_type ||
+                            space.type ||
+                            "private";
+
+                        const cover =
+                            space.cover_image || "";
+
+
+                        return `
+                    <a
+                        class="dashboard-space-card"
+                        href="/spaces/${encodeURIComponent(id)}"
+                    >
+
+                        <div class="dashboard-space-icon">
+
+                            ${cover
+                                ? `
+                                    <img
+                                        src="${escapeHTML(cover)}"
+                                        alt=""
+                                    >
+                                  `
+                                : `
+                                    <i class="fa-solid fa-heart"></i>
+                                  `
+                            }
+
+                        </div>
+
+
+                        <div class="dashboard-space-info">
+
+                            <strong>
+                                ${escapeHTML(name)}
+                            </strong>
+
+                            <span>
+                                ${escapeHTML(formatType(type))}
+                                space
+                            </span>
+
+                        </div>
+
+
+                        <i
+                            class="fa-solid fa-chevron-right dashboard-space-arrow"
+                        ></i>
+
+                    </a>
+                `;
+
+                    }).join("");
+            }
+
+
+            let allSpaces = [];
+
+
+            try {
+
+                const response =
+                    await fetch("/api/spaces/", {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`
+                        }
+                    });
+
+
+                if (response.status === 401) {
+
+                    localStorage.clear();
+                    location.href = "/login";
+                    return;
+
+                }
+
+
+                const result =
+                    await response
+                        .json()
+                        .catch(() => ({}));
+
+
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        result.message ||
+                        "Unable to load spaces."
+                    );
+
+                }
+
+
+                allSpaces =
+                    result.data?.spaces || [];
+
+
+                renderSpaces(allSpaces);
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                grid.innerHTML = `
+            <div class="loading">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <span>
+                    Could not load spaces.
+                    Refresh and try again.
+                </span>
+            </div>
+        `;
+
+            }
+
+
+            search?.addEventListener(
+                "input",
+                () => {
+
+                    const query =
+                        search.value
+                            .trim()
+                            .toLowerCase();
+
+
+                    const filtered =
+                        allSpaces.filter(space => {
+
+                            const name =
+                                space.space_name ||
+                                space.name ||
+                                "";
+
+                            const type =
+                                space.space_type ||
+                                space.type ||
+                                "";
+
+                            return (
+                                name.toLowerCase()
+                                    .includes(query) ||
+                                type.toLowerCase()
+                                    .includes(query)
+                            );
+
+                        });
+
+
+                    renderSpaces(filtered);
+
+                }
+            );
+
+        });
+    </script>
+
+</body>
+
+</html>

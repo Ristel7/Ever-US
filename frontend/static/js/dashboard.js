@@ -1314,19 +1314,9 @@ document.addEventListener("DOMContentLoaded", () => {
     viewAllSpaces?.addEventListener(
         "click",
         () => {
-
-            if (spacesContainer) {
-
-                spacesContainer.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-            }
-
+            window.location.href = "/spaces";
         }
     );
-
 
     /* ---------------------------------------------------------
        SEARCH
