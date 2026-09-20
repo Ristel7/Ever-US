@@ -38,9 +38,10 @@ def dashboard():
     )
 
 
-@pages_bp.route("/spaces")
+@page_bp.route("/spaces")
 def spaces():
-    return render_template("spaces.html")
+    return render_template("spaces/space.html")
+
 
 @page_bp.route("/create-space")
 def create_space_page():
