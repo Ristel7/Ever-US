@@ -479,6 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+
 /* =========================================================
    DASHBOARD POLISH
 ========================================================= */
@@ -921,8 +922,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        /*
+         * IMPORTANT:
+         * Show ALL spaces instead of limiting
+         * the dashboard to six spaces.
+         */
+
         spacesContainer.innerHTML =
-            spaces.slice(0, 6)
+            spaces
                 .map((space) => {
 
                     const id =
@@ -1208,13 +1215,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 (memory) => {
 
                     activities.push({
+
                         icon:
                             "fa-image",
+
                         title:
                             `New memory in ${memory.space_name}`,
+
                         date:
                             memory.created_at ||
                             memory.uploaded_at
+
                     });
 
                 }
@@ -1371,161 +1382,3 @@ document.addEventListener("DOMContentLoaded", () => {
     loadDashboardData();
 
 })();
-
-/* =========================================================
-   DASHBOARD STAT CARD NAVIGATION
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const totalSpacesCard =
-        document.getElementById("totalSpaces")?.closest(".stat");
-
-    const totalMemoriesCard =
-        document.getElementById("totalMemories")?.closest(".stat");
-
-    const totalPeopleCard =
-        document.getElementById("totalPeople")?.closest(".stat");
-
-
-    /* ---------------------------------------------------------
-       TOTAL SPACES
-       Scroll to Your Spaces
-    --------------------------------------------------------- */
-
-    totalSpacesCard?.addEventListener("click", () => {
-
-        const spacesSection =
-            document.getElementById("spaces");
-
-        if (spacesSection) {
-            spacesSection.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-        }
-
-    });
-
-
-    /* ---------------------------------------------------------
-       GET FIRST AVAILABLE SPACE
-    --------------------------------------------------------- */
-
-    async function getFirstSpaceId() {
-
-        const token =
-            localStorage.getItem("access_token");
-
-        if (!token) {
-            return null;
-        }
-
-        try {
-
-            const response = await fetch(
-                "/api/spaces/",
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
-                    }
-                }
-            );
-
-            if (!response.ok) {
-                return null;
-            }
-
-            const result =
-                await response.json().catch(() => ({}));
-
-            const spaces =
-                result.data?.spaces || [];
-
-            if (!spaces.length) {
-                return null;
-            }
-
-            return (
-                spaces[0]._id ||
-                spaces[0].id ||
-                spaces[0].space_id ||
-                null
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Unable to get first space:",
-                error
-            );
-
-            return null;
-        }
-    }
-
-
-    /* ---------------------------------------------------------
-       TOTAL MEMORIES
-       Open first space → Memories
-    --------------------------------------------------------- */
-
-    totalMemoriesCard?.addEventListener(
-        "click",
-        async () => {
-
-            const spaceId =
-                await getFirstSpaceId();
-
-            if (!spaceId) {
-                return;
-            }
-
-            window.location.href =
-                `/spaces/${encodeURIComponent(spaceId)}#memories`;
-        }
-    );
-
-
-    /* ---------------------------------------------------------
-       PEOPLE CONNECTED
-       Open first space → Members
-    --------------------------------------------------------- */
-
-    totalPeopleCard?.addEventListener(
-        "click",
-        async () => {
-
-            const spaceId =
-                await getFirstSpaceId();
-
-            if (!spaceId) {
-                return;
-            }
-
-            window.location.href =
-                `/spaces/${encodeURIComponent(spaceId)}#members`;
-        }
-    );
-
-
-    /* ---------------------------------------------------------
-       VISUAL FEEDBACK
-    --------------------------------------------------------- */
-
-    [
-        totalSpacesCard,
-        totalMemoriesCard,
-        totalPeopleCard
-    ].forEach(card => {
-
-        if (!card) {
-            return;
-        }
-
-        card.style.cursor = "pointer";
-
-    });
-
-});
