@@ -220,9 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             spaces.innerHTML = "";
 
-
             list
-                .slice(0, 4)
                 .forEach(s => {
 
                     spaces.appendChild(
