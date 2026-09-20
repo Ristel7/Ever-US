@@ -10,6 +10,275 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* =========================================================
+           EVERUS — ALL SPACES PAGE
+        ========================================================= */
+
+        .all-spaces-page {
+            width: 100%;
+            min-height: calc(100vh - 82px);
+        }
+
+        .all-spaces-page *,
+        .all-spaces-page *::before,
+        .all-spaces-page *::after {
+            box-sizing: border-box;
+        }
+
+        .all-spaces-content {
+            width: 100%;
+            padding: 42px 48px 60px;
+        }
+
+        .all-spaces-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .all-spaces-eyebrow {
+            display: block;
+            margin: 0 0 9px;
+            color: #9b6cff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .all-spaces-heading h1 {
+            margin: 0;
+            color: #f5f3ff;
+            font-size: 32px;
+            line-height: 1.15;
+            font-weight: 700;
+        }
+
+        .all-spaces-heading p {
+            margin: 10px 0 0;
+            color: #8588a6;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .all-spaces-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 17px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .025);
+            white-space: nowrap;
+        }
+
+        .all-spaces-count strong {
+            color: #fff;
+            font-size: 21px;
+            line-height: 1;
+        }
+
+        .all-spaces-count span {
+            color: #8588a6;
+            font-size: 13px;
+        }
+
+        #allSpacesGrid {
+            width: 100%;
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            gap: 20px !important;
+            align-items: stretch !important;
+        }
+
+        .all-spaces-card {
+            position: relative;
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            height: 286px !important;
+            overflow: hidden !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 1px solid rgba(255, 255, 255, .07) !important;
+            border-radius: 18px !important;
+            background: #111426 !important;
+            color: inherit !important;
+            text-decoration: none !important;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .all-spaces-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(145, 74, 255, .55) !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, .35), 0 0 25px rgba(126, 58, 255, .12);
+        }
+
+        .all-spaces-cover {
+            position: relative;
+            flex: 0 0 170px;
+            width: 100% !important;
+            height: 170px !important;
+            min-height: 170px !important;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #5120b8 0%, #8739ee 48%, #c13ddd 100%);
+        }
+
+        .all-spaces-cover::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(to bottom, transparent 35%, rgba(0, 0, 0, .30));
+        }
+
+        .all-spaces-cover img {
+            position: absolute;
+            inset: 0;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            max-height: none !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        .all-spaces-heart {
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, .90);
+            font-size: 42px;
+            line-height: 1;
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, .25));
+        }
+
+        .all-spaces-type {
+            position: absolute;
+            z-index: 2;
+            left: 12px;
+            bottom: 11px;
+            max-width: calc(100% - 24px);
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: rgba(7, 8, 20, .78);
+            color: #eeeaff;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .all-spaces-info {
+            position: relative;
+            flex: 1 1 auto;
+            min-width: 0;
+            padding: 16px 52px 16px 16px;
+        }
+
+        .all-spaces-name {
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            color: #f5f3ff;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.35;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .all-spaces-meta {
+            display: block;
+            margin-top: 7px;
+            color: #8588a6;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .all-spaces-arrow {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            width: 31px;
+            height: 31px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(139, 74, 255, .12);
+            color: #b879ff;
+            font-size: 12px;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .all-spaces-card:hover .all-spaces-arrow {
+            background: rgba(139, 74, 255, .25);
+            transform: translateX(2px);
+        }
+
+        .all-spaces-state {
+            grid-column: 1 / -1;
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: 1px dashed rgba(255, 255, 255, .08);
+            border-radius: 18px;
+            color: #8588a6;
+            font-size: 14px;
+        }
+
+        .all-spaces-state i {
+            color: #9b6cff;
+        }
+
+        .all-spaces-error {
+            color: #ff9aab;
+        }
+
+        @media (max-width: 1250px) {
+            #allSpacesGrid {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (max-width: 950px) {
+            .all-spaces-content {
+                padding: 32px 24px 50px;
+            }
+
+            #allSpacesGrid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .all-spaces-content {
+                padding: 24px 16px 40px;
+            }
+
+            .all-spaces-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            #allSpacesGrid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -91,40 +360,30 @@
 
 
             <!-- CONTENT -->
-            <section class="page-content">
+            <section class="all-spaces-page">
+                <div class="all-spaces-content">
 
-                <div class="page-heading">
+                    <div class="all-spaces-heading">
+                        <div>
+                            <span class="all-spaces-eyebrow">YOUR COLLECTION</span>
+                            <h1>All Spaces</h1>
+                            <p>All your private spaces in one place.</p>
+                        </div>
 
-                    <div>
-                        <span class="eyebrow">
-                            YOUR COLLECTION
-                        </span>
-
-                        <h1>All Spaces</h1>
-
-                        <p>
-                            All your private spaces in one place.
-                        </p>
+                        <div class="all-spaces-count">
+                            <strong id="spaceCount">0</strong>
+                            <span>Spaces</span>
+                        </div>
                     </div>
 
-                    <div class="space-count">
-                        <strong id="spaceCount">0</strong>
-                        <span>Spaces</span>
-                    </div>
-
-                </div>
-
-
-                <!-- SPACES GRID -->
-                <div class="spaces-grid" id="spacesGrid">
-
-                    <div class="loading" id="spacesLoading">
-                        <i class="fa-solid fa-spinner"></i>
-                        Loading your spaces...
+                    <div id="allSpacesGrid">
+                        <div class="all-spaces-state">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <span>Loading your spaces...</span>
+                        </div>
                     </div>
 
                 </div>
-
             </section>
 
         </main>
@@ -134,246 +393,154 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
-
-            const token =
-                localStorage.getItem("access_token");
+            const token = localStorage.getItem("access_token");
 
             if (!token) {
-                location.href = "/login";
+                window.location.href = "/login";
                 return;
             }
 
-
-            const grid =
-                document.getElementById("spacesGrid");
-
-            const count =
-                document.getElementById("spaceCount");
-
-            const search =
-                document.getElementById("spaceSearch");
-
+            const grid = document.getElementById("allSpacesGrid");
+            const count = document.getElementById("spaceCount");
 
             function escapeHTML(value) {
-
-                const div =
-                    document.createElement("div");
-
-                div.textContent =
-                    value ?? "";
-
+                const div = document.createElement("div");
+                div.textContent = value ?? "";
                 return div.innerHTML;
             }
 
-
             function formatType(value) {
-
-                if (!value) {
-                    return "Private";
-                }
-
-                return value.charAt(0).toUpperCase()
-                    + value.slice(1);
+                const text = String(value || "private");
+                return text.charAt(0).toUpperCase() + text.slice(1);
             }
 
+            function showState(message, icon, error = false) {
+                grid.innerHTML = `
+                    <div class="all-spaces-state ${error ? "all-spaces-error" : ""}">
+                        <i class="fa-solid ${icon}"></i>
+                        <span>${escapeHTML(message)}</span>
+                    </div>
+                `;
+            }
 
             function renderSpaces(spaces) {
-
-                count.textContent =
-                    spaces.length;
-
+                count.textContent = spaces.length;
 
                 if (!spaces.length) {
-
-                    grid.innerHTML = `
-                <div class="loading">
-                    <i class="fa-solid fa-folder-open"></i>
-
-                    <span>
-                        No spaces found.
-                    </span>
-                </div>
-            `;
-
+                    showState("No spaces found.", "fa-folder-open");
                     return;
                 }
 
+                grid.innerHTML = spaces.map((space) => {
+                    const id = space._id || space.id || space.space_id;
+                    const name = space.space_name || space.name || "Untitled Space";
+                    const type = space.space_type || space.type || "private";
+                    const cover = space.cover_image || "";
 
-                grid.innerHTML =
-                    spaces.map(space => {
+                    return `
+                        <a
+                            class="all-spaces-card"
+                            href="/spaces/${encodeURIComponent(String(id))}"
+                            aria-label="Open ${escapeHTML(name)}"
+                        >
+                            <div class="all-spaces-cover">
+                                ${cover
+                            ? `
+                                            <img
+                                                src="${escapeHTML(cover)}"
+                                                alt=""
+                                                loading="lazy"
+                                            >
+                                        `
+                            : `
+                                            <i class="fa-solid fa-heart all-spaces-heart"></i>
+                                        `
+                        }
 
-                        const id =
-                            space._id ||
-                            space.id ||
-                            space.space_id;
+                                <span class="all-spaces-type">
+                                    ${escapeHTML(formatType(type))}
+                                </span>
+                            </div>
 
-                        const name =
-                            space.space_name ||
-                            space.name ||
-                            "Untitled Space";
+                            <div class="all-spaces-info">
+                                <strong class="all-spaces-name">
+                                    ${escapeHTML(name)}
+                                </strong>
 
-                        const type =
-                            space.space_type ||
-                            space.type ||
-                            "private";
+                                <span class="all-spaces-meta">
+                                    ${escapeHTML(formatType(type))} space
+                                </span>
 
-                        const cover =
-                            space.cover_image || "";
-
-
-                        return `
-                    <a
-                        class="all-space-card"
-                        href="/spaces/${encodeURIComponent(id)}"
-                    >
-
-                        <div class="dashboard-space-icon">
-
-                            ${cover
-                                ? `
-                                    <img
-                                        src="${escapeHTML(cover)}"
-                                        alt=""
-                                    >
-                                  `
-                                : `
-                                    <i class="fa-solid fa-heart"></i>
-                                  `
-                            }
-
-                        </div>
-
-
-                        <div class="dashboard-space-info">
-
-                            <strong>
-                                ${escapeHTML(name)}
-                            </strong>
-
-                            <span>
-                                ${escapeHTML(formatType(type))}
-                                space
-                            </span>
-
-                        </div>
-
-
-                        <i
-                            class="fa-solid fa-chevron-right dashboard-space-arrow"
-                        ></i>
-
-                    </a>
-                `;
-
-                    }).join("");
+                                <span class="all-spaces-arrow">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </div>
+                        </a>
+                    `;
+                }).join("");
             }
 
-
-            let allSpaces = [];
-
-
-            try {
-
-                const response =
-                    await fetch("/api/spaces/", {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`
-                        }
-                    });
-
+            async function fetchSpaces() {
+                const response = await fetch("/api/spaces/", {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
                 if (response.status === 401) {
-
                     localStorage.clear();
-                    location.href = "/login";
-                    return;
-
+                    window.location.href = "/login";
+                    return null;
                 }
 
+                const result = await response.json().catch(() => ({}));
 
-                const result =
-                    await response
-                        .json()
-                        .catch(() => ({}));
-
-
-                if (
-                    !response.ok ||
-                    !result.success
-                ) {
-
+                if (!response.ok || !result.success) {
                     throw new Error(
-                        result.message ||
-                        "Unable to load spaces."
+                        result.message || "Unable to load spaces."
                     );
-
                 }
 
-
-                allSpaces =
-                    result.data?.spaces || [];
-
-
-                renderSpaces(allSpaces);
-
-
-            } catch (error) {
-
-                console.error(error);
-
-                grid.innerHTML = `
-            <div class="loading">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-                <span>
-                    Could not load spaces.
-                    Refresh and try again.
-                </span>
-            </div>
-        `;
-
+                return result.data?.spaces || [];
             }
 
+            let spaces = [];
 
-            search?.addEventListener(
-                "input",
-                () => {
+            try {
+                spaces = await fetchSpaces() || [];
+                renderSpaces(spaces);
+            } catch (error) {
+                console.error("Spaces page error:", error);
+                showState(
+                    "Could not load spaces. Refresh and try again.",
+                    "fa-triangle-exclamation",
+                    true
+                );
+            }
 
-                    const query =
-                        search.value
-                            .trim()
-                            .toLowerCase();
+            document.getElementById("createSpace")?.addEventListener("click", () => {
+                window.location.href = "/create-space";
+            });
 
+            // Keep the shared sidebar useful by pointing these links
+            // to the first available space's existing tabs.
+            if (spaces.length) {
+                const first = spaces[0];
+                const firstId = first._id || first.id || first.space_id;
 
-                    const filtered =
-                        allSpaces.filter(space => {
+                if (firstId) {
+                    const base = `/spaces/${encodeURIComponent(String(firstId))}`;
 
-                            const name =
-                                space.space_name ||
-                                space.name ||
-                                "";
+                    const memoriesNav = document.getElementById("memoriesNav");
+                    const peopleNav = document.getElementById("peopleNav");
+                    const timelineNav = document.getElementById("timelineNav");
 
-                            const type =
-                                space.space_type ||
-                                space.type ||
-                                "";
-
-                            return (
-                                name.toLowerCase()
-                                    .includes(query) ||
-                                type.toLowerCase()
-                                    .includes(query)
-                            );
-
-                        });
-
-
-                    renderSpaces(filtered);
-
+                    if (memoriesNav) memoriesNav.href = `${base}#memories`;
+                    if (peopleNav) peopleNav.href = `${base}#members`;
+                    if (timelineNav) timelineNav.href = `${base}#timeline`;
                 }
-            );
-
+            }
         });
     </script>
 
