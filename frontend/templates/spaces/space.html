@@ -8,7 +8,7 @@
     <title>Spaces | everUS</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
@@ -18,7 +18,16 @@
 
         .all-spaces-page {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             min-height: calc(100vh - 82px);
+            overflow-x: hidden;
+        }
+
+        /* Keep the fixed sidebar and main content in separate columns. */
+        .main {
+            min-width: 0;
+            overflow-x: hidden;
         }
 
         .all-spaces-page *,
@@ -29,6 +38,9 @@
 
         .all-spaces-content {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            margin: 0;
             padding: 42px 48px 60px;
         }
 
@@ -90,6 +102,8 @@
 
         #allSpacesGrid {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             display: grid !important;
             grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
             gap: 20px !important;
@@ -340,7 +354,7 @@
 
 
         <!-- MAIN -->
-        <main class="dashboard-main">
+        <main class="main">
 
             <!-- TOPBAR -->
             <header class="topbar">
@@ -547,3 +561,5 @@
 </body>
 
 </html>
+space_corrected_final.html
+HTML
