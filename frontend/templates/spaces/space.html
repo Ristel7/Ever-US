@@ -2,564 +2,2565 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Spaces | everUS</title>
 
+
+    <!-- DASHBOARD CSS -->
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+
+    <!-- FAVICON -->
+
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}?v=3">
+
+
+    <!-- FONT AWESOME -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 
     <style>
         /* =========================================================
            EVERUS — ALL SPACES PAGE
         ========================================================= */
 
+
         .all-spaces-page {
+
             width: 100%;
             max-width: 100%;
             min-width: 0;
-            min-height: calc(100vh - 82px);
+
+            min-height:
+                calc(100vh - 82px);
+
             overflow-x: hidden;
+
         }
 
-        /* Keep the fixed sidebar and main content in separate columns. */
+
+        /*
+         * Keep fixed sidebar and main
+         * content in separate columns.
+         */
+
         .main {
+
             min-width: 0;
+
             overflow-x: hidden;
+
         }
+
 
         .all-spaces-page *,
         .all-spaces-page *::before,
         .all-spaces-page *::after {
+
             box-sizing: border-box;
+
         }
+
+
+        /* =========================================================
+           CONTENT
+        ========================================================= */
 
         .all-spaces-content {
+
             width: 100%;
             max-width: 100%;
             min-width: 0;
+
             margin: 0;
-            padding: 42px 48px 60px;
+
+            padding:
+                42px 48px 60px;
+
         }
+
+
+        /* =========================================================
+           HEADING
+        ========================================================= */
 
         .all-spaces-heading {
+
             display: flex;
+
             align-items: flex-end;
+
             justify-content: space-between;
+
             gap: 24px;
+
             margin-bottom: 30px;
+
         }
+
 
         .all-spaces-eyebrow {
+
             display: block;
-            margin: 0 0 9px;
+
+            margin:
+                0 0 9px;
+
             color: #9b6cff;
+
             font-size: 11px;
+
             font-weight: 700;
+
             letter-spacing: 2px;
+
             line-height: 1.2;
+
             text-transform: uppercase;
+
         }
+
 
         .all-spaces-heading h1 {
+
             margin: 0;
+
             color: #f5f3ff;
+
             font-size: 32px;
+
             line-height: 1.15;
+
             font-weight: 700;
+
         }
+
 
         .all-spaces-heading p {
-            margin: 10px 0 0;
+
+            margin:
+                10px 0 0;
+
             color: #8588a6;
+
             font-size: 14px;
+
             line-height: 1.5;
+
         }
+
+
+        /* =========================================================
+           SPACE COUNT
+        ========================================================= */
 
         .all-spaces-count {
+
             display: inline-flex;
+
             align-items: center;
+
             gap: 9px;
-            padding: 11px 17px;
-            border: 1px solid rgba(255, 255, 255, .08);
+
+            padding:
+                11px 17px;
+
+            border:
+                1px solid rgba(255, 255, 255, .08);
+
             border-radius: 14px;
-            background: rgba(255, 255, 255, .025);
+
+            background:
+                rgba(255, 255, 255, .025);
+
             white-space: nowrap;
+
         }
+
 
         .all-spaces-count strong {
+
             color: #fff;
+
             font-size: 21px;
+
             line-height: 1;
+
         }
+
 
         .all-spaces-count span {
+
             color: #8588a6;
+
             font-size: 13px;
+
         }
+
+
+        /* =========================================================
+           GRID
+        ========================================================= */
 
         #allSpacesGrid {
+
             width: 100%;
+
             max-width: 100%;
+
             min-width: 0;
+
             display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+
+            grid-template-columns:
+                repeat(4,
+                    minmax(0, 1fr)) !important;
+
             gap: 20px !important;
+
             align-items: stretch !important;
+
         }
+
+
+        /* =========================================================
+           SPACE CARD
+        ========================================================= */
 
         .all-spaces-card {
+
             position: relative;
+
             display: flex !important;
+
             flex-direction: column !important;
+
             width: 100% !important;
+
             min-width: 0 !important;
+
             height: 286px !important;
+
             overflow: hidden !important;
+
             padding: 0 !important;
+
             margin: 0 !important;
-            border: 1px solid rgba(255, 255, 255, .07) !important;
+
+            border:
+                1px solid rgba(255, 255, 255, .07) !important;
+
             border-radius: 18px !important;
+
             background: #111426 !important;
+
             color: inherit !important;
+
             text-decoration: none !important;
-            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+
+            transition:
+                transform .2s ease,
+                border-color .2s ease,
+                box-shadow .2s ease;
+
         }
+
 
         .all-spaces-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(145, 74, 255, .55) !important;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, .35), 0 0 25px rgba(126, 58, 255, .12);
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(145, 74, 255, .55) !important;
+
+            box-shadow:
+                0 16px 40px rgba(0, 0, 0, .35),
+
+                0 0 25px rgba(126, 58, 255, .12);
+
         }
+
+
+        /* =========================================================
+           COVER
+        ========================================================= */
 
         .all-spaces-cover {
+
             position: relative;
-            flex: 0 0 170px;
+
+            flex:
+                0 0 170px;
+
             width: 100% !important;
+
             height: 170px !important;
+
             min-height: 170px !important;
+
             overflow: hidden;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
-            background: linear-gradient(135deg, #5120b8 0%, #8739ee 48%, #c13ddd 100%);
+
+            background:
+                linear-gradient(135deg,
+                    #5120b8 0%,
+                    #8739ee 48%,
+                    #c13ddd 100%);
+
         }
+
 
         .all-spaces-cover::after {
+
             content: "";
+
             position: absolute;
+
             inset: 0;
+
             pointer-events: none;
-            background: linear-gradient(to bottom, transparent 35%, rgba(0, 0, 0, .30));
+
+            background:
+                linear-gradient(to bottom,
+                    transparent 35%,
+                    rgba(0, 0, 0, .30));
+
         }
+
 
         .all-spaces-cover img {
+
             position: absolute;
+
             inset: 0;
+
             width: 100% !important;
+
             height: 100% !important;
+
             max-width: none !important;
+
             max-height: none !important;
+
             object-fit: cover !important;
+
             display: block !important;
+
         }
+
 
         .all-spaces-heart {
+
             position: relative;
+
             z-index: 1;
-            color: rgba(255, 255, 255, .90);
+
+            color:
+                rgba(255, 255, 255, .90);
+
             font-size: 42px;
+
             line-height: 1;
-            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, .25));
+
+            filter:
+                drop-shadow(0 6px 16px rgba(0, 0, 0, .25));
+
         }
+
 
         .all-spaces-type {
+
             position: absolute;
+
             z-index: 2;
+
             left: 12px;
+
             bottom: 11px;
-            max-width: calc(100% - 24px);
-            padding: 5px 9px;
+
+            max-width:
+                calc(100% - 24px);
+
+            padding:
+                5px 9px;
+
             border-radius: 999px;
-            background: rgba(7, 8, 20, .78);
+
+            background:
+                rgba(7, 8, 20, .78);
+
             color: #eeeaff;
+
             font-size: 10px;
+
             font-weight: 700;
+
             line-height: 1;
+
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
+
         }
+
+
+        /* =========================================================
+           CARD INFO
+        ========================================================= */
 
         .all-spaces-info {
+
             position: relative;
-            flex: 1 1 auto;
+
+            flex:
+                1 1 auto;
+
             min-width: 0;
-            padding: 16px 52px 16px 16px;
+
+            padding:
+                16px 52px 16px 16px;
+
         }
+
 
         .all-spaces-name {
+
             display: block;
+
             max-width: 100%;
+
             overflow: hidden;
+
             color: #f5f3ff;
+
             font-size: 16px;
+
             font-weight: 700;
+
             line-height: 1.35;
+
             text-overflow: ellipsis;
+
             white-space: nowrap;
+
         }
+
 
         .all-spaces-meta {
+
             display: block;
+
             margin-top: 7px;
+
             color: #8588a6;
+
             font-size: 12px;
+
             line-height: 1.4;
+
         }
+
 
         .all-spaces-arrow {
+
             position: absolute;
+
             right: 14px;
+
             bottom: 14px;
+
             width: 31px;
+
             height: 31px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             border-radius: 50%;
-            background: rgba(139, 74, 255, .12);
+
+            background:
+                rgba(139, 74, 255, .12);
+
             color: #b879ff;
+
             font-size: 12px;
-            transition: background .2s ease, transform .2s ease;
+
+            transition:
+                background .2s ease,
+                transform .2s ease;
+
         }
+
 
         .all-spaces-card:hover .all-spaces-arrow {
-            background: rgba(139, 74, 255, .25);
-            transform: translateX(2px);
+
+            background:
+                rgba(139, 74, 255, .25);
+
+            transform:
+                translateX(2px);
+
         }
+
+
+        /* =========================================================
+           STATES
+        ========================================================= */
 
         .all-spaces-state {
+
             grid-column: 1 / -1;
+
             min-height: 260px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 12px;
-            border: 1px dashed rgba(255, 255, 255, .08);
+
+            border:
+                1px dashed rgba(255, 255, 255, .08);
+
             border-radius: 18px;
+
             color: #8588a6;
+
             font-size: 14px;
+
         }
+
 
         .all-spaces-state i {
+
             color: #9b6cff;
+
         }
+
 
         .all-spaces-error {
+
             color: #ff9aab;
+
         }
+
+
+        /* =========================================================
+           TOPBAR ACTIONS
+        ========================================================= */
+
+        .topbar-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        /* =========================================================
+           JOIN BUTTON
+        ========================================================= */
+
+        .join-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 42px;
+
+            padding:
+                0 16px;
+
+            border:
+                1px solid rgba(155, 108, 255, .28);
+
+            border-radius: 12px;
+
+            background:
+                rgba(155, 108, 255, .10);
+
+            color: #c8b4ff;
+
+            font: inherit;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background .2s ease,
+                border-color .2s ease,
+                transform .2s ease;
+
+        }
+
+
+        .join-btn:hover {
+
+            background:
+                rgba(155, 108, 255, .18);
+
+            border-color:
+                rgba(155, 108, 255, .48);
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        /* =========================================================
+           JOIN SPACE MODAL
+        ========================================================= */
+
+        .join-space-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(4, 5, 14, .72);
+
+            backdrop-filter:
+                blur(8px);
+
+        }
+
+
+        .join-space-modal.open {
+
+            display: flex;
+
+        }
+
+
+        .join-space-dialog {
+
+            width:
+                min(460px,
+                    100%);
+
+            padding: 28px;
+
+            border:
+                1px solid rgba(255, 255, 255, .08);
+
+            border-radius: 20px;
+
+            background: #111426;
+
+            box-shadow:
+                0 24px 70px rgba(0, 0, 0, .50);
+
+        }
+
+
+        .join-space-header {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .join-space-header h2 {
+
+            margin: 0;
+
+            color: #f5f3ff;
+
+            font-size: 21px;
+
+            line-height: 1.25;
+
+        }
+
+
+        .join-space-header p {
+
+            margin:
+                7px 0 0;
+
+            color: #8588a6;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .join-space-close {
+
+            width: 34px;
+
+            height: 34px;
+
+            flex:
+                0 0 34px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid rgba(255, 255, 255, .08);
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, .035);
+
+            color: #aeb1c9;
+
+            cursor: pointer;
+
+        }
+
+
+        .join-space-close:hover {
+
+            color: #fff;
+
+            background:
+                rgba(255, 255, 255, .07);
+
+        }
+
+
+        /* =========================================================
+           JOIN FORM
+        ========================================================= */
+
+        .join-space-form label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #d9d6ea;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .join-space-input {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            padding:
+                0 14px;
+
+            border:
+                1px solid rgba(255, 255, 255, .09);
+
+            border-radius: 12px;
+
+            outline: none;
+
+            background: #0c0f1d;
+
+            color: #f5f3ff;
+
+            font: inherit;
+
+            font-size: 14px;
+
+            letter-spacing: .5px;
+
+            text-transform: uppercase;
+
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease;
+
+        }
+
+
+        .join-space-input::placeholder {
+
+            color: #666a84;
+
+            text-transform: none;
+
+            letter-spacing: 0;
+
+        }
+
+
+        .join-space-input:focus {
+
+            border-color:
+                rgba(155, 108, 255, .65);
+
+            box-shadow:
+                0 0 0 3px rgba(155, 108, 255, .10);
+
+        }
+
+
+        .join-space-message {
+
+            min-height: 20px;
+
+            margin-top: 10px;
+
+            color: #ff9aab;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .join-space-message.success {
+
+            color: #8ee6bb;
+
+        }
+
+
+        .join-space-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 18px;
+
+        }
+
+
+        .join-space-cancel,
+        .join-space-submit {
+
+            min-height: 42px;
+
+            padding:
+                0 16px;
+
+            border-radius: 11px;
+
+            font: inherit;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .join-space-cancel {
+
+            border:
+                1px solid rgba(255, 255, 255, .08);
+
+            background:
+                rgba(255, 255, 255, .035);
+
+            color: #aeb1c9;
+
+        }
+
+
+        .join-space-submit {
+
+            border:
+                1px solid rgba(145, 74, 255, .65);
+
+            background:
+                linear-gradient(135deg,
+                    #6f35d7,
+                    #8f43e9);
+
+            color: #fff;
+
+            box-shadow:
+                0 8px 22px rgba(111, 53, 215, .22);
+
+        }
+
+
+        .join-space-submit:disabled {
+
+            opacity: .65;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
 
         @media (max-width: 1250px) {
+
             #allSpacesGrid {
-                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+
+                grid-template-columns:
+                    repeat(3,
+                        minmax(0, 1fr)) !important;
+
             }
+
         }
+
 
         @media (max-width: 950px) {
+
             .all-spaces-content {
-                padding: 32px 24px 50px;
+
+                padding:
+                    32px 24px 50px;
+
             }
 
+
             #allSpacesGrid {
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+                grid-template-columns:
+                    repeat(2,
+                        minmax(0, 1fr)) !important;
+
             }
+
         }
+
 
         @media (max-width: 620px) {
+
             .all-spaces-content {
-                padding: 24px 16px 40px;
+
+                padding:
+                    24px 16px 40px;
+
             }
+
 
             .all-spaces-heading {
-                align-items: flex-start;
-                flex-direction: column;
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+
             }
 
-            #allSpacesGrid {
-                grid-template-columns: 1fr !important;
+
+            .topbar-actions {
+
+                width: 100%;
+
+                flex-wrap: wrap;
+
             }
+
+
+            .topbar-actions .join-btn,
+
+            .topbar-actions .create-btn {
+
+                flex:
+                    1 1 0;
+
+            }
+
+
+            .join-space-dialog {
+
+                padding: 22px;
+
+            }
+
+
+            #allSpacesGrid {
+
+                grid-template-columns:
+                    1fr !important;
+
+            }
+
         }
     </style>
+
 </head>
+
 
 <body>
 
+
     <div class="dashboard-layout">
 
-        <!-- SIDEBAR -->
+
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+
         <aside class="sidebar">
 
+
+            <!-- BRAND -->
+
             <div class="brand">
-                <span>∞</span> everUS
+
+                <span>∞</span>
+                everUS
+
             </div>
+
+
+            <!-- WORKSPACE -->
 
             <div class="sidebar-section">
-                <small>WORKSPACE</small>
+
+                <small>
+                    WORKSPACE
+                </small>
+
 
                 <a class="nav" href="{{ url_for('pages.dashboard') }}">
+
                     <i class="fa-solid fa-house"></i>
+
                     Dashboard
+
                 </a>
+
 
                 <a class="nav active" href="{{ url_for('pages.spaces') }}">
+
                     <i class="fa-solid fa-folder"></i>
+
                     Spaces
+
                 </a>
+
 
                 <a class="nav" href="#" id="memoriesNav">
+
                     <i class="fa-regular fa-images"></i>
+
                     Memories
+
                 </a>
+
 
                 <a class="nav" href="#" id="peopleNav">
+
                     <i class="fa-solid fa-user-group"></i>
+
                     People
+
                 </a>
+
 
                 <a class="nav" href="#" id="timelineNav">
+
                     <i class="fa-solid fa-timeline"></i>
+
                     Timeline
+
                 </a>
 
+
                 <a class="nav" href="#">
+
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
+
                     AI Assistant
-                    <span class="new-badge">New</span>
+
+                    <span class="new-badge">
+                        New
+                    </span>
+
                 </a>
+
             </div>
+
+
+            <!-- ACCOUNT -->
 
             <div class="sidebar-section account-section">
-                <small>ACCOUNT</small>
+
+                <small>
+                    ACCOUNT
+                </small>
+
 
                 <a class="nav" href="#">
+
                     <i class="fa-solid fa-gear"></i>
+
                     Settings
+
                 </a>
+
             </div>
+
 
         </aside>
 
 
-        <!-- MAIN -->
+        <!-- =====================================================
+             MAIN
+        ====================================================== -->
+
         <main class="main">
 
-            <!-- TOPBAR -->
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
             <header class="topbar">
 
+
+                <!-- SEARCH -->
+
                 <div class="search-wrapper">
+
                     <i class="fa-solid fa-magnifying-glass"></i>
 
+
                     <input type="text" id="spaceSearch" placeholder="Search spaces...">
+
                 </div>
 
-                <button class="create-btn" id="createSpace">
-                    <i class="fa-solid fa-plus"></i>
-                    Create Space
-                </button>
+
+                <!-- ACTIONS -->
+
+                <div class="topbar-actions">
+
+
+                    <!-- JOIN SPACE -->
+
+                    <button class="join-btn" id="joinSpaceButton" type="button">
+
+                        <i class="fa-solid fa-link"></i>
+
+                        Join Space
+
+                    </button>
+
+
+                    <!-- CREATE SPACE -->
+
+                    <button class="create-btn" id="createSpace" type="button">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Create Space
+
+                    </button>
+
+
+                </div>
+
 
             </header>
 
 
-            <!-- CONTENT -->
+            <!-- =================================================
+                 CONTENT
+            ================================================== -->
+
             <section class="all-spaces-page">
+
+
                 <div class="all-spaces-content">
 
+
+                    <!-- HEADING -->
+
                     <div class="all-spaces-heading">
+
+
                         <div>
-                            <span class="all-spaces-eyebrow">YOUR COLLECTION</span>
-                            <h1>All Spaces</h1>
-                            <p>All your private spaces in one place.</p>
+
+                            <span class="all-spaces-eyebrow">
+                                YOUR COLLECTION
+                            </span>
+
+
+                            <h1>
+                                All Spaces
+                            </h1>
+
+
+                            <p>
+                                All your private spaces
+                                in one place.
+                            </p>
+
                         </div>
+
+
+                        <!-- COUNT -->
 
                         <div class="all-spaces-count">
-                            <strong id="spaceCount">0</strong>
-                            <span>Spaces</span>
+
+                            <strong id="spaceCount">
+                                0
+                            </strong>
+
+                            <span>
+                                Spaces
+                            </span>
+
                         </div>
+
+
                     </div>
+
+
+                    <!-- SPACES GRID -->
 
                     <div id="allSpacesGrid">
+
+
                         <div class="all-spaces-state">
-                            <i class="fa-solid fa-spinner fa-spin"></i>
-                            <span>Loading your spaces...</span>
+
+                            <i class="
+                                    fa-solid
+                                    fa-spinner
+                                    fa-spin
+                                "></i>
+
+
+                            <span>
+                                Loading your spaces...
+                            </span>
+
                         </div>
+
+
                     </div>
 
+
                 </div>
+
+
             </section>
 
+
         </main>
+
 
     </div>
 
 
+    <!-- =========================================================
+         JOIN SPACE MODAL
+    ========================================================== -->
+
+    <div class="join-space-modal" id="joinSpaceModal" aria-hidden="true">
+
+
+        <div class="join-space-dialog" role="dialog" aria-modal="true" aria-labelledby="joinSpaceTitle">
+
+
+            <!-- HEADER -->
+
+            <div class="join-space-header">
+
+
+                <div>
+
+                    <h2 id="joinSpaceTitle">
+                        Join a Space
+                    </h2>
+
+
+                    <p>
+                        Enter the invite code
+                        shared with you.
+                    </p>
+
+                </div>
+
+
+                <!-- CLOSE -->
+
+                <button class="join-space-close" id="closeJoinSpace" type="button" aria-label="Close">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <form class="join-space-form" id="joinSpaceForm">
+
+
+                <label for="inviteCodeInput">
+                    Invite Code
+                </label>
+
+
+                <input class="join-space-input" id="inviteCodeInput" name="invite_code" type="text"
+                    placeholder="e.g. ABC123" autocomplete="off" maxlength="64" required>
+
+
+                <!-- MESSAGE -->
+
+                <div class="join-space-message" id="joinSpaceMessage" aria-live="polite"></div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="join-space-actions">
+
+
+                    <button class="join-space-cancel" id="cancelJoinSpace" type="button">
+
+                        Cancel
+
+                    </button>
+
+
+                    <button class="join-space-submit" id="submitJoinSpace" type="submit">
+
+                        <i class="
+                                fa-solid
+                                fa-right-to-bracket
+                            "></i>
+
+                        Join Space
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const token = localStorage.getItem("access_token");
 
-            if (!token) {
-                window.location.href = "/login";
-                return;
-            }
+        document.addEventListener(
+            "DOMContentLoaded",
+            async () => {
 
-            const grid = document.getElementById("allSpacesGrid");
-            const count = document.getElementById("spaceCount");
 
-            function escapeHTML(value) {
-                const div = document.createElement("div");
-                div.textContent = value ?? "";
-                return div.innerHTML;
-            }
+                /* =================================================
+                   AUTH
+                ================================================== */
 
-            function formatType(value) {
-                const text = String(value || "private");
-                return text.charAt(0).toUpperCase() + text.slice(1);
-            }
+                const token =
+                    localStorage.getItem(
+                        "access_token"
+                    );
 
-            function showState(message, icon, error = false) {
-                grid.innerHTML = `
-                    <div class="all-spaces-state ${error ? "all-spaces-error" : ""}">
-                        <i class="fa-solid ${icon}"></i>
-                        <span>${escapeHTML(message)}</span>
-                    </div>
-                `;
-            }
 
-            function renderSpaces(spaces) {
-                count.textContent = spaces.length;
+                if (!token) {
 
-                if (!spaces.length) {
-                    showState("No spaces found.", "fa-folder-open");
+                    window.location.href =
+                        "/login";
+
                     return;
+
                 }
 
-                grid.innerHTML = spaces.map((space) => {
-                    const id = space._id || space.id || space.space_id;
-                    const name = space.space_name || space.name || "Untitled Space";
-                    const type = space.space_type || space.type || "private";
-                    const cover = space.cover_image || "";
 
-                    return `
-                        <a
-                            class="all-spaces-card"
-                            href="/spaces/${encodeURIComponent(String(id))}"
-                            aria-label="Open ${escapeHTML(name)}"
+                /* =================================================
+                   ELEMENTS
+                ================================================== */
+
+                const grid =
+                    document.getElementById(
+                        "allSpacesGrid"
+                    );
+
+
+                const count =
+                    document.getElementById(
+                        "spaceCount"
+                    );
+
+
+                /* =================================================
+                   ESCAPE HTML
+                ================================================== */
+
+                function escapeHTML(value) {
+
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    div.textContent =
+                        value ?? "";
+
+
+                    return div.innerHTML;
+
+                }
+
+
+                /* =================================================
+                   FORMAT TYPE
+                ================================================== */
+
+                function formatType(value) {
+
+                    const text =
+                        String(
+                            value ||
+                            "private"
+                        );
+
+
+                    return (
+                        text
+                            .charAt(0)
+                            .toUpperCase()
+                        +
+                        text.slice(1)
+                    );
+
+                }
+
+
+                /* =================================================
+                   SHOW STATE
+                ================================================== */
+
+                function showState(
+                    message,
+                    icon,
+                    error = false
+                ) {
+
+                    grid.innerHTML = `
+
+                        <div
+                            class="
+                                all-spaces-state
+                                ${error
+                            ? "all-spaces-error"
+                            : ""
+                        }
+                            "
                         >
-                            <div class="all-spaces-cover">
-                                ${cover
-                            ? `
-                                            <img
-                                                src="${escapeHTML(cover)}"
-                                                alt=""
-                                                loading="lazy"
+
+                            <i
+                                class="
+                                    fa-solid
+                                    ${icon}
+                                "
+                            ></i>
+
+
+                            <span>
+                                ${escapeHTML(
+                            message
+                        )}
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                /* =================================================
+                   RENDER SPACES
+                ================================================== */
+
+                function renderSpaces(
+                    spaces
+                ) {
+
+
+                    count.textContent =
+                        spaces.length;
+
+
+                    if (!spaces.length) {
+
+                        showState(
+                            "No spaces found.",
+                            "fa-folder-open"
+                        );
+
+                        return;
+
+                    }
+
+
+                    grid.innerHTML =
+                        spaces
+                            .map(
+                                (space) => {
+
+
+                                    const id =
+                                        space._id ||
+                                        space.id ||
+                                        space.space_id;
+
+
+                                    const name =
+                                        space.space_name ||
+                                        space.name ||
+                                        "Untitled Space";
+
+
+                                    const type =
+                                        space.space_type ||
+                                        space.type ||
+                                        "private";
+
+
+                                    const cover =
+                                        space.cover_image ||
+                                        "";
+
+
+                                    return `
+
+                                        <a
+                                            class="
+                                                all-spaces-card
+                                            "
+                                            href="
+                                                /spaces/${encodeURIComponent(
+                                        String(id)
+                                    )}
+                                            "
+                                            aria-label="
+                                                Open ${escapeHTML(
+                                        name
+                                    )}
+                                            "
+                                        >
+
+
+                                            <!-- COVER -->
+
+                                            <div
+                                                class="
+                                                    all-spaces-cover
+                                                "
                                             >
-                                        `
-                            : `
-                                            <i class="fa-solid fa-heart all-spaces-heart"></i>
-                                        `
+
+
+                                                ${cover
+
+                                            ?
+
+                                            `
+
+                                                        <img
+                                                            src="
+                                                                ${escapeHTML(
+                                                cover
+                                            )}
+                                                            "
+                                                            alt=""
+                                                            loading="lazy"
+                                                        >
+
+                                                    `
+
+                                            :
+
+                                            `
+
+                                                        <i
+                                                            class="
+                                                                fa-solid
+                                                                fa-heart
+                                                                all-spaces-heart
+                                                            "
+                                                        ></i>
+
+                                                    `
+                                        }
+
+
+                                                <!-- TYPE -->
+
+                                                <span
+                                                    class="
+                                                        all-spaces-type
+                                                    "
+                                                >
+
+                                                    ${escapeHTML(
+                                            formatType(
+                                                type
+                                            )
+                                        )}
+
+                                                </span>
+
+
+                                            </div>
+
+
+                                            <!-- INFO -->
+
+                                            <div
+                                                class="
+                                                    all-spaces-info
+                                                "
+                                            >
+
+
+                                                <strong
+                                                    class="
+                                                        all-spaces-name
+                                                    "
+                                                >
+
+                                                    ${escapeHTML(
+                                            name
+                                        )}
+
+                                                </strong>
+
+
+                                                <span
+                                                    class="
+                                                        all-spaces-meta
+                                                    "
+                                                >
+
+                                                    ${escapeHTML(
+                                            formatType(
+                                                type
+                                            )
+                                        )}
+
+                                                    space
+
+                                                </span>
+
+
+                                                <!-- ARROW -->
+
+                                                <span
+                                                    class="
+                                                        all-spaces-arrow
+                                                    "
+                                                >
+
+                                                    <i
+                                                        class="
+                                                            fa-solid
+                                                            fa-chevron-right
+                                                        "
+                                                    ></i>
+
+                                                </span>
+
+
+                                            </div>
+
+
+                                        </a>
+
+                                    `;
+
+                                }
+                            )
+                            .join("");
+
+                }
+
+
+                /* =================================================
+                   FETCH SPACES
+                ================================================== */
+
+                async function fetchSpaces() {
+
+
+                    const response =
+                        await fetch(
+                            "/api/spaces/",
+                            {
+
+                                method:
+                                    "GET",
+
+                                headers: {
+
+                                    Authorization:
+                                        `Bearer ${token}`
+
+                                }
+
+                            }
+                        );
+
+
+                    /* ---------------------------------------------
+                       TOKEN EXPIRED
+                    --------------------------------------------- */
+
+                    if (
+                        response.status ===
+                        401
+                    ) {
+
+                        localStorage.clear();
+
+                        window.location.href =
+                            "/login";
+
+                        return null;
+
+                    }
+
+
+                    const result =
+                        await response
+                            .json()
+                            .catch(
+                                () => ({})
+                            );
+
+
+                    if (
+                        !response.ok ||
+                        !result.success
+                    ) {
+
+                        throw new Error(
+                            result.message ||
+                            "Unable to load spaces."
+                        );
+
+                    }
+
+
+                    return (
+                        result.data?.spaces ||
+                        []
+                    );
+
+                }
+
+
+                /* =================================================
+                   LOAD SPACES
+                ================================================== */
+
+                let spaces = [];
+
+
+                try {
+
+                    spaces =
+                        await fetchSpaces() ||
+                        [];
+
+
+                    renderSpaces(
+                        spaces
+                    );
+
+                }
+
+
+                catch (error) {
+
+                    console.error(
+                        "Spaces page error:",
+                        error
+                    );
+
+
+                    showState(
+                        "Could not load spaces. Refresh and try again.",
+                        "fa-triangle-exclamation",
+                        true
+                    );
+
+                }
+
+
+                /* =================================================
+                   CREATE SPACE
+                ================================================== */
+
+                document
+                    .getElementById(
+                        "createSpace"
+                    )
+                    ?.addEventListener(
+                        "click",
+                        () => {
+
+                            window.location.href =
+                                "/create-space";
+
+                        }
+                    );
+
+
+                /* =================================================
+                   SIDEBAR SPACE LINKS
+                ================================================== */
+
+                if (
+                    spaces.length
+                ) {
+
+
+                    const first =
+                        spaces[0];
+
+
+                    const firstId =
+                        first._id ||
+                        first.id ||
+                        first.space_id;
+
+
+                    if (firstId) {
+
+
+                        const base =
+                            `/spaces/${encodeURIComponent(
+                                String(firstId)
+                            )}`;
+
+
+                        const memoriesNav =
+                            document.getElementById(
+                                "memoriesNav"
+                            );
+
+
+                        const peopleNav =
+                            document.getElementById(
+                                "peopleNav"
+                            );
+
+
+                        const timelineNav =
+                            document.getElementById(
+                                "timelineNav"
+                            );
+
+
+                        if (
+                            memoriesNav
+                        ) {
+
+                            memoriesNav.href =
+                                `${base}#memories`;
+
                         }
 
-                                <span class="all-spaces-type">
-                                    ${escapeHTML(formatType(type))}
-                                </span>
-                            </div>
 
-                            <div class="all-spaces-info">
-                                <strong class="all-spaces-name">
-                                    ${escapeHTML(name)}
-                                </strong>
+                        if (
+                            peopleNav
+                        ) {
 
-                                <span class="all-spaces-meta">
-                                    ${escapeHTML(formatType(type))} space
-                                </span>
+                            peopleNav.href =
+                                `${base}#members`;
 
-                                <span class="all-spaces-arrow">
-                                    <i class="fa-solid fa-chevron-right"></i>
-                                </span>
-                            </div>
-                        </a>
-                    `;
-                }).join("");
-            }
+                        }
 
-            async function fetchSpaces() {
-                const response = await fetch("/api/spaces/", {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`
+
+                        if (
+                            timelineNav
+                        ) {
+
+                            timelineNav.href =
+                                `${base}#timeline`;
+
+                        }
+
                     }
-                });
 
-                if (response.status === 401) {
-                    localStorage.clear();
-                    window.location.href = "/login";
-                    return null;
                 }
 
-                const result = await response.json().catch(() => ({}));
 
-                if (!response.ok || !result.success) {
-                    throw new Error(
-                        result.message || "Unable to load spaces."
+                /* =================================================
+                   SEARCH SPACES
+                ================================================== */
+
+                const search =
+                    document.getElementById(
+                        "spaceSearch"
                     );
-                }
 
-                return result.data?.spaces || [];
-            }
 
-            let spaces = [];
+                search?.addEventListener(
+                    "input",
+                    () => {
 
-            try {
-                spaces = await fetchSpaces() || [];
-                renderSpaces(spaces);
-            } catch (error) {
-                console.error("Spaces page error:", error);
-                showState(
-                    "Could not load spaces. Refresh and try again.",
-                    "fa-triangle-exclamation",
-                    true
+
+                        const query =
+                            search.value
+                                .trim()
+                                .toLowerCase();
+
+
+                        const filtered =
+                            spaces.filter(
+                                (space) => {
+
+
+                                    const name =
+                                        space.space_name ||
+                                        space.name ||
+                                        "";
+
+
+                                    const type =
+                                        space.space_type ||
+                                        space.type ||
+                                        "";
+
+
+                                    return (
+
+                                        name
+                                            .toLowerCase()
+                                            .includes(
+                                                query
+                                            )
+
+                                        ||
+
+                                        type
+                                            .toLowerCase()
+                                            .includes(
+                                                query
+                                            )
+
+                                    );
+
+                                }
+                            );
+
+
+                        renderSpaces(
+                            filtered
+                        );
+
+                    }
                 );
-            }
 
-            document.getElementById("createSpace")?.addEventListener("click", () => {
-                window.location.href = "/create-space";
-            });
 
-            // Keep the shared sidebar useful by pointing these links
-            // to the first available space's existing tabs.
-            if (spaces.length) {
-                const first = spaces[0];
-                const firstId = first._id || first.id || first.space_id;
+                /* =================================================
+                   JOIN SPACE ELEMENTS
+                ================================================== */
 
-                if (firstId) {
-                    const base = `/spaces/${encodeURIComponent(String(firstId))}`;
+                const joinSpaceButton =
+                    document.getElementById(
+                        "joinSpaceButton"
+                    );
 
-                    const memoriesNav = document.getElementById("memoriesNav");
-                    const peopleNav = document.getElementById("peopleNav");
-                    const timelineNav = document.getElementById("timelineNav");
 
-                    if (memoriesNav) memoriesNav.href = `${base}#memories`;
-                    if (peopleNav) peopleNav.href = `${base}#members`;
-                    if (timelineNav) timelineNav.href = `${base}#timeline`;
+                const joinSpaceModal =
+                    document.getElementById(
+                        "joinSpaceModal"
+                    );
+
+
+                const closeJoinSpace =
+                    document.getElementById(
+                        "closeJoinSpace"
+                    );
+
+
+                const cancelJoinSpace =
+                    document.getElementById(
+                        "cancelJoinSpace"
+                    );
+
+
+                const joinSpaceForm =
+                    document.getElementById(
+                        "joinSpaceForm"
+                    );
+
+
+                const inviteCodeInput =
+                    document.getElementById(
+                        "inviteCodeInput"
+                    );
+
+
+                const joinSpaceMessage =
+                    document.getElementById(
+                        "joinSpaceMessage"
+                    );
+
+
+                const submitJoinSpace =
+                    document.getElementById(
+                        "submitJoinSpace"
+                    );
+
+
+                /* =================================================
+                   OPEN JOIN MODAL
+                ================================================== */
+
+                function openJoinSpaceModal() {
+
+
+                    if (!joinSpaceModal) {
+
+                        return;
+
+                    }
+
+
+                    joinSpaceModal.classList.add(
+                        "open"
+                    );
+
+
+                    joinSpaceModal.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
+
+
+                    if (
+                        joinSpaceMessage
+                    ) {
+
+                        joinSpaceMessage.textContent =
+                            "";
+
+                        joinSpaceMessage.classList.remove(
+                            "success"
+                        );
+
+                    }
+
+
+                    if (
+                        inviteCodeInput
+                    ) {
+
+                        inviteCodeInput.value =
+                            "";
+
+
+                        setTimeout(
+                            () => {
+
+                                inviteCodeInput.focus();
+
+                            },
+                            50
+                        );
+
+                    }
+
                 }
+
+
+                /* =================================================
+                   CLOSE JOIN MODAL
+                ================================================== */
+
+                function closeJoinSpaceModal() {
+
+
+                    if (!joinSpaceModal) {
+
+                        return;
+
+                    }
+
+
+                    joinSpaceModal.classList.remove(
+                        "open"
+                    );
+
+
+                    joinSpaceModal.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                }
+
+
+                /* =================================================
+                   JOIN MESSAGE
+                ================================================== */
+
+                function showJoinMessage(
+                    message,
+                    success = false
+                ) {
+
+
+                    if (
+                        !joinSpaceMessage
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    joinSpaceMessage.textContent =
+                        message || "";
+
+
+                    joinSpaceMessage.classList.toggle(
+                        "success",
+                        success
+                    );
+
+                }
+
+
+                /* =================================================
+                   JOIN BUTTON
+                ================================================== */
+
+                joinSpaceButton?.addEventListener(
+                    "click",
+                    openJoinSpaceModal
+                );
+
+
+                /* =================================================
+                   CLOSE BUTTON
+                ================================================== */
+
+                closeJoinSpace?.addEventListener(
+                    "click",
+                    closeJoinSpaceModal
+                );
+
+
+                cancelJoinSpace?.addEventListener(
+                    "click",
+                    closeJoinSpaceModal
+                );
+
+
+                /* =================================================
+                   CLICK OUTSIDE MODAL
+                ================================================== */
+
+                joinSpaceModal?.addEventListener(
+                    "click",
+                    (event) => {
+
+
+                        if (
+                            event.target ===
+                            joinSpaceModal
+                        ) {
+
+                            closeJoinSpaceModal();
+
+                        }
+
+                    }
+                );
+
+
+                /* =================================================
+                   ESCAPE KEY
+                ================================================== */
+
+                document.addEventListener(
+                    "keydown",
+                    (event) => {
+
+
+                        if (
+                            event.key ===
+                            "Escape" &&
+
+                            joinSpaceModal
+                                ?.classList
+                                .contains(
+                                    "open"
+                                )
+                        ) {
+
+                            closeJoinSpaceModal();
+
+                        }
+
+                    }
+                );
+
+
+                /* =================================================
+                   JOIN SPACE FORM
+                ================================================== */
+
+                joinSpaceForm?.addEventListener(
+                    "submit",
+                    async (event) => {
+
+
+                        event.preventDefault();
+
+
+                        const inviteCode =
+                            inviteCodeInput
+                                ?.value
+                                .trim();
+
+
+                        /* -----------------------------------------
+                           VALIDATION
+                        ----------------------------------------- */
+
+                        if (
+                            !inviteCode
+                        ) {
+
+                            showJoinMessage(
+                                "Please enter an invite code."
+                            );
+
+
+                            inviteCodeInput?.focus();
+
+
+                            return;
+
+                        }
+
+
+                        /* -----------------------------------------
+                           LOADING STATE
+                        ----------------------------------------- */
+
+                        if (
+                            submitJoinSpace
+                        ) {
+
+                            submitJoinSpace.disabled =
+                                true;
+
+
+                            submitJoinSpace.innerHTML = `
+
+                                <i
+                                    class="
+                                        fa-solid
+                                        fa-spinner
+                                        fa-spin
+                                    "
+                                ></i>
+
+                                Joining...
+
+                            `;
+
+                        }
+
+
+                        showJoinMessage(
+                            ""
+                        );
+
+
+                        try {
+
+
+                            /* -------------------------------------
+                               JOIN API
+                            ------------------------------------- */
+
+                            const response =
+                                await fetch(
+                                    "/api/invite/join",
+                                    {
+
+                                        method:
+                                            "POST",
+
+                                        headers: {
+
+                                            "Content-Type":
+                                                "application/json",
+
+                                            Authorization:
+                                                `Bearer ${token}`
+
+                                        },
+
+                                        body:
+                                            JSON.stringify(
+                                                {
+                                                    invite_code:
+                                                        inviteCode
+                                                }
+                                            )
+
+                                    }
+                                );
+
+
+                            /* -------------------------------------
+                               AUTH ERROR
+                            ------------------------------------- */
+
+                            if (
+                                response.status ===
+                                401
+                            ) {
+
+                                localStorage.clear();
+
+
+                                window.location.href =
+                                    "/login";
+
+
+                                return;
+
+                            }
+
+
+                            /* -------------------------------------
+                               RESPONSE
+                            ------------------------------------- */
+
+                            const result =
+                                await response
+                                    .json()
+                                    .catch(
+                                        () => ({})
+                                    );
+
+
+                            /* -------------------------------------
+                               API ERROR
+                            ------------------------------------- */
+
+                            if (
+                                !response.ok ||
+                                !result.success
+                            ) {
+
+                                throw new Error(
+                                    result.message ||
+                                    "Unable to join this space."
+                                );
+
+                            }
+
+
+                            /* -------------------------------------
+                               FIND SPACE ID
+                            ------------------------------------- */
+
+                            const joinedSpace =
+                                result.data?.space ||
+                                result.data?.joined_space ||
+                                result.data;
+
+
+                            const joinedSpaceId =
+                                joinedSpace?._id ||
+                                joinedSpace?.id ||
+                                joinedSpace?.space_id ||
+                                result.data?.space_id;
+
+
+                            /* -------------------------------------
+                               SUCCESS
+                            ------------------------------------- */
+
+                            showJoinMessage(
+                                result.message ||
+                                "Space joined successfully.",
+                                true
+                            );
+
+
+                            /* -------------------------------------
+                               REDIRECT
+                            ------------------------------------- */
+
+                            if (
+                                joinedSpaceId
+                            ) {
+
+
+                                setTimeout(
+                                    () => {
+
+                                        window.location.href =
+                                            `/spaces/${encodeURIComponent(
+                                                String(
+                                                    joinedSpaceId
+                                                )
+                                            )}`;
+
+                                    },
+                                    500
+                                );
+
+                            }
+
+
+                            else {
+
+
+                                setTimeout(
+                                    () => {
+
+                                        window.location.reload();
+
+                                    },
+                                    700
+                                );
+
+                            }
+
+                        }
+
+
+                        catch (error) {
+
+
+                            console.error(
+                                "Join space error:",
+                                error
+                            );
+
+
+                            showJoinMessage(
+                                error.message ||
+                                "Unable to join this space."
+                            );
+
+                        }
+
+
+                        finally {
+
+
+                            if (
+                                submitJoinSpace
+                            ) {
+
+                                submitJoinSpace.disabled =
+                                    false;
+
+
+                                submitJoinSpace.innerHTML = `
+
+                                    <i
+                                        class="
+                                            fa-solid
+                                            fa-right-to-bracket
+                                        "
+                                    ></i>
+
+                                    Join Space
+
+                                `;
+
+                            }
+
+                        }
+
+                    }
+                );
+
             }
-        });
+
+        );
+
     </script>
+
 
 </body>
 
 </html>
-space_corrected_final.html
-HTML
