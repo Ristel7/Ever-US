@@ -142,11 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
 
-        /*
-         * Only add JSON content type when a body exists.
-         * This prevents unnecessary content-type headers
-         * on GET requests.
-         */
         if (options.body) {
 
             headers["Content-Type"] =
@@ -189,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       SPACE TYPE
+       SPACE HELPERS
     ========================================================= */
 
     function formatSpaceType(value) {
@@ -206,10 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================================================
-       GET SPACE ID
-    ========================================================= */
-
     function getSpaceId(space) {
 
         return (
@@ -223,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       CREATE SPACE CARD
+       SPACE CARD
     ========================================================= */
 
     function createSpaceCard(space) {
@@ -423,10 +414,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /*
-             * IMPORTANT:
-             * Do not use .slice(0, 4) or .slice(0, 6).
-             * The dashboard should show ALL spaces.
+             * ALL SPACES
+             * No .slice(0, 4)
+             * No .slice(0, 6)
              */
+
             spaces.forEach(
                 (space) => {
 
@@ -517,7 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       GET FIRST SPACE ID
+       FIRST SPACE
     ========================================================= */
 
     async function getFirstSpaceId() {
@@ -730,8 +722,396 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       LOAD RECENT MEMORIES
+       STORAGE CONSTANTS
     ========================================================= */
+
+    const STORAGE_LIMIT_BYTES =
+        10 * 1024 * 1024 * 1024;
+
+
+    /* =========================================================
+       STORAGE FORMAT
+    ========================================================= */
+
+    function formatStorageSize(bytes) {
+
+        const value =
+            Number(bytes) || 0;
+
+
+        if (value <= 0) {
+            return "0 GB";
+        }
+
+
+        const units = [
+            "Bytes",
+            "KB",
+            "MB",
+            "GB",
+            "TB"
+        ];
+
+
+        const exponent =
+            Math.min(
+                Math.floor(
+                    Math.log(value) /
+                    Math.log(1024)
+                ),
+                units.length - 1
+            );
+
+
+        const converted =
+            value /
+            Math.pow(
+                1024,
+                exponent
+            );
+
+
+        if (exponent === 0) {
+
+            return `${Math.round(
+                converted
+            )} ${units[exponent]}`;
+
+        }
+
+
+        if (converted >= 10) {
+
+            return `${converted.toFixed(
+                1
+            )} ${units[exponent]}`;
+
+        }
+
+
+        return `${converted.toFixed(
+            2
+        )} ${units[exponent]}`;
+
+    }
+
+
+    /* =========================================================
+       MEMORY SIZE
+    ========================================================= */
+
+    function getMemorySize(memory) {
+
+        if (!memory) {
+            return 0;
+        }
+
+
+        const possibleValues = [
+
+            memory.file_size,
+
+            memory.fileSize,
+
+            memory.size_bytes,
+
+            memory.sizeBytes,
+
+            memory.bytes,
+
+            memory.file_bytes,
+
+            memory.fileBytes,
+
+            memory.media_size,
+
+            memory.mediaSize,
+
+            memory.storage_bytes,
+
+            memory.storageBytes
+
+        ];
+
+
+        for (
+            const value of possibleValues
+        ) {
+
+            if (
+                value !== null &&
+                value !== undefined &&
+                value !== ""
+            ) {
+
+                const numericValue =
+                    Number(value);
+
+
+                if (
+                    Number.isFinite(
+                        numericValue
+                    ) &&
+                    numericValue >= 0
+                ) {
+
+                    return numericValue;
+
+                }
+
+            }
+
+        }
+
+
+        return 0;
+
+    }
+
+
+    /* =========================================================
+       UPDATE STORAGE UI
+    ========================================================= */
+
+    function updateStorageUI(
+        totalBytes
+    ) {
+
+        const usedBytes =
+            Math.max(
+                0,
+                Number(totalBytes) || 0
+            );
+
+
+        const percentage =
+            Math.min(
+                100,
+                (
+                    usedBytes /
+                    STORAGE_LIMIT_BYTES
+                ) * 100
+            );
+
+
+        if (storageUsed) {
+
+            storageUsed.textContent =
+                formatStorageSize(
+                    usedBytes
+                );
+
+        }
+
+
+        if (storageLimit) {
+
+            storageLimit.textContent =
+                "of 10 GB";
+
+        }
+
+
+        const ring =
+            document.querySelector(
+                ".ring span"
+            );
+
+
+        if (ring) {
+
+            ring.textContent =
+                `${percentage.toFixed(1)}%`;
+
+        }
+
+
+        /*
+         * Support common circular progress
+         * implementations using CSS variables.
+         */
+
+        const ringElement =
+            document.querySelector(
+                ".ring"
+            );
+
+
+        if (ringElement) {
+
+            ringElement.style.setProperty(
+                "--storage-progress",
+                `${percentage}%`
+            );
+
+            ringElement.dataset.progress =
+                percentage.toFixed(1);
+
+        }
+
+
+        /*
+         * Support a progress bar if the
+         * Dashboard HTML contains one.
+         */
+
+        const progressBars =
+            document.querySelectorAll(
+                ".storage-progress-bar, .storage-bar-fill, .progress-fill"
+            );
+
+
+        progressBars.forEach(
+            (bar) => {
+
+                bar.style.width =
+                    `${percentage}%`;
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       LOAD STORAGE
+    ========================================================= */
+
+    async function loadStorageUsage(
+        spaces
+    ) {
+
+        let totalBytes = 0;
+
+
+        if (!Array.isArray(spaces)) {
+
+            updateStorageUI(
+                0
+            );
+
+            return 0;
+
+        }
+
+
+        const results =
+            await Promise.allSettled(
+
+                spaces.map(
+                    async (space) => {
+
+                        const spaceId =
+                            getSpaceId(space);
+
+
+                        if (!spaceId) {
+                            return 0;
+                        }
+
+
+                        try {
+
+                            const response =
+                                await api(
+                                    `/api/spaces/${encodeURIComponent(
+                                        String(spaceId)
+                                    )}/memories`
+                                );
+
+
+                            if (!response?.ok) {
+                                return 0;
+                            }
+
+
+                            const result =
+                                await response
+                                    .json()
+                                    .catch(
+                                        () => ({})
+                                    );
+
+
+                            const memories =
+                                result.data?.memories;
+
+
+                            if (
+                                !Array.isArray(
+                                    memories
+                                )
+                            ) {
+
+                                return 0;
+
+                            }
+
+
+                            return memories.reduce(
+                                (
+                                    sum,
+                                    memory
+                                ) => {
+
+                                    return (
+                                        sum +
+                                        getMemorySize(
+                                            memory
+                                        )
+                                    );
+
+                                },
+                                0
+                            );
+
+                        } catch (error) {
+
+                            console.warn(
+                                "Unable to calculate storage:",
+                                error
+                            );
+
+                            return 0;
+
+                        }
+
+                    }
+                )
+            );
+
+
+        results.forEach(
+            (result) => {
+
+                if (
+                    result.status ===
+                    "fulfilled"
+                ) {
+
+                    totalBytes +=
+                        Number(
+                            result.value
+                        ) || 0;
+
+                }
+
+            }
+        );
+
+
+        updateStorageUI(
+            totalBytes
+        );
+
+
+        return totalBytes;
+
+    }
+
+    /* =========================================================
+   LOAD RECENT MEMORIES
+========================================================= */
 
     async function loadRecentMemories(spaces) {
 
@@ -750,10 +1130,6 @@ document.addEventListener("DOMContentLoaded", () => {
             spaces = [];
         }
 
-
-        /*
-         * Load memories from every space.
-         */
 
         await Promise.allSettled(
 
@@ -841,10 +1217,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-         * Sort newest first.
-         */
-
         allMemories.sort(
             (a, b) => {
 
@@ -871,11 +1243,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
 
-
-        /*
-         * Keep dashboard preview limited.
-         * "View all" opens the Memories page.
-         */
 
         const recent =
             allMemories.slice(0, 6);
@@ -1019,8 +1386,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (minutes < 60) {
 
             return `${minutes} ${minutes === 1
-                    ? "minute"
-                    : "minutes"
+                ? "minute"
+                : "minutes"
                 } ago`;
 
         }
@@ -1035,8 +1402,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (hours < 24) {
 
             return `${hours} ${hours === 1
-                    ? "hour"
-                    : "hours"
+                ? "hour"
+                : "hours"
                 } ago`;
 
         }
@@ -1051,8 +1418,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (days < 7) {
 
             return `${days} ${days === 1
-                    ? "day"
-                    : "days"
+                ? "day"
+                : "days"
                 } ago`;
 
         }
@@ -1090,10 +1457,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const activities = [];
 
 
-        /*
-         * SPACE ACTIVITIES
-         */
-
         if (Array.isArray(spaces)) {
 
             spaces.forEach(
@@ -1125,10 +1488,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-         * MEMORY ACTIVITIES
-         */
-
         if (Array.isArray(memories)) {
 
             memories
@@ -1158,10 +1517,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
-        /*
-         * NEWEST FIRST
-         */
 
         activities.sort(
             (a, b) => {
@@ -1254,53 +1609,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       STORAGE
-    ========================================================= */
-
-    function updateStorageUI() {
-
-        /*
-         * Storage calculation is not currently exposed
-         * by the dashboard API.
-         *
-         * Keep the dashboard at the existing default:
-         * 0 GB of 10 GB.
-         */
-
-        if (storageUsed) {
-
-            storageUsed.textContent =
-                "0 GB";
-
-        }
-
-
-        if (storageLimit) {
-
-            storageLimit.textContent =
-                "of 10 GB";
-
-        }
-
-
-        const ring =
-            document.querySelector(
-                ".ring span"
-            );
-
-
-        if (ring) {
-
-            ring.textContent =
-                "0%";
-
-        }
-
-    }
-
-
-    /* =========================================================
-       LOAD DASHBOARD DATA
+       DASHBOARD DATA
     ========================================================= */
 
     async function loadDashboardData() {
@@ -1347,7 +1656,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            updateStorageUI();
+            updateStorageUI(0);
 
             return;
 
@@ -1356,7 +1665,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const [
             ,
-            memories
+            memories,
+            storage
         ] = await Promise.all([
 
             loadSpaceCounts(
@@ -1364,6 +1674,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ),
 
             loadRecentMemories(
+                spaces
+            ),
+
+            loadStorageUsage(
                 spaces
             )
 
@@ -1376,7 +1690,9 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        updateStorageUI();
+        updateStorageUI(
+            storage
+        );
 
     }
 
@@ -1597,14 +1913,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 hideCreateSpaceModal();
 
 
-                /*
-                 * Reload the entire dashboard so:
-                 * - space count updates
-                 * - new card appears
-                 * - activity updates
-                 * - statistics update
-                 */
-
                 await loadDashboardData();
 
             } catch (error) {
@@ -1754,12 +2062,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     .toLowerCase();
 
 
-            /*
-             * Support both the old dashboard
-             * .space cards and newer
-             * .dashboard-space-card cards.
-             */
-
             const cards =
                 document.querySelectorAll(
                     ".space, .dashboard-space-card"
@@ -1806,7 +2108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       SIDEBAR NAVIGATION
+       OPEN FIRST SPACE TAB
     ========================================================= */
 
     async function openFirstSpaceTab(
@@ -1838,9 +2140,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /*
-     * Memories
-     */
+    /* =========================================================
+       SIDEBAR MEMORIES
+    ========================================================= */
 
     const dashboardMemoriesLink =
         $("dashboardMemoriesLink");
@@ -1860,9 +2162,9 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /*
-     * People
-     */
+    /* =========================================================
+       SIDEBAR PEOPLE
+    ========================================================= */
 
     const dashboardPeopleLink =
         $("dashboardPeopleLink");
@@ -1882,9 +2184,9 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /*
-     * Timeline
-     */
+    /* =========================================================
+       SIDEBAR TIMELINE
+    ========================================================= */
 
     const dashboardTimelineLink =
         $("dashboardTimelineLink");
@@ -1905,7 +2207,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       DASHBOARD STAT CARD NAVIGATION
+       STAT CARDS
     ========================================================= */
 
     const totalSpacesCard =
@@ -1925,10 +2227,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ".stat"
         );
 
-
-    /*
-     * TOTAL SPACES
-     */
 
     totalSpacesCard?.addEventListener(
         "click",
@@ -1951,10 +2249,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /*
-     * TOTAL MEMORIES
-     */
-
     totalMemoriesCard?.addEventListener(
         "click",
         async () => {
@@ -1966,10 +2260,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-
-    /*
-     * PEOPLE CONNECTED
-     */
 
     totalPeopleCard?.addEventListener(
         "click",
@@ -2001,10 +2291,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-
     /* =========================================================
-       RECENT MEMORIES -> VIEW ALL
-    ========================================================= */
+   RECENT MEMORIES -> VIEW ALL
+========================================================= */
 
     const viewAllMemories =
         $("viewAllMemories");
@@ -2143,12 +2432,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /*
-             * IMPORTANT:
-             * Use assign() so the browser definitely
-             * performs the navigation.
-             */
-
             window.location.assign(
                 `/spaces/${encodeURIComponent(
                     String(spaceId)
@@ -2167,13 +2450,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /*
-     * Direct handler.
-     *
-     * Works when Dashboard HTML contains:
-     *
-     * id="viewAllActivity"
-     */
+    /* =========================================================
+       DIRECT RECENT ACTIVITY HANDLER
+    ========================================================= */
 
     const viewAllActivity =
         $("viewAllActivity");
@@ -2191,13 +2470,9 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /*
-     * Delegated fallback.
-     *
-     * This is intentionally kept because the current
-     * Dashboard HTML may not have an ID on the
-     * Recent Activity "View all" button.
-     */
+    /* =========================================================
+       RECENT ACTIVITY FALLBACK
+    ========================================================= */
 
     document.addEventListener(
         "click",
@@ -2215,10 +2490,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
-            /*
-             * Dedicated ID is already handled above.
-             */
 
             if (
                 target.id ===
@@ -2259,11 +2530,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /*
-             * Find the container that owns
-             * the Recent Activity list.
-             */
-
             const activityPanel =
                 activityElement.closest(
                     ".panel, .card, .dashboard-card, section"
@@ -2276,11 +2542,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
-            /*
-             * Make sure this "View all"
-             * belongs to Recent Activity.
-             */
 
             if (
                 !activityPanel.contains(
@@ -2306,14 +2567,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       VIEW ALL SPACES FALLBACK
+       SPACES VIEW ALL FALLBACK
     ========================================================= */
-
-    /*
-     * If the HTML contains a "View all" control for
-     * Your Spaces without the expected ID, detect it
-     * using the spaces container.
-     */
 
     document.addEventListener(
         "click",
@@ -2395,6 +2650,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             event.preventDefault();
 
+
             window.location.href =
                 "/spaces";
 
@@ -2404,7 +2660,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       RECENT MEMORIES FALLBACK
+       MEMORIES VIEW ALL FALLBACK
     ========================================================= */
 
     document.addEventListener(
@@ -2500,7 +2756,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       INITIAL LOAD
+       STORAGE REFRESH
+    ========================================================= */
+
+    /*
+     * Expose a small helper so other Dashboard code
+     * can refresh the storage card after a successful
+     * upload without reloading the whole page.
+     */
+
+    window.refreshDashboardStorage =
+        async function () {
+
+            try {
+
+                const spaces =
+                    await getAllSpaces();
+
+
+                await loadStorageUsage(
+                    spaces
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to refresh dashboard storage:",
+                    error
+                );
+
+            }
+
+        };
+
+
+    /* =========================================================
+       INITIAL DASHBOARD LOAD
     ========================================================= */
 
     loadDashboardData();

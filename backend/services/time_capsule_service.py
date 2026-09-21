@@ -30,12 +30,14 @@ def create_time_capsule(
 
 def get_time_capsules(space_id):
     capsules = list(
-        time_capsules_collection.find(
-            {"space_id": space_id}
-        ).sort(
-            "unlock_at",
-            1
+        time_capsules_collection
+        .find(
+            {"space_id": space_id},
+            {
+                "content": 0
+            }
         )
+        .sort("unlock_at", 1)
     )
 
     return serialize(capsules)
